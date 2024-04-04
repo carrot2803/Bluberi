@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    {% include '_message.html'%}
+    <form action="{{url_for('delete')}}" method="POST">
+        <div class="form-group">
+            <label for="">Room Name</label>
+            <input type="text" name="room_name" class="form-control mb-4" placeholder="Enter the room Name">
+            <input type="submit" class="btn btn-danger" value="Delete">
+        </div>
+    </form>
+</div>
+{% endblock %}

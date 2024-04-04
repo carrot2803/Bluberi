@@ -1,0 +1,31 @@
+{
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.autoImportCompletions": true,
+    "[python]": {
+        "editor.semanticHighlighting.enabled": true
+    },
+    "editor.semanticTokenColorCustomizations": {
+        "[Default Dark+]": {
+            "rules": {
+                "selfParameter": "#569CD6",
+                "clsParameter": "#569CD6",
+            },
+        }
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    // "meta.function-call.python",
+                    "meta.function-call.generic.python",
+                ],
+                "settings": {
+                    "foreground": "#DCDCAA" // Adjust the color code as needed
+                }
+            }
+        ]
+    },
+    "python.analysis.extraPaths": [
+        "./App"
+    ]
+}

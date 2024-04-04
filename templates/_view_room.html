@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include '_navbar.html'%}
+<div class="text-center well alert alert-secondary"><b>Welcome to {{room.room_name}} Group
+        <i>{{current_user.username}}</i> </b></div>
+<div class="container mb-2">
+
+    <h1>Room members</h1>
+
+    {% for room_members in room_members %}
+    <ul>
+        <li>{{ room_members.member_name }}</li>
+    </ul>
+    {% endfor %}
+    <br>
+    <br>
+    <div class="message_holder">
+        <div class="message_content">
+            {% for message in messages %}
+            <div class="msg_bbl alert alert-secondary"><b style="color: #000">{{message.sender_name}}</b>
+                {{message.message}}<br>{{message.created_at}}</div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control mb-4" id="txt2" placeholder="Type Your Message Here...."
+                autocomplete="off">
+            <input type="submit" class="btn btn-outline-info" value="send" id="send1">
+        </div>
+
+    </div>
+
+
+</div>
+<script>
+    $(document).ready(function () {
+        var socket = io.connect('http://127.0.0.1:5000')
+        var username = `{{current_user.username}}`
+        var room = `{{room.room_name}}`;
+        socket.emit('join', { 'username': username, 'room': room });
+        $('#send1').click(function () {
+            socket.emit('incoming-msg', {
+                'msg': $('#txt2').val(),
+                'username': username, 'room': room
+            });
+
+            $('#txt2').val('');
+        });
+        socket.on('message', function (msg) {
+            $('div.message_content').append('<div class="msg_bbl alert alert-secondary"><b style="color: #000">' + msg.username + '</b> ' + ':' + msg.msg + '<br>' + msg.time + '</div>');
+        });
+    });
+
+</script>
+{% endblock %}

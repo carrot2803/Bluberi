@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% include '_navbar.html' %}
+<div class="text-center well alert alert-secondary"><b>Welcome to private Chat__<i> {{current_user.username}}</i> </b></div>
+<div class="container">
+    <div class="list-group container">
+        {% include '_message.html'%}
+        <div class="list-group">
+          <a href="" class="list-group-item disabled" hidden style="justify-content: center;">Members</a>
+        </div>
+    {% include '_message.html' %}
+    <div class="container">
+        <div class="col-sm-8">
+          <div class="no_message">
+            <h1 style='color: #ccc'></h1>
+            <div class="message_holder">
+              {%if messages%}
+               {% for message in messages %}
+               <div class="msg_bbl alert alert-secondary">
+                 <b style="color: #000">{{message.friend_to}}</b> {{message.message}}</div>
+                  
+               {% endfor %}
+               {%else%}
+               {%endif%}
+            </div>
+            <form action="" method="POST">
+              <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+              <div class="clearfix" style="margin-top: 5px;"></div>
+              <input type="text" class="username form-control" value="{{name}}" hidden id="txt1" placeholder="User Name">
+              <div style="padding-top: 5px;"></div>
+              <input type="text" class="message form-control" id="txt2" placeholder="Messages" autocomplete="off">
+              <div style="padding-top: 5px;"></div>
+              <button type="button" class="btn btn-success btn-block" id="send1"><span class="glyphicon glyphicon-send"></span> Send</button>
+            </form>
+           
+          </div>
+        </div>
+       
+      </div>
+</div>
+<script>
+var email = `{{current_user.email}}`;
+$(document).ready(function(){
+    var socket = io.connect('http://127.0.0.1:5000/private')
+    socket.emit('username', email);
+    $('.p').click(function(e){
+        $('#txt1').val($(this).text());
+    });
+    $('#p').click(function(){
+        socket.emit('username', $(this).text());
+    });
+
+
+    $('#send1').click(function(){
+    var usernames = $('#txt1').val();
+    var message = $('#txt2').val();
+    socket.emit( 'private', {
+    email : usernames,
+    message : message
+  } );
+  // empty the input field
+  $( 'input.message' ).val( '' ).focus()
+} );
+  
+
+    socket.on('message', function(msg){
+       
+        $( 'div.message_holder' ).append( '<div class="msg_bbl alert alert-secondary"><b style="color: #000">'+msg.username+'</b> '+':'+msg.message+'</div>' );
+    });
+});
+
+</script>
+{% endblock %}

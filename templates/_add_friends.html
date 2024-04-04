@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% include '_navbar.html'%}
+{% block content %}
+{% include '_message.html'%}
+    <div class="container">
+        <form action="/friends" method="POST">
+            <div class="form-group">
+                <label for="">User Email</label>
+                <input type="text" name="user_email" class="form-control" placeholder="Enter the user email to add">
+                <input type="submit" value="Send Request" class="btn btn-outline-info">
+            </div>
+        </form>
+    </div>
+{% endblock %}

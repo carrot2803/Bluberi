@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+
+{% include '_navbar.html'%}
+{% block content %}
+<div class="container">
+<form action="/update_room_names/{{rooms.room_name}}/" method="POST" class="myform">
+  {% include '_message.html'%}
+        <input type="text" name="new_room_name" value="{{rooms.room_name}}"><br>
+    <p>Room Members Name</p>
+    {% for members in member %}
+    <ul class="list-group">
+      <li class="list-group-item disabled">{{members.member_name}}</li>
+    </ul>
+    <hr>
+    {% endfor %}
+<button type="submit" class="btn btn-danger" id="edit">Edit</button>
+</form>
+</div>
+{% endblock %}
