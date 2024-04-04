@@ -11,6 +11,7 @@ db.init_app(app)
 
 def main():
     db.create_all()
+    print("Database created")
 
 
 if __name__ == "__main__":

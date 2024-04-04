@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask_sqlalchemy.query import Query
 
-from models import Rooms, Room_members, Storing_messages, User, db
+from models import Rooms, RoomMembers, StoringMessages, User, db
 
 #  unironically hook spam
 
@@ -19,7 +19,7 @@ def save_rooms(room_name, created_by):
 
 
 def add_room_member(room_name, usernames, added_by, is_room_admin):
-    roommembers = Room_members(
+    roommembers = RoomMembers(
         member_name=usernames,
         room_name=room_name,
         added_by=added_by,
@@ -31,7 +31,7 @@ def add_room_member(room_name, usernames, added_by, is_room_admin):
 
 
 def add_room_members(room_name, username, added_by):
-    bulk = Room_members(
+    bulk = RoomMembers(
         member_name=username,
         room_name=room_name,
         added_by=added_by,
@@ -43,7 +43,7 @@ def add_room_members(room_name, username, added_by):
 
 
 def is_room_member(member_name, room_name):
-    isroommember = Room_members.query.filter_by(
+    isroommember = RoomMembers.query.filter_by(
         member_name=member_name, room_name=room_name
     ).first()
     if isroommember:
@@ -61,17 +61,17 @@ def get_room(room_name):
 
 
 def get_rooms_for_users(username) -> Query:
-    rooms: Query = Room_members.query.filter_by(member_name=username)
+    rooms: Query = RoomMembers.query.filter_by(member_name=username)
     return rooms
 
 
 def get_room_members(room_name) -> Query:
-    rooms: Query = Room_members.query.filter_by(room_name=room_name)
+    rooms: Query = RoomMembers.query.filter_by(room_name=room_name)
     return rooms
 
 
 def is_room_admin_1(room_name, member_name):
-    return Room_members.query.filter_by(
+    return RoomMembers.query.filter_by(
         room_name=room_name, member_name=member_name, is_room_admin=True
     ).first()
 
@@ -88,8 +88,8 @@ def updated_room(old_room_name, new_room_name):
 
 
 def update_members_room(old_members_room, new_members_room):
-    old_member_room = Room_members.query.filter_by(room_name=old_members_room).update(
-        {Room_members.room_name: new_members_room}
+    old_member_room = RoomMembers.query.filter_by(room_name=old_members_room).update(
+        {RoomMembers.room_name: new_members_room}
     )
     if old_member_room:
         db.session.commit()
@@ -100,8 +100,8 @@ def update_members_room(old_members_room, new_members_room):
 
 def updated_room_members(old_member_name, new_member_names):
     for new_names in new_member_names:
-        return Room_members.query.filter_by(member_name=old_member_name).update(
-            {Room_members.member_name: new_names}
+        return RoomMembers.query.filter_by(member_name=old_member_name).update(
+            {RoomMembers.member_name: new_names}
         )
 
 
@@ -109,9 +109,9 @@ def remove_rooms(room_name):
     deleted_room = Rooms.query.filter_by(room_name=room_name).delete()
     if deleted_room:
         db.session.commit()
-        Room_members.query.filter_by(room_name=room_name).delete()
+        RoomMembers.query.filter_by(room_name=room_name).delete()
         db.session.commit()
-        Storing_messages.query.filter_by(room_name=room_name).delete()
+        StoringMessages.query.filter_by(room_name=room_name).delete()
         db.session.commit()
         return deleted_room
     else:
@@ -123,7 +123,7 @@ def return_only_username():
 
 
 def save_messages(username, room_name, message, created_at):
-    message = Storing_messages(
+    message = StoringMessages(
         sender_name=username,
         room_name=room_name,
         message=message,
@@ -138,7 +138,7 @@ def save_messages(username, room_name, message, created_at):
 
 
 def get_messages(room_name):
-    return Storing_messages.query.filter_by(room_name=room_name)
+    return StoringMessages.query.filter_by(room_name=room_name)
 
 
 class User_login:
