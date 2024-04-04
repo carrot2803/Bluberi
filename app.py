@@ -6,23 +6,30 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from flask import Flask, render_template, redirect, request, url_for, flash, session
+from flask import (
+    Flask,
+    jsonify,
+    render_template,
+    redirect,
+    request,
+    url_for,
+    flash,
+    session,
+)
 from flask_socketio import SocketIO, send, join_room, emit
-from models import User, db
+from models import Rooms, User, db
 from hooks import (
     User_login,
-    get_user,
-    save_rooms,
     add_room_member,
     get_room,
     get_rooms_for_users,
     is_room_member,
     get_room_members,
     is_room_admin_1,
+    save_messages,
     updated_room,
     update_members_room,
     remove_rooms,
-    save_messages,
     get_messages,
 )
 
@@ -58,12 +65,12 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user = request.form["user_name"]
+        username = request.form["user_name"]
         password_input = request.form["pass_word"]
-        if user and password_input is not None:
-
-            if get_user(user):
-                test_user_data = User.query.filter_by(username=user).first()
+        if username and password_input is not None:
+            user = User.query.filter_by(username=username).first()
+            if user is not None:
+                test_user_data = User.query.filter_by(username=username).first()
                 user_models = User_login(
                     test_user_data.id,
                     test_user_data.username,
@@ -92,7 +99,7 @@ def sign_up():
         password = request.form["user_password"]
         email = request.form["Email"]
 
-        user = get_user(username)
+        user = User.query.filter_by(username=username).first()
         if user is None:
             new_user = User(username, email, password)
             db.session.add(new_user)
@@ -118,14 +125,14 @@ def create_room():
         if get_room(room_name):
             flash("Room already exist", "danger")
         else:
-            roomid = save_rooms(room_name, current_user.username)
+            room_created = current_user.create_room(room_name)
             add_room_member(
                 room_name,
                 current_user.username,
                 current_user.username,
                 is_room_admin=True,
             )
-            if roomid:
+            if room_created:
                 return redirect(
                     url_for(
                         "add_members",
@@ -192,7 +199,6 @@ def view_room(room_name):
         return render_template(
             "_view_room.html", room=room, room_members=room_members, messages=messages
         )
-
     else:
         flash(
             f"You are not a member of this group {room_name} please go back ", "warning"
@@ -222,18 +228,21 @@ def update_room_names(room_name):
     return render_template("_edit_room.html", rooms=rooms, member=member)
 
 
-@app.route("/delete_room", methods=["POST", "GET"])  # make delete
+@app.route("/delete_room", methods=["GET"])
 @login_required
 def delete():
-    if request.method == "POST":
-        room_name = request.form["room_name"]
-        if room_name and is_room_admin_1(room_name, current_user.username):
-            remove_rooms(room_name)
-            flash("rooms successfully deleted", "Danger")
-            return redirect(url_for("get_rooms"))
-        else:
-            flash("failed to delete room", "secondary")
     return render_template("delete.html")
+
+
+@app.route("/delete_room/<room_name>", methods=["DELETE"])
+@login_required
+def delete_room(room_name):
+    if is_room_admin_1(room_name, current_user.username):
+        remove_rooms(room_name)
+        flash("Room successfully deleted", "danger")
+    else:
+        flash("Failed to delete room", "secondary")
+    return jsonify("Deleted"), 200
 
 
 # group chat
@@ -273,7 +282,6 @@ def on_message(data):
 def on_join(data):
     rooms = get_room(data["room"])
     if rooms:
-        username = get_user(data["username"])
         room = rooms.room_name
         join_room(room)
         now = datetime.now()

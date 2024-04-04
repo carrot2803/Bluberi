@@ -4,21 +4,23 @@ from flask_sqlalchemy.query import Query
 
 from models import Rooms, RoomMembers, StoringMessages, User, db
 
-#  unironically hook spam
 
-
-def save_rooms(room_name, created_by):
-    room = Rooms(room_name=room_name, created_by=created_by, created_at=datetime.now())
-    if room:
-        db.session.add(room)
+def save_messages(username, room_name, message, created_at):  # big hook
+    message = StoringMessages(
+        sender_name=username,
+        room_name=room_name,
+        message=message,
+        created_at=created_at,
+    )
+    if message:
+        db.session.add(message)
         db.session.commit()
-        roomname = room_name
-        return roomname
+        return message
     else:
-        return False
+        return None
 
 
-def add_room_member(room_name, usernames, added_by, is_room_admin):
+def add_room_member(room_name, usernames, added_by, is_room_admin):  # big hook
     roommembers = RoomMembers(
         member_name=usernames,
         room_name=room_name,
@@ -30,7 +32,7 @@ def add_room_member(room_name, usernames, added_by, is_room_admin):
     db.session.commit()
 
 
-def add_room_members(room_name, username, added_by):
+def add_room_members(room_name, username, added_by):  # big hook
     bulk = RoomMembers(
         member_name=username,
         room_name=room_name,
@@ -42,7 +44,7 @@ def add_room_members(room_name, username, added_by):
     db.session.commit()
 
 
-def is_room_member(member_name, room_name):
+def is_room_member(member_name, room_name):  # big hook
     isroommember = RoomMembers.query.filter_by(
         member_name=member_name, room_name=room_name
     ).first()
@@ -118,25 +120,6 @@ def remove_rooms(room_name):
         return None
 
 
-def return_only_username():
-    return db.session.query(User.username)
-
-
-def save_messages(username, room_name, message, created_at):
-    message = StoringMessages(
-        sender_name=username,
-        room_name=room_name,
-        message=message,
-        created_at=created_at,
-    )
-    if message:
-        db.session.add(message)
-        db.session.commit()
-        return message
-    else:
-        return None
-
-
 def get_messages(room_name):
     return StoringMessages.query.filter_by(room_name=room_name)
 
@@ -163,14 +146,3 @@ class User_login:
 
     def check_password(self, password_input):
         return True
-
-
-def get_user(username):
-    user_data = User.query.filter_by(username=username).first()
-    return (
-        User_login(
-            user_data.id, user_data.username, user_data.email, user_data.password
-        )
-        if user_data
-        else None
-    )

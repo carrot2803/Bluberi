@@ -2,12 +2,30 @@
 {% block content %}
 <div class="container">
     {% include '_message.html'%}
-    <form action="{{url_for('delete')}}" method="POST">
+    <form id="deleteForm">
         <div class="form-group">
-            <label for="">Room Name</label>
-            <input type="text" name="room_name" class="form-control mb-4" placeholder="Enter the room Name">
-            <input type="submit" class="btn btn-danger" value="Delete">
+            <label for="">Room Name </label>
+            <input type="text" id="room_name" class="form-control mb-4" placeholder="Enter the room Name">
+            <button type="button" class="btn btn-danger" onclick="deleteRoom()">Delete</button>
         </div>
     </form>
 </div>
+
+<script>
+    //  pretty this up after
+    function deleteRoom() {
+        const roomName = document.getElementById('room_name').value;
+        fetch('/delete_room/' + roomName, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok)
+                    window.location.href = "/get_rooms";
+                else
+                    alert("Error deleting room")
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+</script>
 {% endblock %}
