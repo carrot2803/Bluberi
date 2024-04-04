@@ -85,17 +85,16 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/sign_up", methods=["POST", "GET"])
+@app.route("/signup", methods=["POST", "GET"])
 def sign_up():
     if request.method == "POST":
-        sessionid = request.form["sessionid"]
         username = request.form["user_username"]
         password = request.form["user_password"]
         email = request.form["Email"]
 
         user = get_user(username)
         if user is None:
-            new_user = User(username, email, password, sessionid)
+            new_user = User(username, email, password)
             db.session.add(new_user)
             db.session.commit()
             flash("user successfully added", "success")
@@ -103,7 +102,7 @@ def sign_up():
         else:
             flash("user already exist", "danger")
 
-    return render_template("user_login.html")
+    return render_template("signup.html")
 
 
 @app.route("/chat", methods=["GET", "POST"])

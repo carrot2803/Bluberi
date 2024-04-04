@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% include '_navbar.html'%}
+
+{% block content %}
+<div class="container">
+    <form action="/signup" method="POST">
+        {% include '_message.html'%}
+        <div class="form-group">
+            <label for="">Email</label>
+            <input type="text" name="Email" class="form-control" placeholder="Enter the Email">
+        </div>
+        <div class="form-group">
+            <label for="">Username</label>
+            <input type="text" name="user_username" class="form-control" placeholder="Enter the Username">
+        </div>
+        <div class="form-group">
+            <label for="">Password</label>
+            <input type="password" class="form-control" name="user_password" placeholder="Enter the Password">
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary form-control" value="Save">
+        </div>
+    </form>
+
+</div>
+{% endblock %}
