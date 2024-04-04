@@ -1,21 +1,45 @@
-<!DOCTYPE html>
 {% extends 'base.html' %}
-
 
 {% include '_navbar.html'%}
 {% block content %}
 <div class="container">
-<form action="/update_room_names/{{rooms.room_name}}/" method="POST" class="myform">
-  {% include '_message.html'%}
-        <input type="text" name="new_room_name" value="{{rooms.room_name}}"><br>
-    <p>Room Members Name</p>
-    {% for members in member %}
-    <ul class="list-group">
-      <li class="list-group-item disabled">{{members.member_name}}</li>
-    </ul>
-    <hr>
-    {% endfor %}
-<button type="submit" class="btn btn-danger" id="edit">Edit</button>
-</form>
+	<form id="editRoomForm" class="myform">
+		{% include '_message.html'%}
+		<input type="text" id="newRoomName" value="{{rooms.room_name}}"><br>
+		<p>Room Members Name</p>
+		{% for members in member %}
+		<ul class="list-group">
+			<li class="list-group-item disabled">{{members.member_name}}</li>
+		</ul>
+		<hr>
+		{% endfor %}
+		<button type="button" class="btn btn-danger" id="edit" onclick="editRoom()">Edit</button>
+	</form>
 </div>
+
+<script>
+	async function editRoom() {
+		try {
+			var newRoomName = document.getElementById("newRoomName").value;
+			const response = await fetch("/update_room_names/{{rooms.room_name}}/", {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ new_room_name: newRoomName })
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to update members room name and room names');
+			}
+
+			const data = await response.json();
+			alert("Successfully updated room name and members room names");
+			window.location.href = "/get_rooms";
+		} catch (error) {
+			alert(error.message);
+		}
+	}
+</script>
+
 {% endblock %}

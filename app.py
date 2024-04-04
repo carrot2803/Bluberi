@@ -45,7 +45,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 # login config
 loginmanager = LoginManager(app)
 loginmanager.init_app(app)
-loginmanager.login_view = "Login"
+loginmanager.login_view = "login"
 loginmanager.login_message = "Login to Access that page"
 loginmanager.login_message_category = "danger"
 
@@ -206,26 +206,30 @@ def view_room(room_name):
         return render_template("error.html")
 
 
-@app.route("/update_room_names/<room_name>/", methods=["GET", "POST"])
+@app.route("/update_room_names/<room_name>/", methods=["GET"])
+def update_room_view(room_name):
+    rooms = get_room(room_name)
+    member = get_room_members(room_name)
+    return render_template("_edit_room.html", rooms=rooms, member=member)
+
+
+@app.route("/update_room_names/<room_name>/", methods=["PUT"])
 @login_required
 def update_room_names(room_name):
     rooms = get_room(room_name)
     member = get_room_members(room_name)
-    if request.method == "POST":
-        new_room_name = request.form["new_room_name"]
-        if is_room_admin_1(room_name, session.get("username")):
-            if updated_room(room_name, new_room_name) and update_members_room(
-                room_name, new_room_name
-            ):
-                flash(
-                    "successfully updated room name and members room names", "success"
-                )
-                return redirect(url_for("get_rooms"))
-            else:
-                flash("failed to update members room name and room names", "danger")
+    data = request.get_json()
+    new_room_name = data["new_room_name"]
+    if is_room_admin_1(room_name, current_user.username):
+        if updated_room(room_name, new_room_name) and update_members_room(
+            room_name, new_room_name
+        ):
+            flash("Successfully updated room name and members room names", "success")
+            return jsonify("Updated"), 200
         else:
-            flash("your are not a admin of this group", "warning")
-    return render_template("_edit_room.html", rooms=rooms, member=member)
+            flash("Failed to update members room name and room names", "danger")
+    else:
+        flash("You are not an admin of this group", "warning")
 
 
 @app.route("/delete_room", methods=["GET"])

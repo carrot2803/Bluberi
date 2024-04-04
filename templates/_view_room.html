@@ -4,8 +4,13 @@
 <div class="text-center well alert alert-secondary"><b>Welcome to {{room.room_name}} Group
         <i>{{current_user.username}}</i> </b></div>
 <div class="container mb-2">
+    <div>
+        <h1>Room members</h1>
+        <a class="nav-link" href="{{ url_for('update_room_names', room_name=room.room_name) }}">
+            Edit Room
+        </a>
+    </div>
 
-    <h1>Room members</h1>
 
     {% for room_members in room_members %}
     <ul>
