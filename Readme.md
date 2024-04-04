@@ -5,9 +5,6 @@
 
 ## BackEnd
 
-- Remove session id after reading more socket io documentation.
-- Move off sessions 
-- Move off emails (idk why i thought i needed it)
 - Addressing the issue of hook spam(Eventually).
 - implement a cleaner put and delete
 - combine the hooks and models
@@ -16,3 +13,6 @@
 - maybe add some functionality
 - make UX cleaner
 - add blueprinting refactoring
+- ~~Remove session id after reading more socket io documentation.~~
+- ~~Move off sessions~~
+- ~~Move off emails (idk why i thought i needed it)~~

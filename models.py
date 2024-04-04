@@ -11,16 +11,12 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(60), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
-    SessionId = db.Column(
-        db.String(50), unique=True, default="asdsadadasd1232eqwdsadsa"
-    )
     friends = db.relationship("Friends", backref="user")
 
-    def __init__(self, username, email, password, SessionId):
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = self.generate_password_hash(password)
-        self.SessionId = SessionId
 
     def generate_password_hash(self, password):
         return generate_password_hash(password)
@@ -36,7 +32,6 @@ class Friends(db.Model):
 class Messages(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
-    SessionId = db.Column(db.String(50), unique=True, default="123")
 
 
 class Rooms(db.Model):
