@@ -1,4 +1,5 @@
 from datetime import datetime
+from operator import is_
 from flask_login import (
     LoginManager,
     login_required,
@@ -17,21 +18,8 @@ from flask import (
     session,
 )
 from flask_socketio import SocketIO, send, join_room, emit
-from models import Rooms, User, db
-from hooks import (
-    User_login,
-    add_room_member,
-    get_room,
-    get_rooms_for_users,
-    is_room_member,
-    get_room_members,
-    is_room_admin_1,
-    save_messages,
-    updated_room,
-    update_members_room,
-    remove_rooms,
-    get_messages,
-)
+from models import RoomMembers, Rooms, User, User_login, db
+
 
 app = Flask(__name__)
 
@@ -98,6 +86,9 @@ def sign_up():
         username = request.form["user_username"]
         password = request.form["user_password"]
         email = request.form["Email"]
+        print(email)
+        print(username)
+        print("Password here", password)
 
         user = User.query.filter_by(username=username).first()
         if user is None:
@@ -122,16 +113,11 @@ def chat():
 def create_room():
     if request.method == "POST":
         room_name = request.form["room_name"]
-        if get_room(room_name):
+        if Rooms.get_room(room_name):
             flash("Room already exist", "danger")
         else:
             room_created = current_user.create_room(room_name)
-            add_room_member(
-                room_name,
-                current_user.username,
-                current_user.username,
-                is_room_admin=True,
-            )
+            current_user.add_room_member(current_user.username, room_name, True)
             if room_created:
                 return redirect(
                     url_for(
@@ -148,24 +134,20 @@ def add_members():
     if request.method == "POST":
         room_name = request.form["room_name"]
         usernames1 = request.form["usernames"]
-        if get_room(room_name) and is_room_admin_1(room_name, current_user.username):
+        room_admin = RoomMembers.query.filter_by(
+            member_name=current_user.username, room_name=room_name, is_room_admin=True
+        ).first()
+        if Rooms.get_room(room_name) and room_admin:
             if User.query.filter_by(username=usernames1).first():
-                if is_room_member(usernames1, room_name) is None:
+                room_member = RoomMembers.query.filter_by(
+                    member_name=usernames1, room_name=room_name
+                ).first()
+                if room_member is None:
                     if usernames1 == current_user.username:
-                        add_room_member(
-                            room_name,
-                            usernames1,
-                            current_user.username,
-                            is_room_admin=True,
-                        )
+                        current_user.add_room_member(usernames1, room_name, True)
                         return redirect(url_for("get_rooms"))
                     else:
-                        add_room_member(
-                            room_name,
-                            usernames1,
-                            current_user.username,
-                            is_room_admin=False,
-                        )
+                        current_user.add_room_member(usernames1, room_name, False)
                         return redirect(url_for("get_rooms"))
                 else:
                     flash(f"{usernames1} already in a room", "warning")
@@ -182,8 +164,8 @@ def add_members():
 @login_required
 def get_rooms():
     if request.method == "GET":
-        rooms = get_rooms_for_users(current_user.username)
-        return render_template("_get_rooms.html", rooms=rooms)
+        room = RoomMembers.query.filter_by(member_name=current_user.username)
+        return render_template("_get_rooms.html", rooms=room)
     else:
         flash("you are not a member of any room", "warning")
     return render_template("_get_rooms.html")
@@ -192,10 +174,13 @@ def get_rooms():
 @app.route("/view_room/<room_name>/", methods=["GET"])
 @login_required
 def view_room(room_name):
-    room = get_room(room_name)
-    if room and is_room_member(current_user.username, room_name):
-        messages = get_messages(room_name)
-        room_members = get_room_members(room_name)
+    room = Rooms.get_room(room_name)
+    room_member = RoomMembers.query.filter_by(
+        member_name=current_user.username, room_name=room_name
+    ).first()
+    if room and room_member:
+        messages = Rooms.get_messages(room_name)
+        room_members = room.get_room_members()
         return render_template(
             "_view_room.html", room=room, room_members=room_members, messages=messages
         )
@@ -206,24 +191,26 @@ def view_room(room_name):
         return render_template("error.html")
 
 
-@app.route("/update_room_names/<room_name>/", methods=["GET"])
+@app.route("/update_room_names/<room_name>/", methods=["GET"])  # add type
 def update_room_view(room_name):
-    rooms = get_room(room_name)
-    member = get_room_members(room_name)
+    rooms = Rooms.get_room(room_name)
+    member = rooms.get_room_members()
     return render_template("_edit_room.html", rooms=rooms, member=member)
 
 
 @app.route("/update_room_names/<room_name>/", methods=["PUT"])
 @login_required
 def update_room_names(room_name):
-    rooms = get_room(room_name)
-    member = get_room_members(room_name)
+    rooms = Rooms.get_room(room_name)
+    member = rooms.get_room_members()
     data = request.get_json()
     new_room_name = data["new_room_name"]
-    if is_room_admin_1(room_name, current_user.username):
-        if updated_room(room_name, new_room_name) and update_members_room(
-            room_name, new_room_name
-        ):
+    room_admin = RoomMembers.query.filter_by(
+        member_name=current_user.username, room_name=room_name, is_room_admin=True
+    ).first()
+    if room_admin:
+        room_updated = current_user.update_room(room_name, new_room_name)
+        if room_updated:
             flash("Successfully updated room name and members room names", "success")
             return jsonify("Updated"), 200
         else:
@@ -241,8 +228,11 @@ def delete():
 @app.route("/delete_room/<room_name>", methods=["DELETE"])
 @login_required
 def delete_room(room_name):
-    if is_room_admin_1(room_name, current_user.username):
-        remove_rooms(room_name)
+    room_admin = RoomMembers.query.filter_by(
+        member_name=current_user.username, room_name=room_name, is_room_admin=True
+    ).first()
+    if room_admin:
+        current_user.delete_room(room_name)
         flash("Room successfully deleted", "danger")
     else:
         flash("Failed to delete room", "secondary")
@@ -252,27 +242,23 @@ def delete_room(room_name):
 # group chat
 @socketio.on("incoming-msg")
 def on_message(data):
-    rooms = get_room(data["room"])
+    rooms = Rooms.get_room(data["room"])
     if rooms:
-        users_rooms = get_room_members(rooms.room_name)
+        users_rooms = rooms.get_room_members()
         if users_rooms:
             for members in users_rooms:
                 msg = data["msg"]
                 if members.member_name == current_user.username:
                     room = rooms.room_name
-                    now = datetime.now()
-                    time_stamp = now.strftime("%H:%M:%S")
-                    message = save_messages(
-                        current_user.username, room, msg, time_stamp
-                    )
+                    message = current_user.send_message(room, msg)
                     if message:
                         print("message saved")
-                        print(time_stamp)
+                        print(message.created_at)
                         send(
                             {
                                 "username": current_user.username,
                                 "msg": msg,
-                                "time": time_stamp,
+                                "time": message.created_at,
                             },
                             room=room,
                         )
@@ -284,12 +270,12 @@ def on_message(data):
 
 @socketio.on("join")
 def on_join(data):
-    rooms = get_room(data["room"])
+    rooms = Rooms.get_room(data["room"])
     if rooms:
         room = rooms.room_name
         join_room(room)
-        now = datetime.now()
-        time_stamp = now.strftime("%H:%M:%S")
+        now = datetime.now().strftime("%H:%M:%S")
+        time_stamp = now
         send(
             {
                 "username": current_user.username,
