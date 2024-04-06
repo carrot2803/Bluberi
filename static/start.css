@@ -110,4 +110,56 @@
     animation-delay: 45s;
 }
 
+.background {
+    z-index: 1;
+}
+
+.display-text {
+    position: relative;
+    z-index: 2;
+    color: white;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.display-text h1 {
+    font-family: "Playfair Display";
+    font-size: 10em;
+    font-weight: bold;
+}
+
+.display-text p {
+    font-size: x-large;
+}
+
+.redirect {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.display-text a {
+    margin: 10px;
+    width: 300px;
+    height: 50px;
+    font-size: large;
+    font-weight:bold;
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border-radius: 20pt;
+    box-shadow: 0 5px 5px 0 rgba(65, 65, 65, 0.2), 0 6px 20px 0 rgba(65, 65, 65, 0.2);
+}
+
+.display-text a:hover {
+    text-decoration: none;
+    width: 400px;
+    box-shadow: 0 5px 5px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+
+}
 
