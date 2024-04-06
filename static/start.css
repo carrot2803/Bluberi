@@ -163,3 +163,29 @@
 
 }
 
+@media only screen and (max-width: 600px) {    
+    .display-text h1 {
+        font-size: 6em;
+    }
+    
+    .display-text p {
+        font-size: 1em;
+    }
+    
+    .redirect {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .display-text a {
+        font-size: 1em;
+        width: 80%;
+        height: max-content;
+    }
+
+    .display-text a:hover {
+        width: 85%;
+        height: max-content;
+    }
+}
+
