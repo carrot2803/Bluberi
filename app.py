@@ -47,7 +47,7 @@ def load_user(id):
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    return render_template("base.html")
+    return render_template("start.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
