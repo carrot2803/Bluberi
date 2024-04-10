@@ -5,6 +5,9 @@
 
 ## BackEnd
 
+- perfect models
+- perfect controllers
+- perfect routes
 - make User experience and UI cleaner
 - add type safety
 - add better routing
