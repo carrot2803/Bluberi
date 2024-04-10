@@ -1,12 +1,13 @@
-from datetime import datetime
-from operator import is_
-from flask_login import (
-    LoginManager,
-    login_required,
-    login_user,
-    logout_user,
+import datetime
+from sqlite3 import IntegrityError
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
     current_user,
+    jwt_required,
+    set_access_cookies,
 )
+
 from flask import (
     Flask,
     jsonify,
@@ -15,10 +16,9 @@ from flask import (
     request,
     url_for,
     flash,
-    session,
 )
-from flask_socketio import SocketIO, send, join_room, emit
-from models import RoomMembers, Rooms, User, User_login, db
+from flask_socketio import SocketIO, send, join_room
+from models import RoomMembers, Rooms, User, db
 
 
 app = Flask(__name__)
@@ -31,18 +31,26 @@ app.config["SECRET_KEY"] = "felicia is an egg"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # login config
-loginmanager = LoginManager(app)
-loginmanager.init_app(app)
-loginmanager.login_view = "login"
-loginmanager.login_message = "Login to Access that page"
-loginmanager.login_message_category = "danger"
+app.config["JWT_SECRET_KEY"] = "jwt-secret-string"
+app.config["JWT_ACCESS_COOKIE_NAME"] = "access_token"
+app.config["JWT_REFRESH_COOKIE_NAME"] = "refresh_token"
+app.config["JWT_TOKEN_LOCATION"] = ["cookies", "headers"]
+app.config["JWT_HEADER_NAME"] = "Cookie"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=15)
+app.config["JWT_COOKIE_CSRF_PROTECT"] = False
+app.config["JWT_COOKIE_SECURE"] = True
+jwt = JWTManager(app)
 
-users = {}
+
+@jwt.user_identity_loader
+def user_identity_lookup(user):
+    return user.id
 
 
-@loginmanager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+@jwt.user_lookup_loader
+def user_lookup_callback(_jwt_header, jwt_data):
+    identity = jwt_data["sub"]
+    return User.query.get(identity)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -50,32 +58,28 @@ def home():
     return render_template("start.html")
 
 
+def login_user(username: str, password: str):
+    user: User | None = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        token: str = create_access_token(identity=user)
+        return token
+    return None
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["user_name"]
-        password_input = request.form["pass_word"]
-        if username and password_input is not None:
-            user = User.query.filter_by(username=username).first()
-            if user is not None:
-                test_user_data = User.query.filter_by(username=username).first()
-                user_models = User_login(
-                    test_user_data.id,
-                    test_user_data.username,
-                    test_user_data.email,
-                    test_user_data.password,
-                )
-                password = user_models.check_password(password_input)
-                if password:
-                    login_user(test_user_data)
-                    flash("login successfull", "success")
-                    return redirect(url_for("get_rooms"))
-                else:
-                    flash("password is incorrect", "danger")
-            else:
-                flash("Invalid Credintials", "danger")
+        password = request.form["pass_word"]
+        token = login_user(username, password)
+        if token is None:
+            flash("Invalid Credintials", "danger")
+            response = redirect(url_for("login"))
         else:
-            flash("username and password not met", "danger")
+            flash("Login was successful", "success")
+            response = redirect(url_for("get_rooms"))
+        set_access_cookies(response, token)
+        return response
 
     return render_template("login.html")
 
@@ -83,33 +87,31 @@ def login():
 @app.route("/signup", methods=["POST", "GET"])
 def sign_up():
     if request.method == "POST":
-        username = request.form["user_username"]
-        password = request.form["user_password"]
-        email = request.form["Email"]
-        print(email)
-        print(username)
-        print("Password here", password)
-
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            new_user = User(username, email, password)
-            db.session.add(new_user)
+        try:
+            username = request.form["user_username"]
+            password = request.form["user_password"]
+            email = request.form["Email"]
+            user = User(username, email, password)
+            db.session.add(user)
             db.session.commit()
-            flash("user successfully added", "success")
-
-        else:
-            flash("user already exist", "danger")
+            response = redirect(url_for("login"))
+            token = create_access_token(identity=user)
+            set_access_cookies(response, token)
+        except IntegrityError:
+            flash("Username already exist", "danger")
+            response = redirect(url_for("sign_up"))
+        return response
 
     return render_template("signup.html")
 
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
-    return render_template("_chat_app.html", username=session.get("username"))
+    return render_template("_chat_app.html", username=current_user.username)
 
 
 @app.route("/create_room", methods=["GET", "POST"])
-@login_required
+@jwt_required()
 def create_room():
     if request.method == "POST":
         room_name = request.form["room_name"]
@@ -129,7 +131,7 @@ def create_room():
 
 
 @app.route("/add_members", methods=["POST", "GET"])
-@login_required
+@jwt_required()
 def add_members():
     if request.method == "POST":
         room_name = request.form["room_name"]
@@ -161,18 +163,18 @@ def add_members():
 
 
 @app.route("/get_rooms", methods=["GET", "POST"])
-@login_required
+@jwt_required()
 def get_rooms():
     if request.method == "GET":
         room = RoomMembers.query.filter_by(member_name=current_user.username)
-        return render_template("_get_rooms.html", rooms=room)
+        return render_template("_get_rooms.html", rooms=room, current_user=current_user)
     else:
         flash("you are not a member of any room", "warning")
     return render_template("_get_rooms.html")
 
 
 @app.route("/view_room/<room_name>/", methods=["GET"])
-@login_required
+@jwt_required()
 def view_room(room_name):
     room = Rooms.get_room(room_name)
     room_member = RoomMembers.query.filter_by(
@@ -182,7 +184,11 @@ def view_room(room_name):
         messages = Rooms.get_messages(room_name)
         room_members = room.get_room_members()
         return render_template(
-            "_view_room.html", room=room, room_members=room_members, messages=messages
+            "_view_room.html",
+            room=room,
+            room_members=room_members,
+            messages=messages,
+            current_user=current_user,
         )
     else:
         flash(
@@ -199,7 +205,7 @@ def update_room_view(room_name):
 
 
 @app.route("/update_room_names/<room_name>/", methods=["PUT"])
-@login_required
+@jwt_required()
 def update_room_names(room_name):
     rooms = Rooms.get_room(room_name)
     member = rooms.get_room_members()
@@ -220,13 +226,13 @@ def update_room_names(room_name):
 
 
 @app.route("/delete_room", methods=["GET"])
-@login_required
+@jwt_required()
 def delete():
     return render_template("delete.html")
 
 
 @app.route("/delete_room/<room_name>", methods=["DELETE"])
-@login_required
+@jwt_required()
 def delete_room(room_name):
     room_admin = RoomMembers.query.filter_by(
         member_name=current_user.username, room_name=room_name, is_room_admin=True
@@ -241,6 +247,7 @@ def delete_room(room_name):
 
 # group chat
 @socketio.on("incoming-msg")
+@jwt_required()
 def on_message(data):
     rooms = Rooms.get_room(data["room"])
     if rooms:
@@ -269,6 +276,7 @@ def on_message(data):
 
 
 @socketio.on("join")
+@jwt_required()
 def on_join(data):
     rooms = Rooms.get_room(data["room"])
     if rooms:
@@ -288,11 +296,12 @@ def on_join(data):
 
 
 @app.route("/logout")
-@login_required
+@jwt_required()
 def logout():
-    logout_user()
-    flash("successfully logged out", "success")
-    return redirect(url_for("login"))
+    response = redirect(url_for("login_page"))
+    unset_jwt_cookies(response)  # type: ignore
+    flash("Logged out")
+    return response
 
 
 if __name__ == "__main__":

@@ -1,15 +1,13 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.query import Query
-from sqlalchemy import Column, String, Integer, ForeignKey
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 db = SQLAlchemy()
 
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(60), nullable=False, unique=True)
@@ -21,7 +19,11 @@ class User(UserMixin, db.Model):
         self.set_password(password)
 
     def set_password(self, password):
-        self.password = generate_password_hash(password, method="scrypt")
+        self.password = generate_password_hash(password)
+        # self.password = generate_password_hash(password, method="scrypt")
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def create_room(self, room_name):
         new_room = Rooms(room_name, self.username, datetime.now())
@@ -37,8 +39,8 @@ class User(UserMixin, db.Model):
             return False
         room.room_name = new_room_name
         rooms_updated = RoomMembers.query.filter_by(room_name=old_room_name).update(
-            {RoomMembers.room_name: new_room_name} 
-        ) #  move this into rooms? actually idk  ifto
+            {RoomMembers.room_name: new_room_name}
+        )  #  move this into rooms? actually idk  ifto
         if rooms_updated is None:
             return False
         db.session.commit()
@@ -49,8 +51,12 @@ class User(UserMixin, db.Model):
         if room is None:
             return False
         db.session.delete(room)
-        RoomMembers.query.filter_by(room_name=room_name).delete()  # prob move this into rooms
-        StoringMessages.query.filter_by(room_name=room_name).delete() # move this into rooms
+        RoomMembers.query.filter_by(
+            room_name=room_name
+        ).delete()  # prob move this into rooms
+        StoringMessages.query.filter_by(
+            room_name=room_name
+        ).delete()  # move this into rooms
         db.session.commit()
         return True
 
@@ -130,27 +136,3 @@ class StoringMessages(db.Model):
         self.room_name = room_name
         self.message = message
         self.created_at = created_at
-
-
-# temp class remove ltr
-class User_login:
-    def __init__(self, id, username, email, password):
-        self.id = id
-        self.username = username
-        self.email = email
-        self.password = password
-
-    def is_authenticated(self):
-        return True
-
-    def is_anonimous(self):
-        return False
-
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return self.username
-
-    def check_password(self, password_input):
-        return True
