@@ -1,11 +1,14 @@
 import datetime
+import os
 from sqlite3 import IntegrityError
+from flask_cors import CORS
 from flask_jwt_extended import (
     JWTManager,
     create_access_token,
     current_user,
     jwt_required,
     set_access_cookies,
+    unset_jwt_cookies,
 )
 
 from flask import (
@@ -18,16 +21,19 @@ from flask import (
     flash,
 )
 from flask_socketio import SocketIO, send, join_room
-from models import RoomMembers, Rooms, User, db
-
+from App.database import db
+from App.models import RoomMembers, Rooms, User
 
 app = Flask(__name__)
 
 # database config
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db.init_app(app)
 app.config["SECRET_KEY"] = "felicia is an egg"
+db.init_app(app)
+app.app_context().push()
+CORS(app)
+
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # login config
@@ -298,8 +304,8 @@ def on_join(data):
 @app.route("/logout")
 @jwt_required()
 def logout():
-    response = redirect(url_for("login_page"))
-    unset_jwt_cookies(response)  # type: ignore
+    response = redirect(url_for("login"))
+    unset_jwt_cookies(response)
     flash("Logged out")
     return response
 
