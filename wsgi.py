@@ -1,7 +1,8 @@
-import click
-from App.app import app, socketio
 from App.database import db
 from App.models import User
+from App.app import create_app
+
+app = create_app()
 
 
 @app.cli.command("init", help="Creates and initializes the database")
@@ -19,4 +20,4 @@ def initialize_db():
 
 
 # if __name__ == "__main__":
-#     socketio.run(app, debug=True)
+# socket.run(app, debug=True)

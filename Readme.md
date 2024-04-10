@@ -5,13 +5,18 @@
 
 ## BackEnd
 
-- move off userlogin and user mixin  and use jwt implace(maybe idk if user mixing allowed we learn it in class)
-- add blueprinting refactoring
-- Big one save message to history so it cant be viewed later(bug i think?)
 - make User experience and UI cleaner
+- add type safety
+- add better routing
+- consider invite links???
+- Big one save message to history so it cant be viewed later(bug i think?)
 - Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.
-- Maybe refactor models
+- Production Builds
 
+- ~~move off userlogin and user mixin  and use jwt implace(maybe idk if user mixing allowed we learn it in class)~~
+- ~~add blueprinting refactoring~~
+- ~~Maybe refactor models~~
+- ~~Consider adding auth context~~
 - ~~Addressing the issue of hook spam(Eventually).~~
 - ~~combine the hooks and models~~
 - ~~implement a cleaner put and delete~~
