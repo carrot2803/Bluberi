@@ -7,7 +7,7 @@ from flask_jwt_extended import (
 from App.models import User
 
 
-def login_user(username: str, password: str) -> str | None:
+def login_user(username: str, password: str):
     user: User | None = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
         token: str = create_access_token(identity=user)

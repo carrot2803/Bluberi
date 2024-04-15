@@ -7,6 +7,7 @@ from flask import (
     url_for,
     flash,
 )
+from werkzeug import Response
 from App.models import RoomMember, Room, User
 from flask import Blueprint
 
@@ -17,13 +18,26 @@ index = Blueprint("index", __name__)
 
 
 @index.route("/", methods=["GET", "POST"])
-def home():
+def home() -> str:
     return render_template("start.html")
 
 
 @index.route("/chat", methods=["GET", "POST"])
-def chat():
+def chat() -> str:
     return render_template("_chat_app.html", username=current_user.username)
+
+
+@index.route("/delete_room", methods=["GET"])
+@jwt_required()
+def delete():
+    return render_template("delete.html")
+
+
+@index.route("/update_room_names/<room_name>/", methods=["GET"])  # add type
+def update_room_view(room_name):
+    room: Room | None = Room.query.filter_by(room_name=room_name).first()
+    member: RoomMember = room.get_room_members()
+    return render_template("_edit_room.html", rooms=room, member=member)
 
 
 @index.route("/create_room", methods=["GET", "POST"])
@@ -48,7 +62,7 @@ def create_room():
 def add_members():
     if request.method == "POST":
         room_name = request.form["room_name"]
-        usernames1 = request.form["usernames"]
+        usernames1 = request.form["username"]
         room_admin = RoomMember.query.filter_by(
             member_name=current_user.username, room_name=room_name, is_room_admin=True
         ).first()
@@ -111,13 +125,6 @@ def view_room(room_name):
         return render_template("error.html")
 
 
-@index.route("/update_room_names/<room_name>/", methods=["GET"])  # add type
-def update_room_view(room_name):
-    rooms = Room.query.filter_by(room_name=room_name).first()
-    member = rooms.get_room_members()
-    return render_template("_edit_room.html", rooms=rooms, member=member)
-
-
 @index.route("/update_room_names/<room_name>/", methods=["PUT"])
 @jwt_required()
 def update_room_names(room_name):
@@ -137,12 +144,6 @@ def update_room_names(room_name):
             flash("Failed to update members room name and room names", "danger")
     else:
         flash("You are not an admin of this group", "warning")
-
-
-@index.route("/delete_room", methods=["GET"])
-@jwt_required()
-def delete():
-    return render_template("delete.html")
 
 
 @index.route("/delete_room/<room_name>", methods=["DELETE"])
