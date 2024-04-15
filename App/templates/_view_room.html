@@ -1,59 +1,83 @@
 {% extends 'base.html' %}
 {% block content %}
-{% include '_navbar.html'%}
-<div class="text-center well alert alert-secondary"><b>Welcome to {{room.room_name}} Group
-        <i>{{current_user.username}}</i> </b></div>
-<div class="container mb-2">
-    <div>
-        <h1>Room members</h1>
-        <a class="nav-link" href="{{ url_for('index.update_room_names', room_name=room.name) }}">
-            Edit Room
-        </a>
-    </div>
 
-
-    {% for room_members in room_members %}
-    <ul>
-        <li>{{ room_members.member_name }}</li>
-    </ul>
-    {% endfor %}
-    <br>
-    <br>
-    <div class="message_holder">
-        <div class="message_content">
-            {% for message in messages %}
-            <div class="msg_bbl alert alert-secondary"><b style="color: #000">{{message.sender_name}}</b>
-                {{message.message}}<br>{{message.created_at}}</div>
+<div class="container">
+    <div class="row">
+        <!-- Sidebar with chats -->
+        <div class="col-md-3">
+            <div class="text-center well alert alert-secondary">
+                <b>Welcome to {{ room.room_name }} Group <i>{{ current_user.username }}</i></b>
+            </div>
+            <h4>Groups joined By {{ current_user.username }}</h4>
+            {% for room in rooms %}
+            {% if room %}
+            <a href="/view_room/{{ room.room_name }}/" class="a btn btn-primary mb-2" id="a_{{ loop.index }}">
+                {{ room.room_name }}
+            </a><br>
+            {% endif %}
+            {% else %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{ current_user.username }}</strong> has not joined any room...click <a
+                    href="/create_room">here</a> to create a room
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             {% endfor %}
         </div>
-        <div class="form-group">
-            <input type="text" class="form-control mb-4" id="txt2" placeholder="Type Your Message Here...."
-                autocomplete="off">
-            <input type="submit" class="btn btn-outline-info" value="send" id="send1">
+
+        <!-- Chat content -->
+        <div class="col-md-9">
+            <div class="container mb-2">
+                <div>
+                    <h1>Room members</h1>
+                    <a class="nav-link" href="{{ url_for('index.update_room_names', room_name=room.name) }}">
+                        Edit Room
+                    </a>
+                </div>
+                {% for room_members in room_members %}
+                <ul>
+                    <li>{{ room_members.member_name }}</li>
+                </ul>
+                {% endfor %}
+                <br>
+                <br>
+                <div class="message_holder">
+                    <div class="message_content">
+                        {% for message in messages %}
+                        <div class="msg_bbl alert alert-secondary">
+                            <b style="color: #000">{{ message.sender_name }}</b>
+                            {{ message.message }}<br>{{ message.created_at }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control mb-4" id="txt2" placeholder="Type Your Message Here...."
+                            autocomplete="off">
+                        <input type="submit" class="btn btn-outline-info" value="send" id="send1">
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-
-
 </div>
+
 <script>
     $(document).ready(function () {
         var socket = io.connect('http://127.0.0.1:5000')
-        var username = `{{current_user.username}}`
-        var room = `{{room.name}}`;
+        var username = `{{ current_user.username }}`
+        var room = `{{ room.name }}`;
         socket.emit('join', { 'username': username, 'room': room });
         $('#send1').click(function () {
             socket.emit('incoming-msg', {
                 'msg': $('#txt2').val(),
                 'username': username, 'room': room
             });
-
             $('#txt2').val('');
         });
         socket.on('message', function (msg) {
             $('div.message_content').append('<div class="msg_bbl alert alert-secondary"><b style="color: #000">' + msg.username + '</b> ' + ':' + msg.msg + '<br>' + msg.time + '</div>');
         });
     });
-
 </script>
 {% endblock %}

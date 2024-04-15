@@ -110,11 +110,14 @@ def view_room(room_name):
     room_member = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name
     ).first()
+    rooms = RoomMember.query.filter_by(member_name=current_user.username).all()
+
     if room and room_member:
-        messages = ChatMessage.query.filter_by(room_name=room_name)
+        messages = ChatMessage.query.filter_by(room_name=room_name).all()
         room_members = room.get_room_members()
         return render_template(
             "_view_room.html",
+            rooms=rooms,
             room=room,
             room_members=room_members,
             messages=messages,
