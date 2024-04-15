@@ -31,7 +31,7 @@ class Room(db.Model):
 class RoomMember(db.Model):
     member_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     room_name = db.Column(db.ForeignKey("room.room_name"))
-    member_name = db.Column(db.String(50), nullable=False, unique=False)
+    member_name = db.Column(db.ForeignKey("user.username"))
     added_by = db.Column(db.String(50), nullable=False)
     is_room_admin = db.Column(db.String(10), nullable=False)
     added_at = db.Column(db.String(40), nullable=False)

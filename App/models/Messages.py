@@ -8,7 +8,7 @@ class Messages(db.Model):
 
 class ChatMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    sender_name = db.Column(db.String(50), nullable=False)
+    sender_name = db.Column(db.ForeignKey("user.username"), nullable=False)
     room_name = db.Column(db.ForeignKey("room.room_name"), nullable=False)
     message = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.String(20), nullable=False)
