@@ -35,7 +35,7 @@ def delete():
 
 @index.route("/update_room_names/<room_name>/", methods=["GET"])  # add type
 def update_room_view(room_name):
-    room: Room | None = Room.query.filter_by(room_name=room_name).first()
+    room: Room | None = Room.query.filter_by(name=room_name).first()
     member: RoomMember = room.get_room_members()
     return render_template("_edit_room.html", rooms=room, member=member)
 
@@ -45,7 +45,7 @@ def update_room_view(room_name):
 def create_room():
     if request.method == "POST":
         room_name = request.form["room_name"]
-        room = Room.query.filter_by(room_name=room_name).first()
+        room = Room.query.filter_by(name=room_name).first()
         if room:
             flash("Room already exist", "danger")
         else:
@@ -66,7 +66,7 @@ def add_members():
         room_admin = RoomMember.query.filter_by(
             member_name=current_user.username, room_name=room_name, is_room_admin=True
         ).first()
-        room = Room.query.filter_by(room_name=room_name).first()
+        room = Room.query.filter_by(name=room_name).first()
         if room and room_admin:
             if User.query.filter_by(username=usernames1).first():
                 room_member = RoomMember.query.filter_by(
@@ -104,7 +104,7 @@ def get_rooms():
 @index.route("/view_room/<room_name>/", methods=["GET"])
 @jwt_required()
 def view_room(room_name):
-    room = Room.query.filter_by(room_name=room_name).first()
+    room = Room.query.filter_by(name=room_name).first()
     room_member = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name
     ).first()
@@ -128,7 +128,7 @@ def view_room(room_name):
 @index.route("/update_room_names/<room_name>/", methods=["PUT"])
 @jwt_required()
 def update_room_names(room_name):
-    rooms = Room.query.filter_by(room_name=room_name).first()
+    rooms = Room.query.filter_by(name=room_name).first()
     member = rooms.get_room_members()
     data = request.get_json()
     new_room_name = data["new_room_name"]

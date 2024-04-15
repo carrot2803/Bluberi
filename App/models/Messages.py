@@ -9,7 +9,7 @@ class Messages(db.Model):
 class ChatMessage(db.Model):
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sender_name: str = db.Column(db.ForeignKey("user.username"), nullable=False)
-    room_name: str = db.Column(db.ForeignKey("room.room_name"), nullable=False)
+    room_name: str = db.Column(db.ForeignKey("room.name"), nullable=False)
     message: str = db.Column(db.String(255), nullable=False)
     created_at: str = db.Column(db.String(20), nullable=False)
 

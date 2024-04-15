@@ -10,7 +10,7 @@ socket = SocketIO(cors_allowed_origins="*")
 @jwt_required()
 def on_message(data):
     room_name = data.get("room")
-    rooms = Room.query.filter_by(room_name=room_name).first()
+    rooms = Room.query.filter_by(name=room_name).first()
     if rooms:
         users_rooms = rooms.get_room_members()
         if users_rooms:
@@ -40,7 +40,7 @@ def on_message(data):
 @jwt_required()
 def on_join(data) -> None:
     room_name = data.get("room")
-    room: Room | None = Room.query.filter_by(room_name=room_name).first()
+    room: Room | None = Room.query.filter_by(name=room_name).first()
     if room is None:
         return
     room_name: str = room.room_name

@@ -11,7 +11,7 @@
     {% for room in rooms %}
         {% if room %}
        
-        <a href="/view_room/{{room.room_name}}/" class="a btn btn-primary mb-2" id="a_{{loop.index}}">{{room.room_name}}</a><br>
+        <a href="/view_room/{{room.name}}/" class="a btn btn-primary mb-2" id="a_{{loop.index}}">{{room.name}}</a><br>
     {% endif %}
         {% else %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">

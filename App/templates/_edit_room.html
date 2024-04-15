@@ -5,7 +5,7 @@
 <div class="container">
 	<form id="editRoomForm" class="myform">
 		{% include '_message.html'%}
-		<input type="text" id="newRoomName" value="{{rooms.room_name}}"><br>
+		<input type="text" id="newRoomName" value="{{rooms.name}}"><br>
 		<p>Room Members Name</p>
 		{% for members in member %}
 		<ul class="list-group">

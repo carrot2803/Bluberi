@@ -3,7 +3,7 @@ from App.database import db
 
 class RoomMember(db.Model):
     member_id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    room_name: str = db.Column(db.ForeignKey("room.room_name"))
+    room_name: str = db.Column(db.ForeignKey("room.name"))
     member_name: str = db.Column(db.ForeignKey("user.username"))
     added_by: str = db.Column(db.String(50), nullable=False)
     is_room_admin = db.Column(db.String(10), nullable=False)
