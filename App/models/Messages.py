@@ -6,7 +6,7 @@ class Messages(db.Model):
     username = db.Column(db.String(50), nullable=False)
 
 
-class StoringMessages(db.Model):
+class ChatMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sender_name = db.Column(db.String(50), nullable=False)
     room_name = db.Column(db.ForeignKey("room.room_name"), nullable=False)

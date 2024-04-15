@@ -10,7 +10,7 @@ class Room(db.Model):
         "RoomMember", backref="room", lazy="dynamic", cascade="all, delete-orphan"
     )
     messages = db.relationship(
-        "StoringMessages", backref="room", lazy="dynamic", cascade="all, delete-orphan"
+        "ChatMessage", backref="room", lazy="dynamic", cascade="all, delete-orphan"
     )
 
     def __init__(self, room_name, created_by, created_at):

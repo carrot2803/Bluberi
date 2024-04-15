@@ -3,7 +3,7 @@ from typing import Any
 from werkzeug.security import generate_password_hash, check_password_hash
 from App.database import db
 from App.models.Room import Room, RoomMember
-from App.models.Messages import StoringMessages
+from App.models.Messages import ChatMessage
 
 
 class User(db.Model):
@@ -50,8 +50,8 @@ class User(db.Model):
         db.session.commit()
         return True
 
-    def send_message(self, room_name, message) -> StoringMessages | None:
-        new_message = StoringMessages(
+    def send_message(self, room_name, message) -> ChatMessage | None:
+        new_message = ChatMessage(
             self.username, room_name, message, datetime.now().strftime("%H:%M:%S")
         )
         if new_message is None:
