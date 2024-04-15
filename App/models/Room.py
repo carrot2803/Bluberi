@@ -1,6 +1,6 @@
-from typing import Any
-from sqlalchemy.orm.relationships import RelationshipProperty
 from App.database import db
+from App.models.Messages import ChatMessage
+from App.models.RoomMember import RoomMember
 
 
 class Room(db.Model):
@@ -20,24 +20,8 @@ class Room(db.Model):
         self.created_by: str = created_by
         self.created_at: str = created_at
 
-    def get_room_members(self) -> RelationshipProperty[Any]:
+    def get_room_members(self):
         return self.members
 
-    def get_messages(self) -> RelationshipProperty[Any]:
+    def get_messages(self):
         return self.messages
-
-
-class RoomMember(db.Model):
-    member_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    room_name = db.Column(db.ForeignKey("room.room_name"))
-    member_name = db.Column(db.ForeignKey("user.username"))
-    added_by = db.Column(db.String(50), nullable=False)
-    is_room_admin = db.Column(db.String(10), nullable=False)
-    added_at = db.Column(db.String(40), nullable=False)
-
-    def __init__(self, member_name, room_name, added_by, is_room_admin, added_at):
-        self.member_name = member_name
-        self.room_name = room_name
-        self.added_by = added_by
-        self.is_room_admin = is_room_admin
-        self.added_at = added_at
