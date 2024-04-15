@@ -3,26 +3,28 @@
 
 {% block content %}
 <div class="container">
-    {% include '_message.html'%}
-    {% if current_user.is_authenticated %}
-    <h1>Welcome to chat room <i>{{current_user.username}}</i></h1>
-    {% endif %}
-    <h4>Groups joined By {{current_user.username}}</h4>
-    {% for room in rooms %}
-        {% if room %}
-       
-        <a href="/view_room/{{room.name}}/" class="a btn btn-primary mb-2" id="a_{{loop.index}}">{{room.name}}</a><br>
-    {% endif %}
-        {% else %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{current_user.username}}</strong> has not joined any room...click <a href="/create_room">here</a> to create a room
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+  {% include '_message.html'%}
+  {% if current_user.is_authenticated %}
+  <h1>Welcome to chat room <i>{{current_user.username}}</i></h1>
+  {% endif %}
+  <h4>Groups joined By {{current_user.username}}</h4>
+  {% for room in rooms %}
+  {% if room %}
 
-    {% endfor %}
-    
+  <a href="/view_room/{{room.room_name}}/" class="a btn btn-primary mb-2" id="a_{{loop.index}}">{{room.room_name}}
+  </a><br>
+  {% endif %}
+  {% else %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>{{current_user.username}}</strong> has not joined any room...click <a href="/create_room">here</a> to create
+    a room
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  {% endfor %}
+
 </div>
 
 {% endblock %}

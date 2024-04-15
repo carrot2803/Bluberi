@@ -17,7 +17,7 @@ def on_message(data):
             for members in users_rooms:
                 msg = data["msg"]
                 if members.member_name == current_user.username:
-                    room = rooms.room_name
+                    room = rooms.name
                     message = current_user.send_message(room, msg)
                     if message:
                         print("message saved")
@@ -43,7 +43,7 @@ def on_join(data) -> None:
     room: Room | None = Room.query.filter_by(name=room_name).first()
     if room is None:
         return
-    room_name: str = room.room_name
+    room_name: str = room.name
     join_room(room_name)
     time: str = datetime.now().strftime("%H:%M:%S")
     send(

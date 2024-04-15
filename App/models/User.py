@@ -32,10 +32,10 @@ class User(db.Model):
         return True
 
     def update_room(self, old_room_name: str, new_room_name: str) -> bool:
-        room: Room | None = Room.query.filter_by(room_name=old_room_name).first()
+        room: Room | None = Room.query.filter_by(name=old_room_name).first()
         if room is None:
             return False
-        room.room_name = new_room_name
+        room.name = new_room_name
         RoomMember.query.filter_by(room_name=old_room_name).update(
             {RoomMember.room_name: new_room_name}
         )
@@ -43,7 +43,7 @@ class User(db.Model):
         return True
 
     def delete_room(self, room_name: str) -> bool:
-        room: Room | None = Room.query.filter_by(room_name=room_name).first()
+        room: Room | None = Room.query.filter_by(name=room_name).first()
         if room is None:
             return False
         db.session.delete(room)

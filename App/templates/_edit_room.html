@@ -5,7 +5,7 @@
 <div class="container">
 	<form id="editRoomForm" class="myform">
 		{% include '_message.html'%}
-		<input type="text" id="newRoomName" value="{{rooms.name}}"><br>
+		<input type="text" id="newRoomName" value="{{room.name}}"><br>
 		<p>Room Members Name</p>
 		{% for members in member %}
 		<ul class="list-group">
@@ -21,7 +21,7 @@
 	async function editRoom() {
 		try {
 			var newRoomName = document.getElementById("newRoomName").value;
-			const response = await fetch("/update_room_names/{{rooms.room_name}}/", {
+			const response = await fetch("/update_room_names/{{room.name}}/", {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'

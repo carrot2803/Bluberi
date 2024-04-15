@@ -37,7 +37,7 @@ def delete():
 def update_room_view(room_name):
     room: Room | None = Room.query.filter_by(name=room_name).first()
     member: RoomMember = room.get_room_members()
-    return render_template("_edit_room.html", rooms=room, member=member)
+    return render_template("_edit_room.html", room=room, member=member)
 
 
 @index.route("/create_room", methods=["GET", "POST"])
@@ -94,8 +94,10 @@ def add_members():
 @jwt_required()
 def get_rooms():
     if request.method == "GET":
-        room = RoomMember.query.filter_by(member_name=current_user.username).all()
-        return render_template("_get_rooms.html", rooms=room, current_user=current_user)
+        rooms = RoomMember.query.filter_by(member_name=current_user.username).all()
+        return render_template(
+            "_get_rooms.html", rooms=rooms, current_user=current_user
+        )
     else:
         flash("you are not a member of any room", "warning")
     return render_template("_get_rooms.html")
