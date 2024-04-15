@@ -1,6 +1,4 @@
 from App.database import db
-from App.models.Messages import ChatMessage
-from App.models.RoomMember import RoomMember
 
 
 class Room(db.Model):
