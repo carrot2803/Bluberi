@@ -12,6 +12,7 @@
 - add type safety
 - add better routing
 - consider invite links???
+- maybe rewrite update query
 - Big one save message to history so it cant be viewed later(bug i think?)
 - Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.
 - Production Builds

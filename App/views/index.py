@@ -7,8 +7,10 @@ from flask import (
     url_for,
     flash,
 )
-from App.models import RoomMembers, Rooms, User
+from App.models import RoomMember, Room, User
 from flask import Blueprint
+
+from App.models.Messages import StoringMessages
 
 
 index = Blueprint("index", __name__)
@@ -29,7 +31,7 @@ def chat():
 def create_room():
     if request.method == "POST":
         room_name = request.form["room_name"]
-        if Rooms.get_room(room_name):
+        if Room.get_room(room_name):
             flash("Room already exist", "danger")
         else:
             room_created = current_user.create_room(room_name)
@@ -46,12 +48,12 @@ def add_members():
     if request.method == "POST":
         room_name = request.form["room_name"]
         usernames1 = request.form["usernames"]
-        room_admin = RoomMembers.query.filter_by(
+        room_admin = RoomMember.query.filter_by(
             member_name=current_user.username, room_name=room_name, is_room_admin=True
         ).first()
-        if Rooms.get_room(room_name) and room_admin:
+        if Room.get_room(room_name) and room_admin:
             if User.query.filter_by(username=usernames1).first():
-                room_member = RoomMembers.query.filter_by(
+                room_member = RoomMember.query.filter_by(
                     member_name=usernames1, room_name=room_name
                 ).first()
                 if room_member is None:
@@ -76,7 +78,7 @@ def add_members():
 @jwt_required()
 def get_rooms():
     if request.method == "GET":
-        room = RoomMembers.query.filter_by(member_name=current_user.username)
+        room = RoomMember.query.filter_by(member_name=current_user.username).all()
         return render_template("_get_rooms.html", rooms=room, current_user=current_user)
     else:
         flash("you are not a member of any room", "warning")
@@ -86,12 +88,12 @@ def get_rooms():
 @index.route("/view_room/<room_name>/", methods=["GET"])
 @jwt_required()
 def view_room(room_name):
-    room = Rooms.get_room(room_name)
-    room_member = RoomMembers.query.filter_by(
+    room = Room.get_room(room_name)
+    room_member = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name
     ).first()
     if room and room_member:
-        messages = Rooms.get_messages(room_name)
+        messages = StoringMessages.query.filter_by(room_name=room_name)
         room_members = room.get_room_members()
         return render_template(
             "_view_room.html",
@@ -109,7 +111,7 @@ def view_room(room_name):
 
 @index.route("/update_room_names/<room_name>/", methods=["GET"])  # add type
 def update_room_view(room_name):
-    rooms = Rooms.get_room(room_name)
+    rooms = Room.get_room(room_name)
     member = rooms.get_room_members()
     return render_template("_edit_room.html", rooms=rooms, member=member)
 
@@ -117,11 +119,11 @@ def update_room_view(room_name):
 @index.route("/update_room_names/<room_name>/", methods=["PUT"])
 @jwt_required()
 def update_room_names(room_name):
-    rooms = Rooms.get_room(room_name)
+    rooms = Room.get_room(room_name)
     member = rooms.get_room_members()
     data = request.get_json()
     new_room_name = data["new_room_name"]
-    room_admin = RoomMembers.query.filter_by(
+    room_admin = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name, is_room_admin=True
     ).first()
     if room_admin:
@@ -144,7 +146,7 @@ def delete():
 @index.route("/delete_room/<room_name>", methods=["DELETE"])
 @jwt_required()
 def delete_room(room_name):
-    room_admin = RoomMembers.query.filter_by(
+    room_admin = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name, is_room_admin=True
     ).first()
     if room_admin:

@@ -1,12 +1,17 @@
 from App.database import db
-from App.models.Messages import StoringMessages
 
 
-class Rooms(db.Model):
+class Room(db.Model):
     room_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    room_name = db.Column(db.String(50), nullable=False, unique=False)
+    room_name = db.Column(db.String(50), nullable=False, unique=True)
     created_by = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.String(40), nullable=False)
+    members = db.relationship(
+        "RoomMember", backref="room", lazy="dynamic", cascade="all, delete-orphan"
+    )
+    messages = db.relationship(
+        "StoringMessages", backref="room", lazy="dynamic", cascade="all, delete-orphan"
+    )
 
     def __init__(self, room_name, created_by, created_at):
         self.room_name = room_name
@@ -14,19 +19,19 @@ class Rooms(db.Model):
         self.created_at = created_at
 
     def get_room_members(self):
-        return RoomMembers.query.filter_by(room_name=self.room_name)
+        return self.members
 
     def get_room(room_name):
-        return Rooms.query.filter_by(room_name=room_name).first()
+        return Room.query.filter_by(room_name=room_name).first()
 
-    def get_messages(room_name):
-        return StoringMessages.query.filter_by(room_name=room_name)
+    def get_messages(self):
+        return self.messages
 
 
-class RoomMembers(db.Model):
+class RoomMember(db.Model):
     member_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    room_name = db.Column(db.ForeignKey("room.room_name"))
     member_name = db.Column(db.String(50), nullable=False, unique=False)
-    room_name = db.Column(db.String(50), nullable=False, unique=False)
     added_by = db.Column(db.String(50), nullable=False)
     is_room_admin = db.Column(db.String(10), nullable=False)
     added_at = db.Column(db.String(40), nullable=False)

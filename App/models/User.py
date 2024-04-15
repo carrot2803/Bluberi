@@ -1,7 +1,9 @@
 from datetime import datetime
+from typing import Any
 from werkzeug.security import generate_password_hash, check_password_hash
 from App.database import db
-from App.models.Rooms import Rooms, RoomMembers, StoringMessages
+from App.models.Room import Room, RoomMember
+from App.models.Messages import StoringMessages
 
 
 class User(db.Model):
@@ -17,13 +19,12 @@ class User(db.Model):
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
-        # self.password = generate_password_hash(password, method="scrypt")
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
     def create_room(self, room_name):
-        new_room = Rooms(room_name, self.username, datetime.now())
+        new_room = Room(room_name, self.username, datetime.now())
         if new_room is None:
             return False
         db.session.add(new_room)
@@ -31,33 +32,25 @@ class User(db.Model):
         return True
 
     def update_room(self, old_room_name, new_room_name):
-        room = Rooms.query.filter_by(room_name=old_room_name).first()
+        room = Room.query.filter_by(room_name=old_room_name).first()
         if room is None:
             return False
         room.room_name = new_room_name
-        rooms_updated = RoomMembers.query.filter_by(room_name=old_room_name).update(
-            {RoomMembers.room_name: new_room_name}
-        )  #  move this into rooms? actually idk  ifto
-        if rooms_updated is None:
-            return False
+        RoomMember.query.filter_by(room_name=old_room_name).update(
+            {RoomMember.room_name: new_room_name}
+        )
         db.session.commit()
         return True
 
     def delete_room(self, room_name) -> bool:
-        room = Rooms.query.filter_by(room_name=room_name).first()
+        room: Room | None = Room.query.filter_by(room_name=room_name).first()
         if room is None:
             return False
         db.session.delete(room)
-        RoomMembers.query.filter_by(
-            room_name=room_name
-        ).delete()  # prob move this into rooms
-        StoringMessages.query.filter_by(
-            room_name=room_name
-        ).delete()  # move this into rooms
         db.session.commit()
         return True
 
-    def send_message(self, room_name, message):
+    def send_message(self, room_name, message) -> StoringMessages | None:
         new_message = StoringMessages(
             self.username, room_name, message, datetime.now().strftime("%H:%M:%S")
         )
@@ -67,8 +60,8 @@ class User(db.Model):
         db.session.commit()
         return new_message
 
-    def add_room_member(self, member_name, room_name, is_room_admin):
-        room_member = RoomMembers(
+    def add_room_member(self, member_name, room_name, is_room_admin) -> None:
+        room_member = RoomMember(
             member_name,
             room_name,
             self.username,

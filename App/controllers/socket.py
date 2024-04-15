@@ -1,7 +1,7 @@
 import datetime
 from flask_jwt_extended import current_user, jwt_required
 from flask_socketio import SocketIO, send, join_room
-from App.models import Rooms
+from App.models import Room
 
 socket = SocketIO(cors_allowed_origins="*")
 
@@ -9,7 +9,7 @@ socket = SocketIO(cors_allowed_origins="*")
 @socket.on("incoming-msg")
 @jwt_required()
 def on_message(data):
-    rooms = Rooms.get_room(data["room"])
+    rooms = Room.get_room(data["room"])
     if rooms:
         users_rooms = rooms.get_room_members()
         if users_rooms:
@@ -38,7 +38,7 @@ def on_message(data):
 @socket.on("join")
 @jwt_required()
 def on_join(data) -> None:
-    room: Rooms | None = Rooms.get_room(data.get("room"))
+    room: Room | None = Room.get_room(data.get("room"))
     if room is None:
         return
     room_name: str = room.room_name
