@@ -17,12 +17,6 @@ class User(db.Model):
         self.email = email
         self.set_password(password)
 
-    def set_password(self, password: str) -> None:
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password: str) -> bool:
-        return check_password_hash(self.password, password)
-
     def create_room(self, room_name: str) -> bool:
         new_room = Room(room_name, self.username, datetime.now())
         if new_room is None:
@@ -70,3 +64,9 @@ class User(db.Model):
         )
         db.session.add(room_member)
         db.session.commit()
+
+    def set_password(self, password: str) -> None:
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        return check_password_hash(self.password, password)

@@ -5,19 +5,18 @@
 
 ## BackEnd
 
-- perfect models
-- perfect controllers
-- perfect routes
-
 - make User experience and UI cleaner
-- add type safety
-- add better routing
+- add routes renaming
 - consider invite links???
 - Big one save message to history so it cant be viewed later(bug i think?)
-- Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.
 - Production Builds
 - maybe rewrite update query
 
+- ~~Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.~~
+- ~~perfect models~~
+- ~~clean up controllers~~
+- ~~clean up routes~~
+- ~~add type safety to models~~
 - ~~move off userlogin and user mixin  and use jwt implace(maybe idk if user mixing allowed we learn it in class)~~
 - ~~add blueprinting refactoring~~
 - ~~Maybe refactor models~~
