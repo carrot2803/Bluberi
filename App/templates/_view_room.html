@@ -15,10 +15,6 @@
             max-height: calc(100vh - 100px);
             overflow-y: auto;
         }
-
-        .chat-area {
-            height: calc(100vh - 100px);
-        }
     </style>
 </head>
 
@@ -118,7 +114,7 @@
 
 
                         <!-- Chat area -->
-                        <div class="chat-area flex-1 flex flex-col">
+                        <div class="chat-area flex-1 flex flex-col" style="height: 90vh;">
                             <div class="flex-3">
                                 <h2
                                     class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
@@ -158,12 +154,11 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            <div class="flex-2 pt-4 pb-10">
-                                <div class="write bg-white shadow flex rounded-lg">
+                            <div class="flex-2  pb-5">
+                                <div class="write bg-white shadow flex rounded-lg ">
                                     <div class="flex-3 flex content-center items-center text-center p-4 pr-0">
                                     </div>
                                     <div class="flex-1">
-                                        <!-- remake as a form -->
                                         <input type="text" class="w-full block outline-none py-4 px-4 bg-transparent"
                                             placeholder="Type Your Message Here...." id="txt2" autocomplete="off">
                                     </div>
