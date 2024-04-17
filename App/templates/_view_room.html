@@ -68,15 +68,29 @@
                                     <div class="flex-1 px-2">
                                         <div class="truncate w-32"><span class="text-gray-800">{{ room.room_name
                                                 }}</span></div>
-                                        <div><small class="text-gray-600">Temp Message</small></div>
+                                        <div>
+                                            <small class="text-gray-800">
+                                                {% if room.get_last_message() %}
+                                                {{ room.get_last_message().sender_name }}: {{
+                                                room.get_last_message().message }}
+                                                {% else %}
+                                                No messages yet
+                                                {% endif %}
+                                            </small>
+                                        </div>
                                     </div>
                                     <div class="flex-2 text-right">
                                         <!-- Display number of new messages here -->
-                                        <div><small class="text-gray-500">15 May</small></div>
+                                        <div><small class="text-gray-500">{{ room.get_last_message().created_at[:-3]
+                                                }}</small></div>
                                         <div>
                                             <small
                                                 class="text-xs bg-red-500 text-white rounded-full h-6 w-6 leading-6 text-center inline-block">
-                                                10
+                                                {% if room.get_num_messages() > 99 %}
+                                                {{ range(1, 11)|random }}
+                                                {% else %}
+                                                {{ room.get_num_messages() }}
+                                                {% endif %}
                                             </small>
                                         </div>
                                     </div>
@@ -105,7 +119,7 @@
 
                                     <div class="icons-container flex mr-5 gap-3">
                                         <a href="{{url_for('index.delete')}}">
-                                            <i class="fas fa-trash" style="font-size:20px;color:#e64b4b;"></i>
+                                            <i class="fas fa-trash text-red-500" style="font-size:20px"></i>
                                         </a>
                                         <a href="{{ url_for('index.update_room_names', room_name=room.name) }}">
                                             <i class="fas fa-edit" style="font-size:20px;color:#1E90FF;"></i>
@@ -155,7 +169,7 @@
                                             </span>
                                         </div>
                                         <div class="flex-1">
-                                            <button class="bg-blue-400 w-10 h-10 rounded-full inline-block" id="send1">
+                                            <button class="bg-blue-500 w-10 h-10 rounded-full inline-block" id="send1">
                                                 <span class="inline-block align-text-bottom">
                                                     <i class="fa fa-paper-plane text-white text-md center"></i>
                                                 </span>

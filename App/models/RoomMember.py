@@ -1,4 +1,5 @@
 from App.database import db
+from App.models.Messages import ChatMessage
 
 
 class RoomMember(db.Model):
@@ -15,3 +16,14 @@ class RoomMember(db.Model):
         self.added_by: str = added_by
         self.is_room_admin = is_room_admin
         self.added_at: str = added_at
+
+    def get_last_message(self):
+        last_message = (
+            ChatMessage.query.filter_by(room_name=self.room_name)
+            .order_by(ChatMessage.created_at.desc())
+            .first()
+        )
+        return last_message
+
+    def get_num_messages(self) -> int:
+        return ChatMessage.query.filter_by(room_name=self.room_name).count()
