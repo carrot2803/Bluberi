@@ -33,6 +33,9 @@ class User(db.Model):
         RoomMember.query.filter_by(room_name=old_room_name).update(
             {RoomMember.room_name: new_room_name}
         )
+        ChatMessage.query.filter_by(room_name=old_room_name).update(
+            {ChatMessage.room_name: new_room_name}
+        )
         db.session.commit()
         return True
 
