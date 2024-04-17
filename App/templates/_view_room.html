@@ -93,7 +93,7 @@
 
 
                         <!-- Chat area -->
-                        <div class="chat-area flex-1 flex flex-col">
+                        <div class="chat-area flex-1 flex flex-col" style="height:100vh">
                             <div class="flex-3">
                                 <h2
                                     class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
@@ -110,7 +110,7 @@
                                 </h2>
 
                             </div>
-                            <div class="messages flex-1 overflow-auto">
+                            <div class="messages flex-1 overflow-y-scroll" style="scrollbar-width: none;">
                                 {% for message in messages %}
                                 <div class="message mb-4 flex">
                                     <div class="flex-2">
