@@ -54,7 +54,7 @@
                                 <!-- Room list -->
                                 {% for room in rooms %}
                                 {% if room %}
-                                <a href=" /view_room/{{ room.room_name }}/"
+                                <a href="/view_room/{{ room.room_name }}/"
                                     class="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md">
                                     <div class="flex-2">
                                         <div class="w-12 h-12 relative">
@@ -81,8 +81,14 @@
                                     </div>
                                     <div class="flex-2 text-right">
                                         <!-- Display number of new messages here -->
-                                        <div><small class="text-gray-500">{{ room.get_last_message().created_at[:-3]
-                                                }}</small></div>
+                                        <div>
+                                            <small class="text-gray-500">
+                                                {% if room.get_last_message() is not none %}
+                                                {{ room.get_last_message().created_at[:-3] }}
+                                                {% endif %}
+                                            </small>
+                                        </div>
+
                                         <div>
                                             <small
                                                 class="text-xs bg-red-500 text-white rounded-full h-6 w-6 leading-6 text-center inline-block">
@@ -98,7 +104,8 @@
                                 {% else %}
                                 <div role="alert">
                                     <strong>{{ current_user.username }}</strong> has not joined any room...click <a
-                                        href="/create_room">here</a> to create a room
+                                        href="/create_room">here</a> to
+                                    create a room
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
