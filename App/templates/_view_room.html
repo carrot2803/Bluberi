@@ -15,11 +15,15 @@
             max-height: calc(100vh - 100px);
             overflow-y: auto;
         }
+
+        .chat-area {
+            height: calc(100vh - 100px);
+        }
     </style>
 </head>
 
 <body>
-    <div class="w-full">
+    <div class="w-full h-screen">
         <div class="flex-1 bg-gray-100 w-full h-full">
             <div class="main-body container m-auto w-11/12 h-full flex flex-col">
 
@@ -93,7 +97,7 @@
 
 
                         <!-- Chat area -->
-                        <div class="chat-area flex-1 flex flex-col" style="height:100vh">
+                        <div class="chat-area flex-1 flex flex-col">
                             <div class="flex-3">
                                 <h2
                                     class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
