@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room</title>
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-hbZHM6VX3fc/Az/hN5wiUJ5wkiaAWOK66nU69pG94JlE1LLBnq5RsYsfWT3zBiAH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .sidebar {
             max-height: calc(100vh - 100px);
@@ -85,8 +89,20 @@
                         <!-- Chat area -->
                         <div class="chat-area flex-1 flex flex-col">
                             <div class="flex-3">
-                                <h2 class="text-xl py-1 mb-8 border-b-2 border-gray-200"><b>Room members</b></h2>
-                                <a href="{{ url_for('index.update_room_names', room_name=room.name) }}">Edit Room</a>
+                                <h2
+                                    class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
+                                    <span>You are Chatting in <b>{{ room.name }}</b></span>
+
+                                    <div class="icons-container flex mr-5 gap-3">
+                                        <a href="{{url_for('index.delete')}}">
+                                            <i class="fas fa-trash" style="font-size:20px;color:#e64b4b;"></i>
+                                        </a>
+                                        <a href="{{ url_for('index.update_room_names', room_name=room.name) }}">
+                                            <i class="fas fa-edit" style="font-size:20px;color:#1E90FF;"></i>
+                                        </a>
+                                    </div>
+                                </h2>
+
                             </div>
                             <div class="messages flex-1 overflow-auto">
                                 {% for message in messages %}
@@ -101,7 +117,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-1 px-2">
-                                        <!-- Add styling to seperate name and time -->
+                                        <!-- Add styling to separate name and time -->
                                         <div class="inline-block bg-gray-300 rounded-full p-2 px-6 text-gray-700">
                                             <span>{{ message.sender_name }}: {{ message.message }}</span>
                                         </div>
@@ -129,7 +145,7 @@
                                         <input type="text" class="w-full block outline-none py-4 px-4 bg-transparent"
                                             placeholder="Type Your Message Here...." id="txt2" autocomplete="off">
                                     </div>
-                                    <div class="flex-2 w-32 p-2 flex content-center items-center">
+                                    <div class="flex-2 w-32 p-2 flex content-center items-center justify-end">
                                         <div class="flex-1 text-center">
                                             <span class="text-gray-400 hover:text-gray-800">
                                                 <span class="inline-block align-text-bottom">
@@ -158,6 +174,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
