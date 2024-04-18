@@ -32,6 +32,15 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #3B82F6;
         }
+
+        .min-h-11 {
+            min-height: 2.75rem;
+        }
+
+        .min-w-11 {
+            min-width: 2.75rem;
+        }
+
     </style>
 </head>
 
@@ -197,7 +206,7 @@
                                         {{message.message}}
                                     </div>
                                     <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
-                                        sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>
+                                        sent at: <time class="text-xs opacity-50">{{message.created_at[:-3]}}</time>
                                     </div>
                                 </div>
                                 {% endif %}
