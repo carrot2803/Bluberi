@@ -1,56 +1,231 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layout.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bluberi</title>
-    <script type="text/javascript" src="{{url_for('static', filename='jquery.js')}}"></script>
-    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
-        integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{url_for('static', filename='app.css')}}">
-    <link rel="stylesheet" href="templates\base.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='start.css')}}">
-</head>
+{% block title %}Bluberi{% endblock %}
+
+{% block content %}
 <style>
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
 
+    :root {
+        --white: snow;
+        --scrollbar: rgb(50, 122, 217);
+        --scrollbar-hover: rgb(41, 105, 188);
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .container {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+        background: var(--white);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--scrollbar);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-hover);
+    }
 </style>
 
-<body>
-    <ul class="background">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
-    <div class="display-text">
-        <p>WELCOME TO</p>
-        <h1>Bluberi</h1>
-        <p>Talk, share, explore with our chat app!</p>
-        <div class="redirect">
-            <a href="/signup">GET STARTED</a>
-            <a href="/login">LOGIN</a>
+<header class="text-gray-700 body-font bg-white">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" href="/">
+            <img class="w-10 h-10 text-white bg-white-500 rounded-full"
+                src="https://cdn0.iconfinder.com/data/icons/fruity-1/100/fruit_food_colour-47-1024.png" alt="logo">
+            <span class="ml-1 text-xl">Bluberi</span>
+        </a>
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+            <a class="mr-5 hover:text-gray-900" href="#about">About</a>
+            <a class="mr-5 hover:text-gray-900" href="#comments">Comments</a>
+        </nav>
+        <button onclick="location.href='/login'"
+            class="inline-flex items-center h-10 text-white bg-blue-500 border-0 py-1 px-3 focus:outline-none hover:bg-blue-600 rounded text-base mt-4 md:mt-0">Login
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+        </button>
+    </div>
+</header>
+<section class="text-gray-700 body-font bg-white w-full " id="home">
+    <div class="container bg-white mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+        <div
+            class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Welcome to Bluberi Chats
+                <br class="hidden lg:inline-block">Engage in Meaningful Conversations
+            </h1>
+            <p class="mb-6 leading-relaxed">Experience the genuine vibe of Bluberi Chats, where users connect over
+                shared interests, passions, and experiences. Dive into conversations that matter, whether it's about
+                hobbies, life stories, or current events. Join our community and embrace the authenticity of human
+                interaction in the digital age.</p>
+            <div class="flex justify-center">
+                <button onclick="location.href='/signup'"
+                    class="inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg">Sign
+                    Up</button>
+                <button onclick="location.href='https://github.com/carrot2803/vegetables-flask-server'"
+                    class="ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg">Discover</button>
+            </div>
+        </div>
+        <div class="lg:max-w-md lg:w-full md:w-1/2 w-4/6">
+            <img class="object-cover object-center rounded" alt="hero"
+                src="https://freebieflux.com/uploads/freebies/free-download-match-go-chat-app-ui-kit.webp">
         </div>
     </div>
-</body>
+</section>
 
-</html>
+<section class="text-gray-700 body-font border bg-white">
+    <div class="container px-5 py-24">
+        <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center" id="about">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">About Bluberi Chats
+            </h1>
+            <p class="lg:w-1/2 w-full leading-relaxed text-base">This is a simple Flask Chat Application
+                that allows users to connect with other users who share similar interests, passions, or experiences.
+            </p>
+        </div>
+        <div class="flex flex-wrap -m-4">
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-300 p-6 rounded-lg">
+                    <div
+                        class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Technologies</h2>
+                    <p class="leading-relaxed text-base">This was built using Flask, SQLAlchemy, and SQLite.</p>
+                </div>
+            </div>
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-300 p-6 rounded-lg">
+                    <div
+                        class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <circle cx="6" cy="6" r="3"></circle>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Time Constraints</h2>
+                    <p class="leading-relaxed text-base">This project was developed in a short time frame</p>
+                </div>
+            </div>
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-300 p-6 rounded-lg">
+                    <div
+                        class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">The Team</h2>
+                    <p class="leading-relaxed text-base">The team consist of 4 developers carrot, meiying, markfmyt
+                        and arashi.</p>
+                </div>
+            </div>
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-300 p-6 rounded-lg">
+                    <div
+                        class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Messaging</h2>
+                    <p class="leading-relaxed text-base">Messages are sent in Real Time using Flask SocketIO</p>
+                </div>
+            </div>
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-300 p-6 rounded-lg">
+                    <div
+                        class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Dark Mode</h2>
+                    <p class="leading-relaxed text-base">Due to Time Constraints no dark mode was made :(</p>
+                </div>
+            </div>
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-300 p-6 rounded-lg">
+                    <div
+                        class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Improvability</h2>
+                    <p class="leading-relaxed text-base">Given a longer time frame a none SSR front-end
+                        should be employed.</p>
+                </div>
+            </div>
+        </div>
+        <button onclick="location.href='https://github.com/carrot2803/vegetables-flask-server'"
+            class="flex mx-auto mt-16 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">See
+            Source</button>
+    </div>
+</section>
+
+<section class="text-gray-700 body-font border-t border-gray-200" id="comments">
+    <div class="container px-5 py-20 mx-auto bg-white">
+        <div class="xl:w-1/2 lg:w-3/4 w-full mx-auto text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="inline-block w-8 h-8 text-blue-500 mb-8"
+                viewBox="0 0 975.036 975.036">
+                <path
+                    d="M925.036 57.197h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.399 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l36 76c11.6 24.399 40.3 35.1 65.1 24.399 66.2-28.6 122.101-64.8 167.7-108.8 55.601-53.7 93.7-114.3 114.3-181.9 20.601-67.6 30.9-159.8 30.9-276.8v-239c0-27.599-22.401-50-50-50zM106.036 913.497c65.4-28.5 121-64.699 166.9-108.6 56.1-53.7 94.4-114.1 115-181.2 20.6-67.1 30.899-159.6 30.899-277.5v-239c0-27.6-22.399-50-50-50h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.4 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l35.9 75.8c11.601 24.399 40.501 35.2 65.301 24.399z">
+                </path>
+            </svg>
+
+            <p class="leading-relaxed text-lg">This is Team Vegetables' Info2602 project, developed via an incremental
+                iterative approach. Building this project deepened our understanding of Flask, network configuration,
+                and backend development, while troubleshooting challenges enhanced our problem-solving abilities and
+                overall technical proficiency. Completing this project also provided valuable insights into project
+                management methodologies and the importance of meeting deadlines, fostering an appreciation for the
+                complexities and nuances of the software development lifecycle. The collaborative nature of the project
+                fostered effective communication and teamwork skills among us, and I am grateful for the opportunity to
+                collaborate with such talented individuals.</p>
+            <span class="inline-block h-1 w-10 rounded bg-blue-500 mt-8 mb-6"></span>
+            <h2 class="text-gray-900 font-medium title-font tracking-wider text-sm">CARROT2803</h2>
+            <p class="text-gray-500">Team Lead/Head Dev</p>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function scrollToSection(event) {
+            event.preventDefault();
+            const sectionId = event.target.getAttribute("href").substring(1);
+            const section = document.getElementById(sectionId);
+            if (section)
+                section.scrollIntoView({ behavior: "smooth" });
+        }
+        const aboutLink = document.querySelector("a[href='#about']");
+        const commentsLink = document.querySelector("a[href='#comments']");
+        aboutLink.addEventListener("click", scrollToSection);
+        commentsLink.addEventListener("click", scrollToSection);
+    });
+</script>
+
+
+{% endblock %}
