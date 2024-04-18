@@ -8,7 +8,7 @@ from App.models.Messages import ChatMessage
 
 class User(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
-    username: str = db.Column(db.String(50), nullable=False)
+    username: str = db.Column(db.String(50), nullable=False, unique=True)
     email: str = db.Column(db.String(60), nullable=False, unique=True)
     password: str = db.Column(db.String(100), nullable=False)
 
