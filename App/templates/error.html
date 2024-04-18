@@ -1,5 +1,23 @@
-{% block content%}
-<div class="container">
-    {% include '_message.html'%}
+{% extends 'auth.html' %}
+
+{% block title %}
+404 - Page Not Found
+{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-8 md:p-12 text-center">
+        <h1 class="mb-2 md:mb-4 text-4xl md:text-6xl font-semibold text-blue-500">404</h1>
+        <p class="mb-4 md:mb-8 text-lg md:text-xl text-gray-600">Oops! It looks like you're lost.</p>
+        <div class="animate-bounce">
+            <svg class="mx-auto h-12 md:h-16 w-12 md:w-16 text-blue-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+        </div>
+        <p class="mt-4 md:mt-8 text-lg md:text-xl text-gray-600">Let's get you back <a href="/chat"
+                class="text-blue-500">home</a>.</p>
+    </div>
 </div>
 {% endblock %}

@@ -28,7 +28,11 @@ def create_app(overrides={}):
     @jwt.invalid_token_loader
     @jwt.unauthorized_loader
     def custom_unauthorized_response(error):
-        return render_template("login.html", error=error), 401
+        return render_template("error.html", error=error), 401
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template("error.html", error=error), 404
 
     app.app_context().push()
 
