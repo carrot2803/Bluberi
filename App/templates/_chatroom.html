@@ -1,0 +1,109 @@
+{% block content %}
+<div class="chat-area flex-1 flex flex-col w-3/4 mr-2" style="height: 91vh;">
+    {% if room %}
+    <div class="flex-3">
+        <h2 class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
+            <span>You are Chatting in <b>{{ room.name }}</b></span>
+
+            <div class="icons-container flex mr-5 gap-3">
+                <a href="{{url_for('index.delete')}}">
+                    <i class="fas fa-trash text-red-500" style="font-size:20px"></i>
+                </a>
+                <a href="{{ url_for('index.update_room_names', room_name=room.name) }}">
+                    <i class="fas fa-edit" style="font-size:20px;color:#1E90FF;"></i>
+                </a>
+                <a href="/add_members">
+                    <i class="fas fa-user-plus text-green-500" style="font-size:20px;"></i>
+                </a>
+            </div>
+        </h2>
+
+    </div>
+    <div class="messages flex-1 overflow-y-scroll  px-10">
+        {% for message in messages %}
+        {% if message.sender_name == current_user.username %}
+        <div class="message grid place-items-end gap-x-3 pt-1 pb-1" style="grid-template-columns: 80px 1fr auto;">
+            <div class="col-start-3 row-span-2 w-10 relative inline-flex self-end">
+                <div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;">
+                    <img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018{{current_user.id}}"
+                        style="object-fit: cover;" />
+                    <span
+                        class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+                </div>
+            </div>
+
+            <div class="col-start-2 row-start-1 text-xs leading-5">
+                {{message.sender_name}}
+            </div>
+            <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-blue-500 text-white"
+                style="width: fit-content; border-end-end-radius: 0px;">
+                {{message.message}}
+            </div>
+            <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
+                sent at: <time class="text-xs opacity-50">{{message.created_at[:-3]}}</time>
+            </div>
+        </div>
+        {% else %}
+        <div class="message grid place-items-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr 80px;">
+            <div class="col-start-1 row-span-2 w-10 relative inline-flex self-end">
+                <div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;">
+                    <img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018{{message.sender_id}}"
+                        style="object-fit: cover;" />
+                    <span
+                        class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+                </div>
+            </div>
+
+            <div class="col-start-2 row-start-1 text-xs leading-5">
+                {{message.sender_name}}
+            </div>
+            <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300"
+                style="width: fit-content; border-end-start-radius: 0px;">
+                {{message.message}}
+            </div>
+            <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
+                sent at: <time class="text-xs opacity-50">{{message.created_at[:-3]}}</time>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="flex-2  pb-5">
+        <div class="write bg-white shadow flex rounded-lg ">
+            <div class="flex-3 flex content-center items-center text-center p-4 pr-0">
+            </div>
+            <div class="flex-1">
+                <input type="text" class="w-full block outline-none py-4 px-4 bg-transparent"
+                    placeholder="Type Your Message Here...." id="txt2" autocomplete="off">
+            </div>
+            <div class="flex-2 w-32 p-2 flex content-center items-center justify-end">
+                <div class="flex-1 text-center">
+                    <span class="text-gray-400 hover:text-gray-800">
+                        <span class="inline-block align-text-bottom">
+                            <i class="fas fa-heart text-md"></i>
+                        </span>
+                    </span>
+                </div>
+                <div class="flex-1">
+                    <button class="bg-blue-500 w-10 h-10 rounded-full inline-block" id="send1">
+                        <span class="inline-block align-text-bottom">
+                            <i class="fa fa-paper-plane text-white text-md center"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="flex flex-col items-center justify-center h-full">
+        <div class="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
+            <span class="text-6xl text-gray-400 mb-4 transition-transform transform hover:scale-110">
+                <i class="far fa-comment-dots text-6xl text-gray-400"></i>
+            </span>
+            <p class="text-gray-600 text-lg mt-4">You do not have a chat selected. Please create
+                or select one.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% block content %}
+<div class="sidebar hidden lg:flex w-1/4 flex-2 flex-col mr-10">
+    <!-- Sidebar -->
+    <div class="options pb-6 px-2  mx-4 flex flex-wrap">
+        <a href="/create_room"
+            class="create-chat-btn bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:shadow-lg transition duration-300 mr-3">
+            <i class="fas fa-plus mr-2"></i>Create Chat
+        </a>
+    </div>
+
+
+    <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5">
+        <!-- Room list -->
+        {% if rooms %}
+        {% for room in rooms %}
+        <a href="/chat/{{ room.room_name }}"
+            class="w-full entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md">
+            <div class="flex-2">
+                <div class="w-12 h-12 relative">
+                    <img class="rounded-full mx-auto w-full h-full"
+                        src="https://loremflickr.com/640/480?lock=1{{ room.member_id }}" alt="chat-user" />
+                    <span
+                        class="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+                </div>
+            </div>
+            <div class="flex-1 px-2">
+                <div class="truncate xl:w-32 lg:w-20">
+                    <span class="text-gray-800">{{ room.room_name}}</span>
+                </div>
+                <div class="truncate xl:w-32 lg:w-20">
+                    <small class="text-gray-800">
+                        {% if room.get_last_message() %}
+                        {{ room.get_last_message().sender_name }}: {{
+                        room.get_last_message().message }}
+                        {% else %}
+                        No messages yet
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
+            <div class="flex-2 text-right">
+                <!-- Display number of new messages here -->
+                <div>
+                    <small class="text-gray-500">
+                        {% if room.get_last_message() is not none %}
+                        {{ room.get_last_message().created_at[:-3] }}
+                        {% endif %}
+                    </small>
+                </div>
+
+                <div>
+                    <small
+                        class="text-xs bg-red-500 text-white rounded-full h-6 w-6 leading-6 text-center inline-block">
+                        {% if room.get_num_messages() > 99 %}
+                        {{ range(1, 11)|random }}
+                        {% else %}
+                        {{ room.get_num_messages() }}
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+        {% else %}
+        <!-- Blue and white card for joining a room -->
+        <div class="w-3/4 bg-blue-500 mb-4 rounded p-4 flex shadow-md">
+            <div class="flex-1 text-center">
+                <div class="text-white">
+                    <strong>You</strong> have not joined any rooms... Click above to create a
+                    room.
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

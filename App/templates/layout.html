@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chat{% endblock %}</title>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-hbZHM6VX3fc/Az/hN5wiUJ5wkiaAWOK66nU69pG94JlE1LLBnq5RsYsfWT3zBiAH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .sidebar {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3B82F6;
+        }
+
+        .min-h-11 {
+            min-height: 2.75rem;
+        }
+
+        .min-w-11 {
+            min-width: 2.75rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="w-screen h-screen">
+        <div class="flex-1 bg-gray-100 w-full h-full">
+            <div class="main-body m-auto container h-full flex flex-col">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>
