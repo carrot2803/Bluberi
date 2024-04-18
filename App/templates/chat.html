@@ -273,6 +273,7 @@
         $(document).ready(function () {
             var socket = io.connect('http://127.0.0.1:5000')
             var username = `{{ current_user.username }}`
+            var id = `{{ current_user.id }}`
             var room = `{{ room.name }}`;
             socket.emit('join', { 'username': username, 'room': room });
 
@@ -280,7 +281,8 @@
                 socket.emit('incoming-msg', {
                     'msg': $('#txt2').val(),
                     'username': username,
-                    'room': room
+                    'room': room,
+                    'sender_id': id,
                 });
                 $('#txt2').val('');
             }
@@ -298,7 +300,7 @@
                 if (msg.username === '{{ current_user.username }}')
                     $('.messages').append('<div class="message grid place-items-end gap-x-3 pt-1 pb-1" style="grid-template-columns: 80px 1fr auto;"><div class="col-start-3 row-span-2 w-10 relative inline-flex self-end"><div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;"><img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018{{current_user.id}}" style="object-fit: cover;"/><span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span></div></div><div class="col-start-2 row-start-1 text-xs leading-5">' + msg.username + '</div><div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-blue-500 text-white" style="width: fit-content; border-end-end-radius: 0px;">' + msg.msg + '</div><div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">sent at: <time class="text-xs opacity-50"> ' + msg.time + ' </time></div></div>')
                 else
-                $('.messages').append('<div class="message grid place-items-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr 80px;"><div class="col-start-1 row-span-2 w-10 relative inline-flex self-end"><div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;"><img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018{{message.sender_id}}" style="object-fit: cover;" /><span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span></div></div><div class="col-start-2 row-start-1 text-xs leading-5">' + msg.username + '</div><div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300" style="width: fit-content; border-end-start-radius: 0px;">' + msg.msg + '</div><div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">sent at: <time class="text-xs opacity-50"> ' + msg.time + ' </time></div></div>');
+                    $('.messages').append('<div class="message grid place-items-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr 80px;"><div class="col-start-1 row-span-2 w-10 relative inline-flex self-end"><div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;"><img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018' + msg.sender_id + '" style="object-fit: cover;" /><span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span></div></div><div class="col-start-2 row-start-1 text-xs leading-5">' + msg.username + '</div><div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300" style="width: fit-content; border-end-start-radius: 0px;">' + msg.msg + '</div><div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">sent at: <time class="text-xs opacity-50"> ' + msg.time + ' </time></div></div>');
                 // Scroll down animation
                 $('.messages').animate({ scrollTop: $('.messages').prop("scrollHeight") }, 500);
             });

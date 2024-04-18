@@ -27,6 +27,7 @@ def on_message(data):
                                 "username": current_user.username,
                                 "msg": msg,
                                 "time": message.created_at,
+                                "sender_id": current_user.id,
                             },
                             room=room,
                         )
