@@ -19,7 +19,7 @@ index = Blueprint("index", __name__)
 
 @index.route("/", methods=["GET", "POST"])
 def home() -> str:
-    return render_template("start.html")
+    return render_template("index.html")
 
 
 @index.route("/chat/<string:room_name>", methods=["POST"])
