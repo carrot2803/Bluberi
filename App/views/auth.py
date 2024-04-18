@@ -34,7 +34,7 @@ def login() -> Response:
         response: Response = redirect(url_for("auth.login"))
     else:
         flash("Login was successful", "success")
-        response: Response = redirect(url_for("index.get_rooms"))
+        response: Response = redirect(url_for("index.chat"))
     set_access_cookies(response, token)
     return response
 

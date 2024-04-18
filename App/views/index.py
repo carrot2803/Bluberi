@@ -22,11 +22,6 @@ def home() -> str:
     return render_template("start.html")
 
 
-@index.route("/chat", methods=["GET", "POST"])
-def chat() -> str:
-    return render_template("_chat_app.html", username=current_user.username)
-
-
 @index.route("/delete_room", methods=["GET"])
 @jwt_required()
 def delete():
@@ -75,10 +70,10 @@ def add_members():
                 if room_member is None:
                     if usernames1 == current_user.username:
                         current_user.add_room_member(usernames1, room_name, True)
-                        return redirect(url_for("index.get_rooms"))
+                        return redirect(url_for("index.chat"))
                     else:
                         current_user.add_room_member(usernames1, room_name, False)
-                        return redirect(url_for("index.get_rooms"))
+                        return redirect(url_for("index.chat"))
                 else:
                     flash(f"{usernames1} already in a room", "warning")
             else:
@@ -90,29 +85,16 @@ def add_members():
     return render_template("add_room_member.html")
 
 
-@index.route("/get_rooms", methods=["GET", "POST"])
+@index.route("/chat", methods=["GET"])
 @jwt_required()
-def get_rooms():
-    if request.method == "GET":
-        rooms = RoomMember.query.filter_by(member_name=current_user.username).all()
-        return render_template(
-            "_get_rooms.html", rooms=rooms, current_user=current_user
-        )
-    else:
-        flash("you are not a member of any room", "warning")
-    return render_template("_get_rooms.html")
-
-
-@index.route("/view_room", methods=["GET"])
-@jwt_required()
-def view_room1():
+def chat():
     rooms = RoomMember.query.filter_by(member_name=current_user.username).all()
-    return render_template("_view_room.html", rooms=rooms, current_user=current_user)
+    return render_template("chat.html", rooms=rooms, current_user=current_user)
 
 
-@index.route("/view_room/<string:room_name>", methods=["GET"])
+@index.route("/chat/<string:room_name>", methods=["GET"])
 @jwt_required()
-def view_room(room_name):
+def chat_room(room_name):
     room = Room.query.filter_by(name=room_name).first()
     room_member = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name
@@ -125,7 +107,7 @@ def view_room(room_name):
         print(messages)
         room_members = room.get_room_members()
         return render_template(
-            "_view_room.html",
+            "chat.html",
             rooms=rooms,
             room=room,
             room_members=room_members,

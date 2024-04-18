@@ -35,7 +35,7 @@
 
 			const data = await response.json();
 			alert("Successfully updated room name and members room names");
-			window.location.href = "/get_rooms";
+			window.location.href = "/chat/" + newRoomName;
 		} catch (error) {
 			alert(error.message);
 		}
