@@ -6,7 +6,7 @@
             <span>You are Chatting in <b>{{ room.name }}</b></span>
 
             <div class="icons-container flex mr-5 gap-3">
-                <a href="{{url_for('index.delete')}}">
+                <a>
                     <i class="fas fa-trash text-red-500" style="font-size:20px"></i>
                 </a>
                 <a href="{{ url_for('index.update_room_names', room_name=room.name) }}">
@@ -106,4 +106,34 @@
     </div>
     {% endif %}
 </div>
+
+<div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md">
+        <h2 class="text-lg font-semibold mb-4">Are you sure you want to delete?</h2>
+        <div class="flex justify-end">
+            <button id="deleteYes" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded mr-2">Yes</button>
+            <button id="deleteNo" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">No</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteButton = document.querySelector('.fa-trash');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteYesButton = document.getElementById('deleteYes');
+        const deleteNoButton = document.getElementById('deleteNo');
+
+        deleteButton.addEventListener('click', () => deleteModal.classList.remove('hidden'));
+        deleteNoButton.addEventListener('click', () => deleteModal.classList.add('hidden'));
+        deleteYesButton.addEventListener('click', () => {
+            fetch(window.location.pathname, { method: 'DELETE' })
+                .then(response => response.ok ? window.location.href = "/chat" : alert("Error deleting room"))
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+
+
 {% endblock %}

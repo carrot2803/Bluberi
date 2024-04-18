@@ -142,15 +142,13 @@ def update_room_names(room_name):
         flash("You are not an admin of this group", "warning")
 
 
-@index.route("/delete_room/<room_name>", methods=["DELETE"])
+@index.route("/chat/<string:room_name>", methods=["DELETE"])
 @jwt_required()
 def delete_room(room_name):
     room_admin = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name, is_room_admin=True
     ).first()
-    if room_admin:
-        current_user.delete_room(room_name)
-        flash("Room successfully deleted", "danger")
-    else:
-        flash("Failed to delete room", "secondary")
+    if room_admin is None:
+        return jsonify("Failed to delete room"), 400
+    current_user.delete_room(room_name)
     return jsonify("Deleted"), 200
