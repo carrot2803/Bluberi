@@ -13,12 +13,32 @@
         </h1>
     </div>
 
+    {% if not rooms %}
+    <div class="flex flex-col justify-center items-center h-full">
+        <div class="flex flex-col items-center justify-center m-10">
+            <div class="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
+                <span class="text-6xl text-gray-400 mb-4 transition-transform transform hover:scale-110">
+                    <i class="far fa-comment-dots text-8xl text-blue-500"></i>
+                </span>
+                <p class="text-gray-600 text-lg font-bold mt-4">No chats yet?</p>
+                <p class="text-gray-600 text-lg mt-4">Start the conversation! Create a chat room to begin chatting with friends.</p>
+            </div>
+        </div>
+        <a href="/create_room"
+            class="create-chat-btn w-1/6 bg-blue-500 text-white text-center px-4 py-2 rounded shadow-md hover:shadow-lg transition duration-300 mr-3">
+            <i class="fas fa-plus mr-2"></i>Create Chat
+        </a>
+    </div>
+    {% else %}
+
     <!-- wrapper  -->
     <div class="flex-1 flex h-full">
         {% include '_sidebar.html' %}
 
         {% include '_chatroom.html' %}
     </div>
+
+    {% endif %}
 </div>
 {% endblock %}
 
