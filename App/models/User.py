@@ -53,7 +53,7 @@ class User(db.Model):
             self.username,
             room_name,
             message,
-            datetime.now().strftime("%H:%M:%S"),
+            datetime.now().strftime("%H:%M"),
         )
         if new_message is None:
             return None
@@ -67,7 +67,7 @@ class User(db.Model):
             room_name,
             self.username,
             is_room_admin,
-            datetime.now().strftime("%H:%M:%S"),
+            datetime.now().strftime("%H:%M"),
         )
         db.session.add(room_member)
         db.session.commit()

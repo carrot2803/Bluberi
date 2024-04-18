@@ -46,7 +46,7 @@ def on_join(data) -> None:
         return
     room_name: str = room.name
     join_room(room_name)
-    time: str = datetime.now().strftime("%H:%M:%S")
+    time: str = datetime.now().strftime("%H:%M")
     send(
         {
             "username": current_user.username,
