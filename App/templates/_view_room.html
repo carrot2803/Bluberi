@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room</title>
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha384-hbZHM6VX3fc/Az/hN5wiUJ5wkiaAWOK66nU69pG94JlE1LLBnq5RsYsfWT3zBiAH" crossorigin="anonymous">
 
@@ -26,7 +26,7 @@
 
                 <div class="main flex-1 flex flex-col">
 
-                    <div class="hidden lg:block heading flex-2">
+                    <div class="hidden lg:block heading flex-2 ml-6">
                         <h1 class="text-3xl text-gray-700 mb-4">Chat</h1>
                     </div>
 
@@ -34,20 +34,15 @@
                     <div class="flex-1 flex h-full">
                         <div class="sidebar hidden lg:flex w-1/4 flex-2 flex-col mr-10">
                             <!-- Sidebar -->
-                            <div class="options pb-6 px-2 my-3 mb-4 flex flex-wrap">
-                                <a href="/create_room" class=" create-chat-btn bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:shadow-lg transition duration-300 mr-3">
-                                    Create Chat
-                                    <!-- <i class="fas fa-plus"></i> -->
-                                </a>
-                                <a href="/add_members"
-                                    class="add-member-btn bg-green-500 text-white px-4 py-2 rounded ml-2 shadow-md hover:shadow-lg transition duration-300">
-                                    Add Member
-                                    <!-- <i class="fas fa-user-plus"></i> -->
+                            <div class="options pb-6 px-2  mx-4 flex flex-wrap">
+                                <a href="/create_room"
+                                    class="create-chat-btn bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:shadow-lg transition duration-300 mr-3">
+                                    <i class="fas fa-plus mr-2"></i>Create Chat
                                 </a>
                             </div>
 
-
-                            <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5" style="scrollbar-width: thin;">
+                            <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5"
+                                style="scrollbar-width: thin;">
                                 <!-- Room list -->
                                 {% for room in rooms %}
                                 {% if room %}
@@ -58,7 +53,8 @@
                                             <img class="rounded-full mx-auto"
                                                 src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000"
                                                 alt="chat-user" />
-                                            <span class="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+                                            <span
+                                                class="absolute w-4 h-4 bg-green-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
                                         </div>
                                     </div>
                                     <div class="flex-1 px-2">
@@ -115,7 +111,7 @@
 
 
                         <!-- Chat area -->
-                        <div class="chat-area flex-1 flex flex-col w-3/4" style="height: 90vh;">
+                        <div class="chat-area flex-1 flex flex-col w-3/4 mr-2" style="height: 91vh;">
                             <div class="flex-3">
                                 <h2
                                     class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
@@ -128,25 +124,34 @@
                                         <a href="{{ url_for('index.update_room_names', room_name=room.name) }}">
                                             <i class="fas fa-edit" style="font-size:20px;color:#1E90FF;"></i>
                                         </a>
+                                        <a href="/add_members">
+                                            <i class="fas fa-user-plus text-green-500" style="font-size:20px;"></i>
+                                        </a>
                                     </div>
                                 </h2>
 
                             </div>
                             <div class="messages flex-1 overflow-y-scroll  px-10" style="scrollbar-width: thin;">
                                 {% for message in messages %}
-                                <div class="message grid place-item-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr;">
+                                <div class="message grid place-item-start gap-x-3 pt-1 pb-1"
+                                    style="grid-template-columns: auto 1fr;">
                                     <div class="col-start-1 row-span-2 w-10 relative inline-flex self-end">
-                                        <div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;">
-                                            <img alt="chat-user" src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000" style="object-fit: cover;"/>
-                                            <span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+                                        <div class="w-10 rounded-full block"
+                                            style="aspect-ratio: 1/1; overflow: hidden;">
+                                            <img alt="chat-user"
+                                                src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000"
+                                                style="object-fit: cover;" />
+                                            <span
+                                                class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-start-2 row-start-1 text-xs leading-5">
                                         {{message.sender_name}}
                                     </div>
-                                    <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300" style="width: fit-content; border-end-start-radius: 0px;">
-                                    {{message.message}}
+                                    <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300"
+                                        style="width: fit-content; border-end-start-radius: 0px;">
+                                        {{message.message}}
                                     </div>
                                     <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
                                         sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>

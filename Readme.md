@@ -3,15 +3,17 @@
 ## Notes
 - Components marked with `_` denote those that are considered as components, while others are pages.
 
+## Front End
+- make User experience and UI cleaner
+
+
 ## BackEnd
 
-- make User experience and UI cleaner
+- run test on chat message persistance
 - add routes renaming
-- consider invite links???
-- Big one save message to history so it cant be viewed later(bug i think?)
 - Production Builds
-- maybe rewrite update query
 
+~~- maybe rewrite update query~~
 - ~~Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.~~
 - ~~perfect models~~
 - ~~clean up controllers~~
