@@ -1,0 +1,49 @@
+{% block content %}
+
+<div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md">
+        <h2 class="text-lg font-semibold mb-4">Update Room Name</h2>
+        <input type="text" id="newRoomName" class="w-full block outline-none py-2 px-4 bg-gray-100 mb-4"
+            placeholder="Enter new room name...">
+        <div class="flex justify-end">
+            <button id="updateRoom"
+                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Update</button>
+            <button id="cancelUpdate"
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const updateButton = document.querySelector('.fa-edit');
+        const updateModal = document.getElementById('updateModal');
+        const updateRoomButton = document.getElementById('updateRoom');
+        const cancelUpdateButton = document.getElementById('cancelUpdate');
+
+        updateButton.addEventListener('click', () => updateModal.classList.remove('hidden'));
+        cancelUpdateButton.addEventListener('click', () => updateModal.classList.add('hidden'));
+
+        updateRoomButton.addEventListener('click', () => {
+            const newRoomName = document.getElementById('newRoomName').value;
+            fetch(window.location.pathname, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ new_room_name: newRoomName })
+            })
+                .then(response => {
+                    if (response.ok)
+                        window.location.href = "/chat/" + newRoomName;
+                    else
+                        alert("Error updating room name");
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+
+{% endblock %}
