@@ -40,7 +40,7 @@
                 {{message.message}}
             </div>
             <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
-                sent at: <time class="text-xs opacity-50">{{message.created_at[:-3]}}</time>
+                sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>
             </div>
         </div>
         {% else %}
@@ -62,7 +62,7 @@
                 {{message.message}}
             </div>
             <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
-                sent at: <time class="text-xs opacity-50">{{message.created_at[:-3]}}</time>
+                sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>
             </div>
         </div>
         {% endif %}

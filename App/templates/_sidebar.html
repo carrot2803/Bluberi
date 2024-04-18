@@ -43,7 +43,7 @@
                 <div>
                     <small class="text-gray-500">
                         {% if room.get_last_message() is not none %}
-                        {{ room.get_last_message().created_at[:-3] }}
+                        {{ room.get_last_message().created_at}}
                         {% endif %}
                     </small>
                 </div>
