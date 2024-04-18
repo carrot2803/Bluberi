@@ -47,37 +47,26 @@ def create_chat(room_name):
     return jsonify("Room created"), 200
 
 
-@index.route("/add_members", methods=["POST", "GET"])
+@index.route("/chat/<string:room_name>/add_member", methods=["POST"])
 @jwt_required()
-def add_members():
-    if request.method == "POST":
-        room_name = request.form["room_name"]
-        usernames1 = request.form["username"]
-        room_admin = RoomMember.query.filter_by(
-            member_name=current_user.username, room_name=room_name, is_room_admin=True
-        ).first()
-        room = Room.query.filter_by(name=room_name).first()
-        if room and room_admin:
-            if User.query.filter_by(username=usernames1).first():
-                room_member = RoomMember.query.filter_by(
-                    member_name=usernames1, room_name=room_name
-                ).first()
-                if room_member is None:
-                    if usernames1 == current_user.username:
-                        current_user.add_room_member(usernames1, room_name, True)
-                        return redirect(url_for("index.chat"))
-                    else:
-                        current_user.add_room_member(usernames1, room_name, False)
-                        return redirect(url_for("index.chat"))
-                else:
-                    flash(f"{usernames1} already in a room", "warning")
-            else:
-                flash(
-                    f"{usernames1} is not a registered member..Register first", "danger"
-                )
-        else:
-            flash("failed to add members", "danger")
-    return render_template("add_room_member.html")
+def add_member(room_name):
+    data = request.get_json()
+    username = data.get("username")
+    is_room_admin = RoomMember.query.filter_by(
+        member_name=current_user.username, room_name=room_name, is_room_admin=True
+    ).first()
+    room = Room.query.filter_by(name=room_name).first()
+    if not room:
+        return jsonify("Room not found"), 400
+    if not is_room_admin:
+        return jsonify("You are not an admin of this group"), 400
+    is_member = RoomMember.query.filter_by(
+        member_name=username, room_name=room_name
+    ).first()
+    if is_member:
+        return jsonify("User already in room"), 400
+    current_user.add_room_member(username, room_name, False)
+    return jsonify("User added to room"), 200
 
 
 @index.route("/chat", methods=["GET"])
@@ -85,6 +74,11 @@ def add_members():
 def chat():
     rooms = RoomMember.query.filter_by(member_name=current_user.username).all()
     return render_template("chat.html", rooms=rooms, current_user=current_user)
+
+
+@index.route("/get_usernames", methods=["GET"])
+def get_usernames():
+    return jsonify(message=[user.username for user in User.query.all()]), 200
 
 
 @index.route("/chat/<string:room_name>", methods=["GET"])

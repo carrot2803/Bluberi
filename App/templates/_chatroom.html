@@ -13,7 +13,7 @@
                 <a>
                     <i class="fas fa-edit" style="font-size:20px;color:#1E90FF;"></i>
                 </a>
-                <a href="/add_members">
+                <a>
                     <i class="fas fa-user-plus text-green-500" style="font-size:20px;"></i>
                 </a>
             </div>
@@ -108,6 +108,71 @@
     {% endif %}
 </div>
 
+<div id="addMemberModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md">
+        <h2 class="text-lg font-semibold mb-4">Add Members</h2>
+        <select id="userDropdown" class="w-full block outline-none py-2 px-4 bg-gray-100 mb-4">
+            <!-- Dropdown options will be populated dynamically -->
+        </select>
+        <div class="flex justify-end">
+            <button id="addMembers" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Add</button>
+            <button id="cancelAdd" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const addMemberButton = document.querySelector('.fa-user-plus');
+        const addMemberModal = document.getElementById('addMemberModal');
+        const userDropdown = document.getElementById('userDropdown');
+        const addMembersButton = document.getElementById('addMembers');
+        const cancelAddButton = document.getElementById('cancelAdd');
+
+        // Function to fetch user names and populate dropdown
+        const populateUserDropdown = () => {
+            fetch('/get_usernames')
+                .then(response => response.json())
+                .then(data => {
+                    userDropdown.innerHTML = '';
+                    data.message.forEach(username => {
+                        const option = document.createElement('option');
+                        option.textContent = username;
+                        userDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        };
+
+        addMemberButton.addEventListener('click', () => {
+            populateUserDropdown();
+            addMemberModal.classList.remove('hidden');
+        });
+
+        cancelAddButton.addEventListener('click', () => addMemberModal.classList.add('hidden'));
+
+        addMembersButton.addEventListener('click', () => {
+            const selectedUsername = userDropdown.value;
+
+            fetch(window.location.pathname + "/add_member", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: selectedUsername })
+            })
+                .then(response => {
+                    if (response.ok)
+                        window.location.reload();
+                    else
+                        response.json().then(data => alert(data));
+                })
+                .catch(error => console.error('Error:', error));
+            addMemberModal.classList.add('hidden');
+        });
+    });
+</script>
 
 
 
