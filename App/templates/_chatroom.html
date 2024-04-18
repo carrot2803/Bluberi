@@ -1,5 +1,5 @@
 {% block content %}
-<div class="chat-area flex-1 flex flex-col w-3/4 mr-2" style="height: 91vh;">
+<div class="chat-area flex-1 flex flex-col w-3/4 mx-10" style="height: 91vh;">
     {% if room %}
     <div class="flex-3">
         <h2 class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
@@ -7,15 +7,15 @@
 
             <div class="icons-container flex mr-5 gap-3">
                 <!-- dont forget to fix hover -->
-                <a>
-                    <i class="fas fa-trash text-red-500" style="font-size:20px"></i>
-                </a>
-                <a>
-                    <i class="fas fa-edit" style="font-size:20px;color:#1E90FF;"></i>
-                </a>
-                <a>
-                    <i class="fas fa-user-plus text-green-500" style="font-size:20px;"></i>
-                </a>
+                <button >
+                    <i class="fas fa-trash text-red-500 hover:text-red-600"></i>
+                </button>
+                <button>
+                    <i class="fas fa-edit text-blue-400 hover:text-blue-600"></i>
+                </button>
+                <button>
+                    <i class="fas fa-user-plus text-green-500 hover:text-green-600"></i>
+                </button>
             </div>
         </h2>
 
@@ -86,7 +86,7 @@
                     </span>
                 </div>
                 <div class="flex-1">
-                    <button class="bg-blue-500 w-10 h-10 rounded-full inline-block" id="send1">
+                    <button class="bg-blue-500 hover:bg-blue-600 w-10 h-10 rounded-full inline-block" id="send1">
                         <span class="inline-block align-text-bottom">
                             <i class="fa fa-paper-plane text-white text-md center"></i>
                         </span>
