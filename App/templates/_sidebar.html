@@ -10,7 +10,6 @@
 
     <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5">
         <!-- Room list -->
-        {% if rooms %}
         {% for room in rooms %}
         <a href="/chat/{{ room.room_name }}"
             class="w-full entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md">
@@ -57,16 +56,6 @@
             </div>
         </a>
         {% endfor %}
-        {% else %}
-        <!-- Blue and white card for joining a room -->
-        <div class="w-3/4 bg-blue-500 mb-4 rounded p-4 flex shadow-md">
-            <div class="flex-1 text-center">
-                <div class="text-white">
-                    <strong>You</strong> have not joined any rooms... Click above to create a room.
-                </div>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </div>
 
