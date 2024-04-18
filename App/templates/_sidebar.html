@@ -2,12 +2,11 @@
 <div class="sidebar hidden lg:flex w-1/4 flex-2 flex-col mr-10">
     <!-- Sidebar -->
     <div class="options pb-6 px-2  mx-4 flex flex-wrap">
-        <a href="/create_room"
+        <a
             class="create-chat-btn bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:shadow-lg transition duration-300 mr-3">
             <i class="fas fa-plus mr-2"></i>Create Chat
         </a>
     </div>
-
 
     <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5">
         <!-- Room list -->
@@ -30,8 +29,7 @@
                 <div class="truncate xl:w-32 lg:w-20">
                     <small class="text-gray-800">
                         {% if room.get_last_message() %}
-                        {{ room.get_last_message().sender_name }}: {{
-                        room.get_last_message().message }}
+                        {{ room.get_last_message().sender_name }}: {{ room.get_last_message().message }}
                         {% else %}
                         No messages yet
                         {% endif %}
@@ -39,7 +37,6 @@
                 </div>
             </div>
             <div class="flex-2 text-right">
-                <!-- Display number of new messages here -->
                 <div>
                     <small class="text-gray-500">
                         {% if room.get_last_message() is not none %}
@@ -47,7 +44,6 @@
                         {% endif %}
                     </small>
                 </div>
-
                 <div>
                     <small
                         class="text-xs bg-red-500 text-white rounded-full h-6 w-6 leading-6 text-center inline-block">
@@ -66,14 +62,55 @@
         <div class="w-3/4 bg-blue-500 mb-4 rounded p-4 flex shadow-md">
             <div class="flex-1 text-center">
                 <div class="text-white">
-                    <strong>You</strong> have not joined any rooms... Click above to create a
-                    room.
+                    <strong>You</strong> have not joined any rooms... Click above to create a room.
                 </div>
             </div>
         </div>
         {% endif %}
     </div>
-
 </div>
+
+<div id="createChatModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md">
+        <h2 class="text-lg font-semibold mb-4">Create New Chat</h2>
+        <input type="text" id="newChatName" class="w-full block outline-none py-2 px-4 bg-gray-100 mb-4"
+            placeholder="Enter new chat name...">
+        <div class="flex justify-end">
+            <button id="createChat"
+                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Create</button>
+            <button id="cancelCreate"
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const createChatButton = document.querySelector('.create-chat-btn');
+        const createChatModal = document.getElementById('createChatModal');
+        const createChatButtonSubmit = document.getElementById('createChat');
+        const cancelCreateButton = document.getElementById('cancelCreate');
+
+        createChatButton.addEventListener('click', () => createChatModal.classList.remove('hidden'));
+        cancelCreateButton.addEventListener('click', () => createChatModal.classList.add('hidden'));
+
+        createChatButtonSubmit.addEventListener('click', () => {
+            const newChatName = document.getElementById('newChatName').value;
+            fetch(`/chat/${newChatName}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (response.ok)
+                        window.location.reload();
+                    else
+                        response.json().then(data => alert(data))
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
 
 {% endblock %}

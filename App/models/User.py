@@ -21,6 +21,7 @@ class User(db.Model):
         new_room = Room(room_name, self.username, datetime.now())
         if new_room is None:
             return False
+        self.add_room_member(self.username, room_name, True)
         db.session.add(new_room)
         db.session.commit()
         return True

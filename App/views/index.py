@@ -35,21 +35,16 @@ def update_room_view(room_name):
     return render_template("_edit_room.html", room=room, member=member)
 
 
-@index.route("/create_room", methods=["GET", "POST"])
+@index.route("/chat/<string:room_name>", methods=["POST"])
 @jwt_required()
-def create_room():
-    if request.method == "POST":
-        room_name = request.form["room_name"]
-        room = Room.query.filter_by(name=room_name).first()
-        if room:
-            flash("Room already exist", "danger")
-        else:
-            room_created = current_user.create_room(room_name)
-            current_user.add_room_member(current_user.username, room_name, True)
-            if room_created:
-                return redirect(url_for("index.add_members"))
-
-    return render_template("_create_room.html")
+def create_chat(room_name):
+    room_exist = Room.query.filter_by(name=room_name).first()
+    if room_exist:
+        return jsonify("Room already exist"), 400
+    room_created = current_user.create_room(room_name)
+    if room_created is False:
+        return jsonify("Failed to create room"), 400
+    return jsonify("Room created"), 200
 
 
 @index.route("/add_members", methods=["POST", "GET"])
@@ -121,7 +116,7 @@ def chat_room(room_name):
         return render_template("error.html")
 
 
-@index.route("/update_room_names/<room_name>/", methods=["PUT"])
+@index.route("/chat/<room_name>", methods=["PUT"])
 @jwt_required()
 def update_room_names(room_name):
     rooms = Room.query.filter_by(name=room_name).first()
