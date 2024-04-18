@@ -59,47 +59,6 @@
     </div>
 </div>
 
-<div id="createChatModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
-    <div class="bg-white p-8 rounded-lg shadow-md max-w-md">
-        <h2 class="text-lg font-semibold mb-4">Create New Chat</h2>
-        <input type="text" id="newChatName" class="w-full block outline-none py-2 px-4 bg-gray-100 mb-4"
-            placeholder="Enter new chat name...">
-        <div class="flex justify-end">
-            <button id="createChat"
-                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Create</button>
-            <button id="cancelCreate"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
-        </div>
-    </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const createChatButton = document.querySelector('.create-chat-btn');
-        const createChatModal = document.getElementById('createChatModal');
-        const createChatButtonSubmit = document.getElementById('createChat');
-        const cancelCreateButton = document.getElementById('cancelCreate');
-
-        createChatButton.addEventListener('click', () => createChatModal.classList.remove('hidden'));
-        cancelCreateButton.addEventListener('click', () => createChatModal.classList.add('hidden'));
-
-        createChatButtonSubmit.addEventListener('click', () => {
-            const newChatName = document.getElementById('newChatName').value;
-            fetch(`/chat/${newChatName}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then(response => {
-                    if (response.ok)
-                        window.location.reload();
-                    else
-                        response.json().then(data => alert(data))
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    });
-</script>
 
 {% endblock %}
