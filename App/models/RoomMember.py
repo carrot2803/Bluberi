@@ -26,4 +26,4 @@ class RoomMember(db.Model):
         return last_message
 
     def get_num_messages(self) -> int:
-        return ChatMessage.query.filter_by(room_name=self.room_name).count()
+        return ChatMessage.query.filter_by(room_name=self.room_name).count()    

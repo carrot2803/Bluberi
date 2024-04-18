@@ -1,4 +1,5 @@
 from App.database import db
+from App.models import User
 
 
 class Messages(db.Model):
@@ -18,3 +19,6 @@ class ChatMessage(db.Model):
         self.room_name: str = room_name
         self.message: str = message
         self.created_at: str = created_at
+
+    def get_picture_id(self) -> int:
+        return sum(ord(c) for c in self.sender_name)
