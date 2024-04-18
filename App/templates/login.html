@@ -1,75 +1,65 @@
-{% extends 'base.html' %}
-
-
-{% include '_navbar.html'%}
+{% extends 'auth.html' %}
 
 {% block content %}
-<div class="container">
+<div class="relative min-h-screen flex">
+  <div
+    class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
+    <div
+      class="sm:w-1/2 xl:w-3/5 h-full hidden md:flex flex-auto items-center justify-center p-10 overflow-hidden bg-blue-900 text-white bg-no-repeat bg-cover relative">
+      <div class="absolute bg-gradient-to-b from-blue-600 to-blue-100 opacity-75 inset-0 z-0"></div>
+      <div class="w-full max-w-md z-10">
+        <div class="sm:text-4xl xl:text-5xl font-bold leading-tight mb-6">Welcome Back!</div>
+        <div class="sm:text-sm xl:text-md text-gray-200 font-normal">Sign In To Chat With Friends</div>
+      </div>
+      <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <div
+      class="md:flex md:items-center md:justify-center w-full sm:w-auto md:h-full xl:w-2/5 p-8 md:p-10 lg:p-14 sm:rounded-lg md:rounded-none bg-white">
+      <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+          <h2 class="mt-6 text-3xl font-bold text-gray-900">Welcome Back!</h2>
+          <p class="mt-2 text-sm text-gray-500">Sign In To Chat With Friends</p>
+        </div>
 
-  <form action="{{url_for('auth.login')}}" method="POST" class="myform">
-    {% include '_message.html'%}
-    <div class="form-group">
-      <label for="">Username</label>
-      <input type="text" name="username" id="username" class="form-control" placeholder="Enter the Username">
+        <form class="mt-8 space-y-6" action="/login" method="POST">
+          <input type="hidden" name="remember" value="true">
+          <div class="relative">
+            <label class="ml-3 text-sm font-bold text-gray-700 tracking-wide">Username</label>
+            <input
+              class="w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-blue-500"
+              type="text" name="username" placeholder="Username">
+          </div>
+          <div class="mt-8 content-center">
+            <label class="ml-3 text-sm font-bold text-gray-700 tracking-wide">Password</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-blue-500"
+              name="password" type="password" placeholder="Enter your password">
+          </div>
+          <div>
+            <button type="submit"
+              class="w-full flex justify-center bg-gradient-to-r from-blue-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-blue-600 text-gray-100 p-4 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">Log
+              In</button>
+          </div>
+          <p class="flex flex-col items-center justify-center mt-10 text-center text-md text-gray-500">
+            <span>Don't have an account yet?</span>
+            <a class="text-blue-400 hover:text-blue-500 no-underline hover:underline cursor-pointer transition ease-in duration-300"
+              href="/signup">Sign Up</a>
+          </p>
+        </form>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="">Password</label>
-      <input type="text" name="password" id="password" class="form-control" placeholder="Enter the Password">
-    </div>
-    <input type="submit" value="login" class="btn btn-outline-primary login">
-    <p>Dont have an account? click <a href="/signup">here</a> to Register </p>
-  </form>
+  </div>
 </div>
-
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-  body {
-    background-color: #08408b;
-  }
-
-  .container {
-    max-width: 500px;
-    margin: 0 auto;
-    margin-top: 2rem;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
-  }
-
-  p {
-    text-align: center;
-    padding-top: 1.5rem;
-  }
-
-  * {
-    font-family: 'Poppins', 'Segoe UI';
-    font-weight: 500;
-  }
-
-  .container .btn {
-    color: #08408b;
-    border: none;
-    padding: 10px 45%;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .form-group label {
-    font-weight: bold;
-  }
-
-  .container .btn:hover {
-    background-color: #08408b;
-    color: white;
-  }
-
-  .form-control {
-    border-radius: 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.7);
-  }
-</style>
 
 {% endblock %}
