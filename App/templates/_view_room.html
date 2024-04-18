@@ -15,6 +15,23 @@
             max-height: calc(100vh - 100px);
             overflow-y: auto;
         }
+
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3B82F6;
+        }
     </style>
 </head>
 
@@ -41,8 +58,8 @@
                                 </a>
                             </div>
 
-                            <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5"
-                                style="scrollbar-width: thin;">
+
+                            <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5">
                                 <!-- Room list -->
                                 {% for room in rooms %}
                                 {% if room %}
@@ -97,8 +114,7 @@
                                 {% else %}
                                 <div role="alert">
                                     <strong>{{ current_user.username }}</strong> has not joined any room...click <a
-                                        href="/create_room">here</a> to
-                                    create a room
+                                        href="/create_room">here</a> to create a room
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -106,6 +122,7 @@
                                 {% endif %}
                                 {% endfor %}
                             </div>
+
                         </div>
 
 
@@ -131,7 +148,7 @@
                                 </h2>
 
                             </div>
-                            <div class="messages flex-1 overflow-y-scroll  px-10" style="scrollbar-width: thin;">
+                            <div class="messages flex-1 overflow-y-scroll  px-10">
                                 {% for message in messages %}
                                 <div class="message grid place-item-start gap-x-3 pt-1 pb-1"
                                     style="grid-template-columns: auto 1fr;">

@@ -103,7 +103,7 @@ def get_rooms():
     return render_template("_get_rooms.html")
 
 
-@index.route("/view_room/<room_name>/", methods=["GET"])
+@index.route("/view_room/<string:room_name>/", methods=["GET"])
 @jwt_required()
 def view_room(room_name):
     room = Room.query.filter_by(name=room_name).first()
