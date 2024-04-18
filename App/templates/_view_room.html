@@ -69,8 +69,8 @@
 
                             <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5">
                                 <!-- Room list -->
+                                {% if rooms %}
                                 {% for room in rooms %}
-                                {% if room %}
                                 <a href="/view_room/{{ room.room_name }}"
                                     class="w-full entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md">
                                     <div class="flex-2">
@@ -119,16 +119,18 @@
                                         </div>
                                     </div>
                                 </a>
+                                {% endfor %}
                                 {% else %}
-                                <div role="alert">
-                                    <strong>{{ current_user.username }}</strong> has not joined any room...click <a
-                                        href="/create_room">here</a> to create a room
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                <!-- Blue and white card for joining a room -->
+                                <div class="w-3/4 bg-blue-500 mb-4 rounded p-4 flex shadow-md">
+                                    <div class="flex-1 text-center">
+                                        <div class="text-white">
+                                            <strong>You</strong> have not joined any rooms... Click above to create a
+                                            room.
+                                        </div>
+                                    </div>
                                 </div>
                                 {% endif %}
-                                {% endfor %}
                             </div>
 
                         </div>
@@ -137,6 +139,7 @@
 
                         <!-- Chat area -->
                         <div class="chat-area flex-1 flex flex-col w-3/4 mr-2" style="height: 91vh;">
+                            {% if room %}
                             <div class="flex-3">
                                 <h2
                                     class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
@@ -237,6 +240,18 @@
                                     </div>
                                 </div>
                             </div>
+                            {% else %}
+                            <div class="flex flex-col items-center justify-center h-full">
+                                <div class="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
+                                    <span
+                                        class="text-6xl text-gray-400 mb-4 transition-transform transform hover:scale-110">
+                                        <i class="far fa-comment-dots text-6xl text-gray-400"></i>
+                                    </span>
+                                    <p class="text-gray-600 text-lg mt-4">You do not have a chat selected. Please create
+                                        or select one.</p>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
 
                     </div>
@@ -249,6 +264,7 @@
     <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
         integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
         crossorigin="anonymous"></script>
+    {% if room %}
     <script>
         $(document).ready(function () {
             var socket = io.connect('http://127.0.0.1:5000')
@@ -281,6 +297,7 @@
             });
         });
     </script>
+    {% endif %}
 
 </body>
 

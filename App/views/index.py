@@ -103,6 +103,13 @@ def get_rooms():
     return render_template("_get_rooms.html")
 
 
+@index.route("/view_room", methods=["GET"])
+@jwt_required()
+def view_room1():
+    rooms = RoomMember.query.filter_by(member_name=current_user.username).all()
+    return render_template("_view_room.html", rooms=rooms, current_user=current_user)
+
+
 @index.route("/view_room/<string:room_name>", methods=["GET"])
 @jwt_required()
 def view_room(room_name):
