@@ -107,19 +107,20 @@
     </div>
     {% endif %}
 </div>
-
 <div id="addMemberModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
-    <div class="bg-white p-8 rounded-lg shadow-md max-w-md">
+    <div class="bg-white p-4 md:p-8 rounded-lg shadow-md max-w-md w-full md:w-3/4">
         <h2 class="text-lg font-semibold mb-4">Add Members</h2>
-        <select id="userDropdown" class="w-full block outline-none py-2 px-4 bg-gray-100 mb-4">
-            <!-- Dropdown options will be populated dynamically -->
+        <select id="userDropdown"
+            class="w-full block outline-none py-2 px-4 bg-gray-100 mb-4 border border-gray-300 rounded-md">
         </select>
-        <div class="flex justify-end">
-            <button id="addMembers" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Add</button>
+        <div class="flex flex-col md:flex-row md:justify-end">
+            <button id="addMembers"
+                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mb-2 md:mb-0 md:mr-2">Add</button>
             <button id="cancelAdd" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
         </div>
     </div>
 </div>
+
 
 <!-- JavaScript -->
 <script>

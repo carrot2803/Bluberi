@@ -22,19 +22,6 @@ def home() -> str:
     return render_template("start.html")
 
 
-@index.route("/delete_room", methods=["GET"])
-@jwt_required()
-def delete():
-    return render_template("delete.html")
-
-
-@index.route("/update_room_names/<room_name>/", methods=["GET"])  # add type
-def update_room_view(room_name):
-    room: Room | None = Room.query.filter_by(name=room_name).first()
-    member: RoomMember = room.get_room_members()
-    return render_template("_edit_room.html", room=room, member=member)
-
-
 @index.route("/chat/<string:room_name>", methods=["POST"])
 @jwt_required()
 def create_chat(room_name):
