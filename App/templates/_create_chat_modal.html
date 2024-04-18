@@ -8,7 +8,7 @@
             <button id="createChat"
                 class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Create</button>
             <button id="cancelCreate"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 hover:text-white py-2 px-4 rounded">Cancel</button>
         </div>
     </div>
 </div>
@@ -23,12 +23,15 @@
         const createChatModal = document.getElementById('createChatModal');
         const createChatButtonSubmit = document.getElementById('createChat');
         const cancelCreateButton = document.getElementById('cancelCreate');
+        const newChatNameInput = document.getElementById('newChatName');
 
         createChatButton.addEventListener('click', () => createChatModal.classList.remove('hidden'));
         cancelCreateButton.addEventListener('click', () => createChatModal.classList.add('hidden'));
+        createChatButtonSubmit.addEventListener('click', () => createChat());
+        newChatNameInput.addEventListener('keydown', (event) => (event.key === 'Enter') ? createChat() : null);
 
-        createChatButtonSubmit.addEventListener('click', () => {
-            const newChatName = document.getElementById('newChatName').value;
+        function createChat() {
+            const newChatName = newChatNameInput.value;
             fetch(`/chat/${newChatName}`, {
                 method: 'POST',
                 headers: {
@@ -42,7 +45,7 @@
                         response.json().then(data => alert(data))
                 })
                 .catch(error => console.error('Error:', error));
-        });
+        }
     });
 </script>
 {% endblock %}

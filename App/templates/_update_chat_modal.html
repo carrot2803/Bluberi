@@ -9,7 +9,7 @@
             <button id="updateRoom"
                 class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">Update</button>
             <button id="cancelUpdate"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
+                class="bg-gray-300 hover:bg-gray-400 hover:text-white text-gray-800 py-2 px-4 rounded">Cancel</button>
         </div>
     </div>
 </div>
@@ -22,12 +22,16 @@
         const updateModal = document.getElementById('updateModal');
         const updateRoomButton = document.getElementById('updateRoom');
         const cancelUpdateButton = document.getElementById('cancelUpdate');
+        const newRoomNameInput = document.getElementById('newRoomName');
 
         updateButton.addEventListener('click', () => updateModal.classList.remove('hidden'));
         cancelUpdateButton.addEventListener('click', () => updateModal.classList.add('hidden'));
+        newRoomNameInput.addEventListener('keypress', (event) => (event.key === 'Enter') ? updateRoom() : null);
+        updateRoomButton.addEventListener('click', updateRoom);
 
-        updateRoomButton.addEventListener('click', () => {
-            const newRoomName = document.getElementById('newRoomName').value;
+
+        function updateRoom() {
+            const newRoomName = newRoomNameInput.value;
             fetch(window.location.pathname, {
                 method: 'PUT',
                 headers: {
@@ -42,8 +46,9 @@
                         alert("Error updating room name");
                 })
                 .catch(error => console.error('Error:', error));
-        });
+        }
     });
+
 </script>
 
 {% endblock %}

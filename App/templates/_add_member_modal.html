@@ -8,7 +8,8 @@
         <div class="flex flex-col md:flex-row md:justify-end">
             <button id="addMembers"
                 class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mb-2 md:mb-0 md:mr-2">Add</button>
-            <button id="cancelAdd" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">Cancel</button>
+            <button id="cancelAdd"
+                class="bg-gray-300 hover:bg-gray-400 hover:text-white text-gray-800 py-2 px-4 rounded">Cancel</button>
         </div>
     </div>
 </div>
@@ -22,8 +23,8 @@
         const userDropdown = document.getElementById('userDropdown');
         const addMembersButton = document.getElementById('addMembers');
         const cancelAddButton = document.getElementById('cancelAdd');
+        const newRoomNameInput = document.getElementById('newRoomNameInput');
 
-        // Function to fetch user names and populate dropdown
         const populateUserDropdown = () => {
             fetch('/get_usernames')
                 .then(response => response.json())
@@ -38,16 +39,8 @@
                 .catch(error => console.error('Error:', error));
         };
 
-        addMemberButton.addEventListener('click', () => {
-            populateUserDropdown();
-            addMemberModal.classList.remove('hidden');
-        });
-
-        cancelAddButton.addEventListener('click', () => addMemberModal.classList.add('hidden'));
-
-        addMembersButton.addEventListener('click', () => {
-            const selectedUsername = userDropdown.value;
-
+        const addMember = () => {
+            const selectedUsername = userDropdown.value[0];
             fetch(window.location.pathname + "/add_member", {
                 method: 'POST',
                 headers: {
@@ -63,7 +56,17 @@
                 })
                 .catch(error => console.error('Error:', error));
             addMemberModal.classList.add('hidden');
+        };
+
+        addMemberButton.addEventListener('click', () => {
+            populateUserDropdown();
+            addMemberModal.classList.remove('hidden');
         });
+
+        cancelAddButton.addEventListener('click', () => addMemberModal.classList.add('hidden'));
+        addMembersButton.addEventListener('click', addMember);
+        document.addEventListener('keypress', (event) => (event.key === 'Enter') ? addMember() : null);
+
     });
 </script>
 {% endblock %}

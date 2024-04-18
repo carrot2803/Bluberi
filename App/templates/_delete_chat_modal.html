@@ -4,7 +4,8 @@
         <h2 class="text-lg font-semibold mb-4">Are you sure you want to delete?</h2>
         <div class="flex justify-end">
             <button id="deleteYes" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded mr-2">Yes</button>
-            <button id="deleteNo" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">No</button>
+            <button id="deleteNo"
+                class="bg-gray-300 hover:bg-gray-400 hover:text-white text-gray-800 py-2 px-4 rounded">No</button>
         </div>
     </div>
 </div>
@@ -20,11 +21,22 @@
 
         deleteButton.addEventListener('click', () => deleteModal.classList.remove('hidden'));
         deleteNoButton.addEventListener('click', () => deleteModal.classList.add('hidden'));
-        deleteYesButton.addEventListener('click', () => {
+        document.addEventListener('keydown', (event) =>
+            (event.key === 'Enter' && !deleteModal.classList.contains('hidden')) ?
+                handleDelete() : null);
+        deleteYesButton.addEventListener('click', handleDelete);
+
+        function handleDelete() {
             fetch(window.location.pathname, { method: 'DELETE' })
-                .then(response => response.ok ? window.location.href = "/chat" : alert("Error deleting room"))
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/chat";
+                    } else {
+                        alert("Error deleting room");
+                    }
+                })
                 .catch(error => console.error('Error:', error));
-        });
+        }
     });
 </script>
 {% endblock %}

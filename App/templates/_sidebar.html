@@ -2,10 +2,10 @@
 <div class="sidebar hidden lg:flex w-1/4 flex-2 flex-col mr-10">
     <!-- Sidebar -->
     <div class="options pb-6 px-2  mx-4 flex flex-wrap">
-        <a
-            class="create-chat-btn bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:shadow-lg transition duration-300 mr-3">
+        <button
+            class="create-chat-btn bg-blue-500 text-white px-4 py-2 rounded shadow-md cursor-pointer hover:shadow-lg hover:bg-blue-600 transition duration-300 mr-3">
             <i class="fas fa-plus mr-2"></i>Create Chat
-        </a>
+        </button>
     </div>
 
     <div class="flex-1 h-full overflow-auto overflow-x-hidden px-5">
@@ -58,7 +58,4 @@
         {% endfor %}
     </div>
 </div>
-
-
-
 {% endblock %}
