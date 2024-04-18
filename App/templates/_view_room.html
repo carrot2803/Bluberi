@@ -150,30 +150,45 @@
                             </div>
                             <div class="messages flex-1 overflow-y-scroll  px-10">
                                 {% for message in messages %}
-                                <div class="message grid place-item-start gap-x-3 pt-1 pb-1"
-                                    style="grid-template-columns: auto 1fr;">
-                                    <div class="col-start-1 row-span-2 w-10 relative inline-flex self-end">
-                                        <div class="w-10 rounded-full block"
-                                            style="aspect-ratio: 1/1; overflow: hidden;">
-                                            <img alt="chat-user"
-                                                src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000"
-                                                style="object-fit: cover;" />
-                                            <span
-                                                class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+                                {% if message.sender_name == current_user.username %}
+                                <div class="message grid place-items-end gap-x-3 pt-1 pb-1" style="grid-template-columns: 80px 1fr auto;">
+                                    <div class="col-start-3 row-span-2 w-10 relative inline-flex self-end">
+                                        <div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;">
+                                            <img alt="chat-user" src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000" style="object-fit: cover;"/>
+                                            <span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="col-start-2 row-start-1 text-xs leading-5">
                                         {{message.sender_name}}
                                     </div>
-                                    <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300"
-                                        style="width: fit-content; border-end-start-radius: 0px;">
-                                        {{message.message}}
+                                    <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-blue-500 text-white" style="width: fit-content; border-end-end-radius: 0px;">
+                                    {{message.message}}
                                     </div>
                                     <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
                                         sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>
                                     </div>
                                 </div>
+                                {% else %}
+                                <div class="message grid place-items-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr 80px;">
+                                    <div class="col-start-1 row-span-2 w-10 relative inline-flex self-end">
+                                        <div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;">
+                                            <img alt="chat-user" src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000" style="object-fit: cover;"/>
+                                            <span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-start-2 row-start-1 text-xs leading-5">
+                                        {{message.sender_name}}
+                                    </div>
+                                    <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300" style="width: fit-content; border-end-start-radius: 0px;">
+                                    {{message.message}}
+                                    </div>
+                                    <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
+                                        sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>
+                                    </div>
+                                </div>
+                                {% endif %}
                                 {% endfor %}
                             </div>
                             <div class="flex-2  pb-5">
@@ -240,7 +255,7 @@
             });
 
             socket.on('message', function (msg) {
-                $('.messages').append('<div class="message grid place-item-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr;"><div class="col-start-1 row-span-2 w-10 relative inline-flex self-end"><div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;"><img alt="chat-user" src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000" style="object-fit: cover;"/><span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span></div></div><div class="col-start-2 row-start-1 text-xs leading-5">' + msg.username + '</div><div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300" style="width: fit-content; border-end-start-radius: 0px;">' + msg.msg + '</div><div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">sent at: <time class="text-xs opacity-50"> ' + msg.time + ' </time></div></div>')
+                $('.messages').append('<div class="message grid place-items-end gap-x-3 pt-1 pb-1" style="grid-template-columns: 80px 1fr auto;"><div class="col-start-3 row-span-2 w-10 relative inline-flex self-end"><div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;"><img alt="chat-user" src="https://i.seadn.io/gae/WQ3RntKTaRKCcAXcCqk-D2H5pFqk2qrytvJNvzR9KaLCYkUXUyyWRIFwYP8bWYHWsPrdOgAdRXKDqk6bzTWt4NmyTEFv7FMcbVNXRg?auto=format&dpr=1&w=1000" style="object-fit: cover;"/><span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span></div></div><div class="col-start-2 row-start-1 text-xs leading-5">' + msg.username + '</div><div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-blue-500 text-white" style="width: fit-content; border-end-end-radius: 0px;">' + msg.msg + '</div><div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">sent at: <time class="text-xs opacity-50"> ' + msg.time + ' </time></div></div>')
                 // Scroll down animation
                 $('.messages').animate({ scrollTop: $('.messages').prop("scrollHeight") }, 500);
             });
