@@ -13,7 +13,7 @@
 - add routes renaming
 - Production Builds
 
-~~- maybe rewrite update query~~
+- ~~-maybe rewrite update query~~
 - ~~Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.~~
 - ~~perfect models~~
 - ~~clean up controllers~~
