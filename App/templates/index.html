@@ -46,7 +46,7 @@
                 src="https://cdn0.iconfinder.com/data/icons/fruity-1/100/fruit_food_colour-47-1024.png" alt="logo">
             <span class="ml-1 text-xl">Bluberi</span>
         </a>
-        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center ">
             <a class="mr-5 hover:text-blue-500" href="#about">About</a>
             <a class="mr-5 hover:text-blue-500" href="#comments">Comments</a>
         </nav>
@@ -59,8 +59,8 @@
         </button>
     </div>
 </header>
-<section class="text-gray-700 body-font bg-white w-full " id="home">
-    <div class="container bg-white mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+<section class="text-gray-700 body-font bg-white w-full" id="home">
+    <div class="container bg-white mx-auto flex px-5 py-24 md:flex-row flex-col items-center mb-24">
         <div
             class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
 
@@ -79,9 +79,9 @@
                     class="ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg">Discover</button>
             </div>
         </div>
-        <div class="lg:max-w-md lg:w-full md:w-1/2 w-4/6">
+        <div class="lg:max-w-md lg:w-full md:w-1/2 w-4/6 mr-5">
             <img class="object-cover object-center rounded" alt="hero"
-                src="https://freebieflux.com/uploads/freebies/free-download-match-go-chat-app-ui-kit.webp">
+                src="{{url_for('static', filename='landing.png')}}">
         </div>
     </div>
 </section>
