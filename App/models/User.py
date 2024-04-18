@@ -49,7 +49,11 @@ class User(db.Model):
 
     def send_message(self, room_name: str, message: str) -> ChatMessage | None:
         new_message = ChatMessage(
-            self.username, room_name, message, datetime.now().strftime("%H:%M:%S")
+            self.id,
+            self.username,
+            room_name,
+            message,
+            datetime.now().strftime("%H:%M:%S"),
         )
         if new_message is None:
             return None
