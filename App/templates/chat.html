@@ -5,6 +5,7 @@
 {% include '_sidebar.html' %}
 <!-- Chats -->
 <section class="flex flex-col flex-auto border-l border-gray-200">
+    {% if room %}
     <div class="chat-header px-6 py-4 flex flex-row flex-none justify-between items-center shadow">
         <div class="flex">
             <div class="w-12 h-12 mr-4 relative flex flex-shrink-0">
@@ -48,5 +49,36 @@
             </button>
         </div>
     </div>
+    {% else %}
+    {% if not rooms %}
+    <div class="flex flex-col items-center justify-center h-full bg-gradient-to-b from-blue-100 to-white">
+        <div class="flex flex-col items-center justify-center m-10">
+            <div class="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
+                <span class="text-6xl text-gray-400 mb-4 transition-transform transform hover:scale-110">
+                    <i class="far fa-comment-dots text-8xl text-blue-500"></i>
+                </span>
+                <p class="text-gray-600 text-lg font-bold mt-4">No chats yet?</p>
+                <p class="text-gray-600 text-lg mt-4">Start the conversation! Create a chat room to begin chatting with
+                    friends.</p>
+            </div>
+        </div>
+        <button
+            class="create-chat-btn w-1/6 bg-blue-500 text-white text-center px-4 py-2 rounded shadow-md cursor-pointer hover:shadow-lg hover:bg-blue-600 transition duration-300 mr-3">
+            <i class="fas fa-plus mr-2"></i>Create Chat
+        </button>
+    </div>
+    {% else %}
+    <div class="flex flex-col items-center justify-center h-full bg-gradient-to-b from-blue-100 to-white">
+        <div class="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
+            <span class="text-6xl text-gray-400 mb-4 transition-transform transform hover:scale-110">
+                <i class="far fa-comment-dots text-8xl text-blue-500"></i>
+            </span>
+            <p class="text-gray-600 text-lg font-bold mt-4">Start Talking !</p>
+            <p class="text-gray-600 text-lg mt-4">Select a chat and stay connected with your friends.</p>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
 </section>
 {% endblock %}
