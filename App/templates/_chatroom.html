@@ -39,11 +39,11 @@
     {% endfor %}
 </div>
 <div class="chat-footer flex items-center justify-center mb-2">
-    <div class="flex items-center space-x-4">
-        <div class="relative">
+    <div class="flex items-center space-x-4 w-full max-w-lg">
+        <div class="relative flex-1">
             <label>
                 <input id="txt2"
-                    class="rounded-full py-2 px-24 w-full border border-gray-200 focus:border-blue-500 bg-white focus:bg-blue-50 focus:outline-none text-gray-800 focus:shadow-md transition duration-300 ease-in"
+                    class="rounded-full py-2 px-4 w-full border border-gray-200 focus:border-blue-500 bg-white focus:bg-blue-50 focus:outline-none text-gray-800 focus:shadow-md transition duration-300 ease-in"
                     type="text" placeholder="Enter message" />
             </label>
         </div>
@@ -53,6 +53,7 @@
         </button>
     </div>
 </div>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
