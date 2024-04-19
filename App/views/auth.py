@@ -47,9 +47,12 @@ def sign_up() -> Response | str:
     password: str | None = data.get("password")
     if not username or not password or not email:
         return render_template("signup.html", error="No data provided")
-    user_exist: User | None = User.query.filter_by(username=username).first()
-    if user_exist:
-        return render_template("signup.html", error="Username Already Exist")
+    
+    username_exist: User | None = User.query.filter_by(username=username).first()
+    email_exist: User | None = User.query.filter_by(email=email).first()
+    if username_exist or email_exist:
+        return render_template("signup.html", error="Username/Email Already Exist")
+        
     user = User(username, email, password)
     db.session.add(user)
     db.session.commit()
