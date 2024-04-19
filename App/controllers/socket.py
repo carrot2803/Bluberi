@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from flask_jwt_extended import current_user, jwt_required
 from flask_socketio import SocketIO, send, join_room
 from App.models import Room
@@ -33,7 +33,7 @@ def on_join(data) -> None:
         return
     room_name: str = room.name
     join_room(room_name)
-    time: str = datetime.now().strftime("%H:%M")  # type: ignore
+    time: str = datetime.now().strftime("%H:%M") 
     send(
         {
             "username": current_user.username,
