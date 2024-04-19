@@ -33,7 +33,7 @@ def login() -> Response:
         error = "Invalid Credintials"
         response: Response = render_template("login.html", error=error)
     else:
-        # flash("Login was successful", "success")
+        flash("Login was successful", "success")
         response: Response = redirect(url_for("chat.chat_page"))
         set_access_cookies(response, token)  # type: ignore
     return response
@@ -52,8 +52,8 @@ def sign_up() -> Response:
         token: str = create_access_token(identity=user)
         set_access_cookies(response, token)  # type: ignore
     except IntegrityError:
-        flash("Username already exist", "danger")
-        response = redirect(url_for("auth.sign_up"))
+        error = "Username Already Exist"
+        response: Response = render_template("signup.html", error=error)
     return response
 
 
