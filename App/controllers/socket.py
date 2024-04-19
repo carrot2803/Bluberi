@@ -38,6 +38,7 @@ def on_join(data) -> None:
         {
             "username": current_user.username,
             "msg": "has came to online",
+            "sender_id": current_user.id,
             "time": time,
         },  # type: ignore
         room=room_name,
