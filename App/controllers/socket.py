@@ -8,33 +8,20 @@ socket = SocketIO(cors_allowed_origins="*")
 
 @socket.on("incoming-msg")
 @jwt_required()
-def on_message(data):
+def on_message(data) -> None:
     room_name = data.get("room")
-    rooms = Room.query.filter_by(name=room_name).first()
-    if rooms:
-        users_rooms = rooms.get_room_members()
-        if users_rooms:
-            for members in users_rooms:
-                msg = data["msg"]
-                if members.member_name == current_user.username:
-                    room = rooms.name
-                    message = current_user.send_message(room, msg)
-                    if message:
-                        print("message saved")
-                        print(message.created_at)
-                        send(
-                            {
-                                "username": current_user.username,
-                                "msg": msg,
-                                "time": message.created_at,
-                                "sender_id": current_user.id,
-                            },  # type: ignore
-                            room=room,
-                        )
-                    else:
-                        print("Something went wrong")
-    else:
-        return "message not sent"
+    room: Room | None = Room.query.filter_by(name=room_name).first()
+    if not room:
+        return
+    users_rooms = room.get_room_members()
+    if not users_rooms:
+        return
+    for members in users_rooms:
+        msg = data["msg"]
+        if members.member_name == current_user.username:
+            message = current_user.send_message(room.name, msg)
+            if message:
+                send({"username": current_user.username, "msg": msg, "time": message.created_at, "sender_id": current_user.id}, room=room.name)  # type: ignore
 
 
 @socket.on("join")
