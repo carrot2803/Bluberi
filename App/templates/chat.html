@@ -1,97 +1,92 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Chat{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png"
+        href="https://cdn0.iconfinder.com/data/icons/fruity-1/100/fruit_food_colour-47-1024.png">
+</head>
 
-{% block content %}
-<!-- Maybe make bg white -->
-<!-- <div class="main flex-1 flex flex-col "> -->
-<div class="main w-screen flex-1 flex flex-col bg-gradient-to-b from-white to-blue-100">
-    <div class="hidden lg:block heading flex-2 ml-6 my-3 mb-4 ">
-        <h1 class="text-lg text-gray-700">
-            <a href="/logout" class="flex items-center text-gray-700 hover:text-gray-900">
-                <i class="fas fa-sign-out-alt mr-2"></i>
-                Logout
-            </a>
-        </h1>
-    </div>
-
-    {% if not rooms %}
-    <div class="flex flex-col justify-center items-center h-full">
-        <div class="flex flex-col items-center justify-center m-10">
-            <div class="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
-                <span class="text-6xl text-gray-400 mb-4 transition-transform transform hover:scale-110">
-                    <i class="far fa-comment-dots text-8xl text-blue-500"></i>
-                </span>
-                <p class="text-gray-600 text-lg font-bold mt-4">No chats yet?</p>
-                <p class="text-gray-600 text-lg mt-4">Start the conversation! Create a chat room to begin chatting with
-                    friends.</p>
-            </div>
-        </div>
-        <button
-            class="create-chat-btn w-1/6 bg-blue-500 text-white text-center px-4 py-2 rounded shadow-md cursor-pointer hover:shadow-lg hover:bg-blue-600 transition duration-300 mr-3">
-            <i class="fas fa-plus mr-2"></i>Create Chat
-        </button>
-    </div>
-    {% else %}
-
-    <!-- wrapper  -->
-    <div class="flex-1 flex h-full">
-        {% include '_sidebar.html' %}
-
-        {% include '_chatroom.html' %}
-    </div>
-
-    {% endif %}
-</div>
-{% include '_create_chat_modal.html' %}
-{% include '_add_member_modal.html' %}
-{% include '_delete_chat_modal.html' %}
-{% include '_update_chat_modal.html' %}
-
-{% endblock %}
-
-{% block scripts %}
-<script src="{{url_for('static', filename='jquery.js')}}"></script>
-<script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
-    integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
-    crossorigin="anonymous"></script>
-{% if room %}
-<script>
-    $(document).ready(function () {
-        var socket = io.connect('http://127.0.0.1:5000')
-        var username = `{{ current_user.username }}`
-        var id = `{{ current_user.id }}`
-        var room = `{{ room.name }}`;
-        socket.emit('join', { 'username': username, 'room': room });
-
-        function sendMessage() {
-            socket.emit('incoming-msg', {
-                'msg': $('#txt2').val(),
-                'username': username,
-                'room': room,
-                'sender_id': id,
-            });
-            $('#txt2').val('');
+<body>
+    <style>
+        .group:hover .group-hover\:block {
+            display: block;
         }
 
-        $('#send1').click(function () {
-            sendMessage();
-        });
+        .hover\:w-64:hover {
+            width: 45%;
+        }
 
-        $('#txt2').keypress(function (e) {
-            if (e.which == 13)
-                sendMessage();
-        });
+        ::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
 
-        socket.on('message', function (msg) {
-            if (msg.username === '{{ current_user.username }}')
-                $('.messages').append('<div class="message grid place-items-end gap-x-3 pt-1 pb-1" style="grid-template-columns: 80px 1fr auto;"><div class="col-start-3 row-span-2 w-10 relative inline-flex self-end"><div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;"><img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018{{current_user.id}}" style="object-fit: cover;"/><span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span></div></div><div class="col-start-2 row-start-1 text-xs leading-5">' + msg.username + '</div><div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-blue-500 text-white" style="width: fit-content; border-end-end-radius: 0px;">' + msg.msg + '</div><div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">sent at: <time class="text-xs opacity-50"> ' + msg.time + ' </time></div></div>')
-            else
-                $('.messages').append('<div class="message grid place-items-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr 80px;"><div class="col-start-1 row-span-2 w-10 relative inline-flex self-end"><div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;"><img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018' + msg.sender_id + '" style="object-fit: cover;" /><span class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span></div></div><div class="col-start-2 row-start-1 text-xs leading-5">' + msg.username + '</div><div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300" style="width: fit-content; border-end-start-radius: 0px;">' + msg.msg + '</div><div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">sent at: <time class="text-xs opacity-50"> ' + msg.time + ' </time></div></div>');
-            // Scroll down animation
-            $('.messages').animate({ scrollTop: $('.messages').prop("scrollHeight") }, 500);
-        });
-    });
-</script>
-{% endif %}
-{% endblock %}
+        ::-webkit-scrollbar-button {
+            width: 0px;
+            height: 0px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2d3748;
+            border: 0px none #ffffff;
+            border-radius: 50px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2b6cb0;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: #000000;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a202c;
+            border: 0px none #ffffff;
+            border-radius: 50px;
+        }
+
+        ::-webkit-scrollbar-track:hover {
+            background: #666666;
+        }
+
+        ::-webkit-scrollbar-track:active {
+            background: #333333;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+    </style>
+
+    <div class="h-screen w-full flex antialiased text-gray-200 bg-gray-900 overflow-hidden">
+        <div class="flex-1 flex flex-col">
+            <main class="flex-grow flex flex-row min-h-0">
+                <section
+                    class="flex flex-col flex-none overflow-auto w-24 hover:w-64 group lg:max-w-sm md:w-2/5 transition-all duration-300 ease-in-out">
+                    <div class="header p-4 flex flex-row justify-between items-center flex-none">
+                        <button>
+                            <!-- Add logout button -->
+                        </button>
+                        <p class="text-md font-bold hidden md:block group-hover:block">Chats</p>
+                        <a href="#"
+                            class="block rounded-full hover:bg-gray-700 bg-gray-800 w-10 h-10 p-2 hidden md:block group-hover:block">
+                            <svg viewBox="0 0 24 24" class="w-full h-full fill-current">
+                                <path
+                                    d="M6.3 12.3l10-10a1 1 0 0 1 1.4 0l4 4a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-.7.3H7a1 1 0 0 1-1-1v-4a1 1 0 0 1 .3-.7zM8 16h2.59l9-9L17 4.41l-9 9V16zm10-2a1 1 0 0 1 2 0v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2h6a1 1 0 0 1 0 2H4v14h14v-6z" />
+                            </svg>
+                        </a>
+                    </div>
+
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+
+
+</html>
