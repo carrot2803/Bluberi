@@ -5,12 +5,11 @@ from flask_jwt_extended import (
     set_access_cookies,
     unset_jwt_cookies,
 )
-
 from flask import Blueprint, render_template, redirect, request, url_for, flash
-from werkzeug import Response
 from App.database import db
 from App.models import User
 from App.controllers import login_user
+from werkzeug.wrappers import Response
 
 auth = Blueprint("auth", __name__)
 
@@ -36,7 +35,7 @@ def login() -> Response:
     else:
         flash("Login was successful", "success")
         response: Response = redirect(url_for("chat.chat_page"))
-    set_access_cookies(response, token)
+    set_access_cookies(response, token)  # type: ignore
     return response
 
 
@@ -51,7 +50,7 @@ def sign_up() -> Response:
         db.session.commit()
         response: Response = redirect(url_for("auth.login"))
         token: str = create_access_token(identity=user)
-        set_access_cookies(response, token)
+        set_access_cookies(response, token)  # type: ignore
     except IntegrityError:
         flash("Username already exist", "danger")
         response = redirect(url_for("auth.sign_up"))
@@ -62,5 +61,5 @@ def sign_up() -> Response:
 @jwt_required()
 def logout() -> Response:
     response: Response = redirect(url_for("auth.login"))
-    unset_jwt_cookies(response)
+    unset_jwt_cookies(response)  # type: ignore
     return response

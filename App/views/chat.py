@@ -36,7 +36,7 @@ def chat_room(room_name) -> str:
 
 @chat.route("/chat/<string:room_name>/add_member", methods=["POST"])
 @jwt_required()
-def add_member(room_name) -> tuple[Response, 200 | 400]:
+def add_member(room_name) -> tuple[Response, int]:
     data: dict = request.get_json()
     if not data:
         return jsonify("No data provided"), 400
@@ -60,7 +60,7 @@ def add_member(room_name) -> tuple[Response, 200 | 400]:
 
 @chat.route("/chat/<string:room_name>", methods=["POST"])
 @jwt_required()
-def create_chat(room_name) -> tuple[Response, 200 | 400]:
+def create_chat(room_name) -> tuple[Response, int]:
     room_exist: Room | None = Room.query.filter_by(name=room_name).first()
     if room_exist:
         return jsonify("Room already exist"), 400
@@ -72,9 +72,9 @@ def create_chat(room_name) -> tuple[Response, 200 | 400]:
 
 @chat.route("/chat/<room_name>", methods=["PUT"])
 @jwt_required()
-def update_room_names(room_name) -> tuple[Response, 200 | 400]:
+def update_room_names(room_name) -> tuple[Response, int]:
     data: dict = request.get_json()
-    new_room_name: str = data.get("new_room_name")
+    new_room_name: str = data.get("new_room_name") # type: ignore
     room_admin: RoomMember | None = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name, is_room_admin=True
     ).first()
@@ -88,7 +88,7 @@ def update_room_names(room_name) -> tuple[Response, 200 | 400]:
 
 @chat.route("/chat/<string:room_name>", methods=["DELETE"])
 @jwt_required()
-def delete_room(room_name) -> tuple[Response, 200 | 400]:
+def delete_room(room_name) -> tuple[Response, int]:
     room_admin: RoomMember | None = RoomMember.query.filter_by(
         member_name=current_user.username, room_name=room_name, is_room_admin=True
     ).first()

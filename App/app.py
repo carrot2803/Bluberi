@@ -1,4 +1,5 @@
 from datetime import timedelta
+from typing import Literal
 from flask import Flask, render_template
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -14,7 +15,7 @@ def add_views(app):
     app.register_blueprint(chat, url_prefix="/")
 
 
-def create_app(overrides={}):
+def create_app(overrides={}) -> Flask:
     app = Flask(__name__)
 
     load_config(app, overrides)
@@ -28,11 +29,11 @@ def create_app(overrides={}):
 
     @jwt.invalid_token_loader
     @jwt.unauthorized_loader
-    def custom_unauthorized_response(error):
-        return render_template("error.html", error=error), 401
+    def custom_unauthorized_response(error) -> tuple[str, Literal[401]]:
+        return render_template("login.html", error=error), 401
 
     @app.errorhandler(404)
-    def page_not_found(error):
+    def page_not_found(error) -> tuple[str, Literal[404]]:
         return render_template("error.html", error=error), 404
 
     app.app_context().push()
@@ -40,7 +41,7 @@ def create_app(overrides={}):
     return app
 
 
-def load_config(app, overrides):
+def load_config(app, overrides) -> None:
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///database.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = "felicia is an egg"

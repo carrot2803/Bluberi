@@ -20,7 +20,7 @@ class RoomMember(db.Model):
     def get_last_message(self):
         last_message = (
             ChatMessage.query.filter_by(room_name=self.room_name)
-            .order_by(ChatMessage.created_at.desc())
+            .order_by(ChatMessage.created_at.desc())  # type: ignore
             .first()
         )
         return last_message

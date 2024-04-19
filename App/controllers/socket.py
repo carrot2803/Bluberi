@@ -28,7 +28,7 @@ def on_message(data):
                                 "msg": msg,
                                 "time": message.created_at,
                                 "sender_id": current_user.id,
-                            },
+                            },  # type: ignore
                             room=room,
                         )
                     else:
@@ -46,13 +46,13 @@ def on_join(data) -> None:
         return
     room_name: str = room.name
     join_room(room_name)
-    time: str = datetime.now().strftime("%H:%M")
+    time: str = datetime.now().strftime("%H:%M")  # type: ignore
     send(
         {
             "username": current_user.username,
             "msg": "has came to online",
             "time": time,
-        },
+        },  # type: ignore
         room=room_name,
     )
     print("message got sent")

@@ -14,5 +14,5 @@ def home() -> str:
 
 @index.route("/get_usernames", methods=["GET"])
 @jwt_required()
-def get_usernames() -> tuple[Response, 200]:
+def get_usernames() -> tuple[Response, int]:
     return jsonify(message=[user.username for user in User.query.all()]), 200
