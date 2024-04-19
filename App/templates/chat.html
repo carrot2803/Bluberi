@@ -14,7 +14,9 @@
                     src="https://loremflickr.com/640/480?lock=1{{ rooms.member_id }}" alt="chat-user" />
             </div>
             <div class="text-sm">
-                <p class="font-bold text-md">{{ room.name }}</p>
+                <p class="font-bold text-md cursor-pointer hover:text-blue-500"
+                    onclick="window.location.href='/chat/{{room.name}}'">{{ room.name }}
+                </p>
                 <p class="text-gray-500 truncate pt-1">
                     {% for member in room.members %}
                     {{ member.member_name }}{% if not loop.last %}, {% endif %}
