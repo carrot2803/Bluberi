@@ -43,7 +43,7 @@ def create_app(overrides={}) -> Flask:
 
 def load_config(app, overrides) -> None:
     # secret shud be inside a dot env
-    app.config["ENV"] = "production"
+    app.config["ENV"] = "PRODUCTION"
     app.config["JWT_SECRET_KEY"] = "jwt-secret-string"
     app.config["SECRET_KEY"] = "felicia is an"
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///database.db"
