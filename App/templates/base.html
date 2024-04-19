@@ -60,7 +60,8 @@
 {% if room %}
 <script>
     $(document).ready(function () {
-        var socket = io.connect('http://127.0.0.1:5000')
+        // var socket = io.connect('http://127.0.0.1:5000')
+        var socket = io();  
         var username = `{{ current_user.username }}`
         var id = `{{ current_user.id }}`
         var room = `{{ room.name }}`;
@@ -86,6 +87,7 @@
         });
 
         socket.on('message', function (msg) {
+            // alert("recieved message")
             var escapedMsg = $('<div>').text(msg.msg).html();
 
             if (msg.username === '{{ current_user.username }}')
