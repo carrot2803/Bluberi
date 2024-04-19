@@ -18,7 +18,7 @@ class User(db.Model):
         self.set_password(password)
 
     def create_room(self, room_name: str) -> bool:
-        new_room = Room(room_name, self.username, datetime.now())  # type: ignore
+        new_room = Room(room_name, self.username, datetime.now().strftime("%H:%M"))
         if new_room is None:
             return False
         self.add_room_member(self.username, room_name, True)
@@ -54,7 +54,7 @@ class User(db.Model):
             self.username,
             room_name,
             message,
-            datetime.now().strftime("%H:%M"),
+            datetime.now().strftime("%H:%M:%S"),
         )
         if new_message is None:
             return None

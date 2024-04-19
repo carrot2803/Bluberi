@@ -1,0 +1,63 @@
+{% block content %}
+<div
+    class="chat-body p-4 flex-1 overflow-y-scroll messages scroll-snap-type-y: y-mandatory messages transition ease-in-out duration-500">
+
+    {% for message in messages %}
+    {% if message.sender_name == current_user.username %}
+    <div class="grid place-items-end justify-end mb-5">
+        <div class="message text-sm text-white grid grid-flow-row gap-2">
+            <div class="flex items-center flex-row-reverse group row-start-1">
+                <p class="px-6 py-3 rounded-t-3xl rounded-l-3xl bg-blue-500 max-w-xs lg:max-w-md">
+                    {{message.message}}</p>
+            </div>
+        </div>
+        <div class="chat-footer opacity-50 text-xs row-start-2">
+            sent at: <time class="text-xs opacity-50">{{message.created_at[:-3]}}</time>
+        </div>
+    </div>
+    {% else %}
+    <div class="grid place-item-start justify-start mb-5">
+        <div class="w-8 h-8 relative flex flex-shrink-0 mr-4 col-start-1 row-start-2">
+            <img class="shadow-md rounded-full w-full h-full object-cover" alt="chat-user"
+                src="https://avatars.githubusercontent.com/u/10018{{message.sender_id}}" />
+            <!-- dont forget to put back sender id -->
+        </div>
+        <div class="text-xs leading-5 col-start-2 row-start-1">
+            {{message.sender_name}}
+        </div>
+        <div class=" message text-sm text-gray-700 grid grid-flow-row gap-2 col-start-2 row-start-2">
+            <div class="flex items-center group">
+                <p class="px-6 py-3 rounded-t-3xl rounded-r-3xl bg-gray-200 max-w-xs lg:max-w-md text-grey-800">
+                    {{message.message}}</p>
+            </div>
+        </div>
+        <div class="chat-footer opacity-50 text-xs col-start-2 row-start-3">
+            sent at: <time class="text-xs opacity-50">{{message.created_at[:-3]}}</time>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<div class="chat-footer flex items-center justify-center mb-2">
+    <div class="flex items-center space-x-4 w-full max-w-lg">
+        <div class="relative flex-1">
+            <label>
+                <input id="txt2"
+                    class="rounded-full py-2 px-4 w-full border border-gray-200 focus:border-blue-500 bg-white focus:bg-blue-50 focus:outline-none text-gray-800 focus:shadow-md transition duration-300 ease-in"
+                    type="text" placeholder="Enter message" />
+            </label>
+        </div>
+        <button id="send1" type="button"
+            class="flex items-center justify-center w-12 h-12 bg-blue-500 rounded-full focus:outline-none">
+            <i class="fas fa-paper-plane text-white hover:text-blue-600"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var chatBody = document.querySelector('.messages');
+        chatBody.scrollTop = chatBody.scrollHeight;
+    });
+</script>
+{% endblock %}

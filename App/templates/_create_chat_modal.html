@@ -38,7 +38,7 @@
             })
                 .then(response => {
                     if (response.ok)
-                        window.location.href = `/chat/${newChatName}`;
+                        window.location.href = `/chat`;
                     else
                         response.json().then(data => alert(data))
                 })

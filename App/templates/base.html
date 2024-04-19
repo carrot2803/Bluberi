@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chat{% endblock %}</title>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-hbZHM6VX3fc/Az/hN5wiUJ5wkiaAWOK66nU69pG94JlE1LLBnq5RsYsfWT3zBiAH" crossorigin="anonymous">
+    <link rel="icon" type="image/png"
+        href="https://cdn0.iconfinder.com/data/icons/fruity-1/100/fruit_food_colour-47-1024.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .group:hover .group-hover\:block {
+            display: block;
+        }
+
+        .hover\:w-64:hover {
+            width: 45%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0c6fb2;
+            border: 0px none #ffffff;
+            border-radius: 50px;
+        }
+
+        .message p {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="h-screen w-full flex antialiased text-gray-800 bg-white overflow-hidden">
+        <div class="flex-1 flex flex-col">
+            <main class="flex-grow flex flex-row min-h-0">
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+    {% include '_create_chat_modal.html' %}
+    {% include '_add_member_modal.html' %}
+    {% include '_delete_chat_modal.html' %}
+    {% include '_update_chat_modal.html' %}
+</body>
+
+{% block scripts %}
+<script src="{{url_for('static', filename='jquery.js')}}"></script>
+<script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+    integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+    crossorigin="anonymous"></script>
+{% if room %}
+<script>
+    $(document).ready(function () {
+        var socket = io.connect('http://127.0.0.1:5000')
+        var username = `{{ current_user.username }}`
+        var id = `{{ current_user.id }}`
+        var room = `{{ room.name }}`;
+        socket.emit('join', { 'username': username, 'room': room });
+
+        function sendMessage() {
+            socket.emit('incoming-msg', {
+                'msg': $('#txt2').val(),
+                'username': username,
+                'room': room,
+                'sender_id': id,
+            });
+            $('#txt2').val('');
+        }
+
+        $('#send1').click(function () {
+            sendMessage();
+        });
+
+        $('#txt2').keypress(function (e) {
+            if (e.which == 13)
+                sendMessage();
+        });
+
+        socket.on('message', function (msg) {
+            var escapedMsg = $('<div>').text(msg.msg).html();
+
+            if (msg.username === '{{ current_user.username }}')
+                $('.messages').append('<div class="grid place-items-end justify-end mb-5"><div class="message text-sm text-white grid grid-flow-row gap-2"><div class="flex items-center flex-row-reverse group row-start-1"><p class="px-6 py-3 rounded-t-3xl rounded-l-3xl bg-blue-500 max-w-xs lg:max-w-md">' + escapedMsg + '</p></div></div><div class="chat-footer opacity-50 text-xs row-start-2">sent at: <time class="text-xs opacity-50">' + msg.time + '</time></div></div>');
+            else
+                $('.messages').append('<div class="grid place-item-start justify-start mb-5"><div class="w-8 h-8 relative flex flex-shrink-0 mr-4 col-start-1 row-start-2"><img class="shadow-md rounded-full w-full h-full object-cover" alt="chat-user" src="https://avatars.githubusercontent.com/u/10018' + msg.sender_id + '" /></div><div class="text-xs leading-5 col-start-2 row-start-1">' + msg.username + '</div><div class=" message text-sm text-gray-700 grid grid-flow-row gap-2 col-start-2 row-start-2"><div class="flex items-center group"><p class="px-6 py-3 rounded-t-3xl rounded-r-3xl bg-gray-200 max-w-xs lg:max-w-md text-grey-800">' + escapedMsg + '</p></div></div><div class="chat-footer opacity-50 text-xs col-start-2 row-start-3">sent at: <time class="text-xs opacity-50">' + msg.time + '</time></div></div>');
+
+            // Scroll down animation
+            $('.messages').animate({ scrollTop: $('.messages').prop("scrollHeight") }, 500);
+        });
+
+    });
+</script>
+{% endif %}
+{% endblock %}
+
+</html>
