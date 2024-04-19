@@ -1,9 +1,9 @@
 {% block content %}
-<div class="chat-body p-4 flex-1 overflow-y-scroll">
+<div class="chat-body p-4 flex-1 overflow-y-scroll messages">
 {% for message in messages %}
         {% if message.sender_name == current_user.username %}
         <div class="grid place-items-end justify-end mb-5">
-            <div class="messages text-sm text-white grid grid-flow-row gap-2">
+            <div class="message text-sm text-white grid grid-flow-row gap-2">
                 <div class="flex items-center flex-row-reverse group row-start-1">
                     <p class="px-6 py-3 rounded-t-3xl rounded-l-3xl bg-blue-500 max-w-xs lg:max-w-md">
                         {{message.message}}</p>
@@ -39,13 +39,13 @@ C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.
         <div class="grid place-item-start justify-start mb-5">
             <div class="w-8 h-8 relative flex flex-shrink-0 mr-4 col-start-1 row-start-2">
                 <img class="shadow-md rounded-full w-full h-full object-cover" alt="chat-user"
-                    src="https://avatars.githubusercontent.com/u/10018" />
+                    src="https://avatars.githubusercontent.com/u/10018{{message.sender_id}}" />
                 <!-- dont forget to put back sender id -->
             </div>
             <div class="text-xs leading-5 col-start-2 row-start-1">
                 {{message.sender_name}}
             </div>
-            <div class=" messages text-sm text-gray-700 grid grid-flow-row gap-2 col-start-2 row-start-2">
+            <div class=" message text-sm text-gray-700 grid grid-flow-row gap-2 col-start-2 row-start-2">
                 <div class="flex items-center group">
                     <p
                         class="px-6 py-3 rounded-t-3xl rounded-r-3xl bg-gray-200 max-w-xs lg:max-w-md text-grey-800">
