@@ -1,5 +1,7 @@
 {% block content %}
-<div class="chat-body p-4 flex-1 overflow-y-scroll messages">
+<div
+    class="chat-body p-4 flex-1 overflow-y-scroll messages scroll-snap-type-y: y-mandatory messages transition ease-in-out duration-500">
+
     {% for message in messages %}
     {% if message.sender_name == current_user.username %}
     <div class="grid place-items-end justify-end mb-5">
@@ -93,4 +95,14 @@
         </button>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var chatBody = document.querySelector('.messages');
+        chatBody.scrollTop = chatBody.scrollHeight;
+    });
+</script>
+
+
+
 {% endblock %}
