@@ -1,10 +1,4 @@
 from App.database import db
-from App.models import User
-
-
-class Messages(db.Model):
-    id: int = db.Column(db.Integer, primary_key=True)
-    username: str = db.Column(db.String(50), nullable=False)
 
 
 class ChatMessage(db.Model):

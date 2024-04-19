@@ -5,6 +5,7 @@ from flask_jwt_extended import (
     set_access_cookies,
     unset_jwt_cookies,
 )
+
 from flask import Blueprint, render_template, redirect, request, url_for, flash
 from werkzeug import Response
 from App.database import db
@@ -34,7 +35,7 @@ def login() -> Response:
         response: Response = redirect(url_for("auth.login"))
     else:
         flash("Login was successful", "success")
-        response: Response = redirect(url_for("index.chat"))
+        response: Response = redirect(url_for("chat.chat_page"))
     set_access_cookies(response, token)
     return response
 
@@ -62,5 +63,4 @@ def sign_up() -> Response:
 def logout() -> Response:
     response: Response = redirect(url_for("auth.login"))
     unset_jwt_cookies(response)
-    flash("Logged out")
     return response

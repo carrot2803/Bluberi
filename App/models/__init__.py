@@ -1,4 +1,4 @@
 from .User import User
-from .Messages import ChatMessage, Messages
+from .ChatMessage import ChatMessage
 from .Room import Room
 from .RoomMember import RoomMember

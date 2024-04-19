@@ -34,9 +34,7 @@
             const newChatName = newChatNameInput.value;
             fetch(`/chat/${newChatName}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
             })
                 .then(response => {
                     if (response.ok)

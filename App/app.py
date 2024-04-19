@@ -7,10 +7,11 @@ from App.database import init_db
 
 
 def add_views(app):
-    from App.views import auth, index
+    from App.views import auth, index, chat
 
     app.register_blueprint(auth, url_prefix="/")
     app.register_blueprint(index, url_prefix="/")
+    app.register_blueprint(chat, url_prefix="/")
 
 
 def create_app(overrides={}):

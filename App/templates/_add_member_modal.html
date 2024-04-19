@@ -40,7 +40,7 @@
         };
 
         const addMember = () => {
-            const selectedUsername = userDropdown.value[0];
+            const selectedUsername = userDropdown.value;
             fetch(window.location.pathname + "/add_member", {
                 method: 'POST',
                 headers: {
@@ -65,7 +65,7 @@
 
         cancelAddButton.addEventListener('click', () => addMemberModal.classList.add('hidden'));
         addMembersButton.addEventListener('click', addMember);
-        document.addEventListener('keypress', (event) => (event.key === 'Enter') ? addMember() : null);
+        document.addEventListener('keypress', (event) => (event.key === 'Enter' && !addMemberModal.classList.contains('hidden')) ? addMember() : null);
 
     });
 </script>

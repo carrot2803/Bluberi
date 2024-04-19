@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from App.database import db
 from App.models.Room import Room
 from App.models.RoomMember import RoomMember
-from App.models.Messages import ChatMessage
+from App.models.ChatMessage import ChatMessage
 
 
 class User(db.Model):

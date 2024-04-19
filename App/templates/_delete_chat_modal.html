@@ -29,11 +29,10 @@
         function handleDelete() {
             fetch(window.location.pathname, { method: 'DELETE' })
                 .then(response => {
-                    if (response.ok) {
+                    if (response.ok)
                         window.location.href = "/chat";
-                    } else {
-                        alert("Error deleting room");
-                    }
+                    else
+                        response.json().then(data => alert(data))
                 })
                 .catch(error => console.error('Error:', error));
         }
