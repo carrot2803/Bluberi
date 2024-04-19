@@ -7,7 +7,7 @@ from App.controllers import socket, setup_jwt, add_auth_context
 from App.database import init_db
 
 
-def add_views(app):
+def add_views(app) -> None:
     from App.views import auth, index, chat
 
     app.register_blueprint(auth, url_prefix="/")
@@ -42,10 +42,14 @@ def create_app(overrides={}) -> Flask:
 
 
 def load_config(app, overrides) -> None:
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///database.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SECRET_KEY"] = "felicia is an egg"
+    # hidden configs
+    app.config["ENV"] = "development"
     app.config["JWT_SECRET_KEY"] = "jwt-secret-string"
+    app.config["SECRET_KEY"] = "felicia is an egg"
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///database.db"
+    app.config["PYTHON_VERSION"] = "3.11.3"
+    # general config
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["JWT_ACCESS_COOKIE_NAME"] = "access_token"
     app.config["JWT_REFRESH_COOKIE_NAME"] = "refresh_token"
     app.config["JWT_TOKEN_LOCATION"] = ["cookies", "headers"]

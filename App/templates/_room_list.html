@@ -11,7 +11,7 @@
             <p class="room-name text-blue-500 font-bold">{{ room.room_name }}</p>
             <div class="flex items-center justify-between text-sm text-gray-600">
                 <div class="message-info min-w-0">
-                    <p class="truncate">
+                    <p class="truncate max-w-sm w-32">
                         {% if room.get_last_message() %}
                         {{ room.get_last_message().sender_name }}: {{
                         room.get_last_message().message }}
