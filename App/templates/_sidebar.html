@@ -59,7 +59,7 @@
                     </div>
                     <p class="timestamp ml-2 whitespace-no-wrap text-blue-500">
                         {% if room.get_last_message() is not none %}
-                        {{ room.get_last_message().created_at}}
+                        {{ room.get_last_message().created_at[:-3] }}
                         {% endif %}
                     </p>
                 </div>
@@ -76,11 +76,10 @@
 
             Array.from(rooms).forEach(function (room) {
                 const roomName = room.querySelector('.room-name').textContent.toLowerCase();
-                if (roomName.includes(query)) {
+                if (roomName.includes(query))
                     room.style.display = '';
-                } else {
+                else
                     room.style.display = 'none';
-                }
             });
         }
     </script>

@@ -54,7 +54,7 @@ class User(db.Model):
             self.username,
             room_name,
             message,
-            datetime.now().strftime("%H:%M"),
+            datetime.now().strftime("%H:%M:%S"),
         )
         if new_message is None:
             return None

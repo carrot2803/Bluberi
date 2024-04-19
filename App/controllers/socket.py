@@ -20,8 +20,9 @@ def on_message(data) -> None:
         msg = data["msg"]
         if members.member_name == current_user.username:
             message = current_user.send_message(room.name, msg)
+            time = message.created_at[:-3]
             if message:
-                send({"username": current_user.username, "msg": msg, "time": message.created_at, "sender_id": current_user.id}, room=room.name)  # type: ignore
+                send({"username": current_user.username, "msg": msg, "time": time, "sender_id": current_user.id}, room=room.name)  # type: ignore
 
 
 @socket.on("join")
@@ -33,7 +34,7 @@ def on_join(data) -> None:
         return
     room_name: str = room.name
     join_room(room_name)
-    time: str = datetime.now().strftime("%H:%M") 
+    time: str = datetime.now().strftime("%H:%M")
     send(
         {
             "username": current_user.username,
