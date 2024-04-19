@@ -63,4 +63,19 @@
   </div>
 </div>
 
+<script>
+  // JavaScript to handle flashed messages as alerts or popups
+  document.addEventListener('DOMContentLoaded', function() {
+      var error = `{{error}}`;
+      
+      function renderError() {
+        if (error)
+          alert("Error: " + error)
+      }
+
+      renderError();
+  });
+
+</script>
+
 {% endblock %}

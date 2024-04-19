@@ -30,12 +30,12 @@ def login() -> Response:
     password: str = request.form["password"]
     token: str | None = login_user(username, password)
     if token is None:
-        flash("Invalid Credintials", "danger")
-        response: Response = redirect(url_for("auth.login"))
+        error = "Invalid Credintials"
+        response: Response = render_template("login.html", error=error)
     else:
-        flash("Login was successful", "success")
+        # flash("Login was successful", "success")
         response: Response = redirect(url_for("chat.chat_page"))
-    set_access_cookies(response, token)  # type: ignore
+        set_access_cookies(response, token)  # type: ignore
     return response
 
 
