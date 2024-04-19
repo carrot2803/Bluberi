@@ -1,0 +1,33 @@
+{% block content %}
+<div class="chat-header px-6 py-4 flex flex-row flex-none justify-between items-center shadow">
+    <div class="flex">
+        <div class="w-12 h-12 mr-4 relative flex flex-shrink-0">
+            <img class="shadow-md rounded-full w-full h-full object-cover"
+                src="https://loremflickr.com/640/480?lock=1{{ room.room_id }}" alt="chat-user" />
+        </div>
+        <div class="text-sm">
+            <p class="font-bold text-md cursor-pointer hover:text-blue-500"
+                onclick="window.location.href='/chat/{{room.name}}'">
+                {{ room.name }}
+            </p>
+            <p class="text-gray-500 truncate pt-1">
+                {% for member in room.members %}
+                {{ member.member_name }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+
+    <div class="icons-container flex  gap-3">
+        <button>
+            <i class="fas fa-trash text-gray-600 hover:text-red-500 text-xl"></i>
+        </button>
+        <button>
+            <i class="fas fa-edit text-gray-600 hover:text-blue-500 text-xl"></i>
+        </button>
+        <button>
+            <i class="fas fa-user-plus text-gray-600 hover:text-green-500 text-xl"></i>
+        </button>
+    </div>
+</div>
+{% endblock %}

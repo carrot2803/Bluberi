@@ -1,0 +1,33 @@
+{% block content %}
+<div class="contacts p-2 flex-1 overflow-y-scroll" id="roomList">
+    {% for room in rooms %}
+    <a class="contact-item mb-2 flex justify-between items-center p-3 hover:bg-blue-100 rounded-lg relative shadow-md border border-gray-100 hover:border-blue-300"
+        href="/chat/{{room.room_name}}">
+        <div class="w-16 h-16 relative flex flex-shrink rounded-full overflow-hidden">
+            <img class="w-full h-full object-cover" src="https://loremflickr.com/640/480?lock=1{{ room.room.room_id }}"
+                alt="chat-user" />
+        </div>
+        <div class="info-container flex-auto min-w-0 ml-4 mr-6 hidden md:block group-hover:block">
+            <p class="room-name text-blue-500 font-bold">{{ room.room_name }}</p>
+            <div class="flex items-center justify-between text-sm text-gray-600">
+                <div class="message-info min-w-0">
+                    <p class="truncate">
+                        {% if room.get_last_message() %}
+                        {{ room.get_last_message().sender_name }}: {{
+                        room.get_last_message().message }}
+                        {% else %}
+                        No messages yet
+                        {% endif %}
+                    </p>
+                </div>
+                <p class="timestamp ml-2 whitespace-no-wrap text-blue-500">
+                    {% if room.get_last_message() is not none %}
+                    {{ room.get_last_message().created_at[:-3] }}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
