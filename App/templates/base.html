@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png"
         href="https://cdn0.iconfinder.com/data/icons/fruity-1/100/fruit_food_colour-47-1024.png">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         .group:hover .group-hover\:block {
             display: block;
@@ -61,7 +61,7 @@
 <script>
     $(document).ready(function () {
         // var socket = io.connect('http://127.0.0.1:5000')
-        var socket = io();  
+        var socket = io();
         var username = `{{ current_user.username }}`
         var id = `{{ current_user.id }}`
         var room = `{{ room.name }}`;
