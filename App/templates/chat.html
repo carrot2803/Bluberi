@@ -14,8 +14,12 @@
                     src="https://loremflickr.com/640/480?lock=1{{ rooms.member_id }}" alt="chat-user" />
             </div>
             <div class="text-sm">
-                <p class="font-bold">{{ room.name }}</p>
-                <p>Active 1h ago</p>
+                <p class="font-bold text-md">{{ room.name }}</p>
+                <p class="text-gray-500 truncate pt-1">
+                    {% for member in room.members %}
+                    {{ member.member_name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
             </div>
         </div>
 
