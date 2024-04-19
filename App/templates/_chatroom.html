@@ -1,112 +1,84 @@
 {% block content %}
-<div class="chat-area flex-1 flex flex-col w-3/4 mx-10" style="height: 91vh;">
-    {% if room %}
-    <div class="flex-3">
-        <h2 class="text-xl py-1 mb-8 border-b-2 border-gray-200 flex justify-between items-center">
-            <span class="text-blue-500 font-bold">{{ room.name }}</span>
-
-            <div class="icons-container flex mr-5 gap-3">
-                <!-- dont forget to fix hover -->
-                <button >
-                    <i class="fas fa-trash text-red-500 hover:text-red-600"></i>
-                </button>
-                <button>
-                    <i class="fas fa-edit text-blue-400 hover:text-blue-600"></i>
-                </button>
-                <button>
-                    <i class="fas fa-user-plus text-green-500 hover:text-green-600"></i>
-                </button>
-            </div>
-        </h2>
-
-    </div>
-    <div class="messages flex-1 overflow-y-scroll  px-10">
-        {% for message in messages %}
+<div class="chat-body p-4 flex-1 overflow-y-scroll">
+{% for message in messages %}
         {% if message.sender_name == current_user.username %}
-        <div class="message grid place-items-end gap-x-3 pt-1 pb-1" style="grid-template-columns: 80px 1fr auto;">
-            <div class="col-start-3 row-span-2 w-10 relative inline-flex self-end">
-                <div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;">
-                    <img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018{{current_user.id}}"
-                        style="object-fit: cover;" />
-                    <span
-                        class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
+        <div class="grid place-items-end justify-end mb-5">
+            <div class="messages text-sm text-white grid grid-flow-row gap-2">
+                <div class="flex items-center flex-row-reverse group row-start-1">
+                    <p class="px-6 py-3 rounded-t-3xl rounded-l-3xl bg-blue-500 max-w-xs lg:max-w-md">
+                        {{message.message}}</p>
+                    <button type="button"
+                        class="hidden group-hover:block flex flex-shrink-0 focus:outline-none mx-2 block rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-700 bg-gray-800 w-8 h-8 p-2">
+                        <svg viewBox="0 0 20 20" class="w-full h-full fill-current">
+                            <path d="M10.001,7.8C8.786,7.8,7.8,8.785,7.8,10s0.986,2.2,2.201,2.2S12.2,11.215,12.2,10S11.216,7.8,10.001,7.8z
+M3.001,7.8C1.786,7.8,0.8,8.785,0.8,10s0.986,2.2,2.201,2.2S5.2,11.214,5.2,10S4.216,7.8,3.001,7.8z M17.001,7.8
+C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.8,17.001,7.8z" />
+                        </svg>
+                    </button>
+                    <button type="button"
+                        class="hidden group-hover:block flex flex-shrink-0 focus:outline-none mx-2 block rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-700 bg-gray-800 w-8 h-8 p-2">
+                        <svg viewBox="0 0 20 20" class="w-full h-full fill-current">
+                            <path
+                                d="M19,16.685c0,0-2.225-9.732-11-9.732V2.969L1,9.542l7,6.69v-4.357C12.763,11.874,16.516,12.296,19,16.685z" />
+                        </svg>
+                    </button>
+                    <button type="button"
+                        class="hidden group-hover:block flex flex-shrink-0 focus:outline-none mx-2 block rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-700 bg-gray-800 w-8 h-8 p-2">
+                        <svg viewBox="0 0 24 24" class="w-full h-full fill-current">
+                            <path
+                                d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-3.54-4.46a1 1 0 0 1 1.42-1.42 3 3 0 0 0 4.24 0 1 1 0 0 1 1.42 1.42 5 5 0 0 1-7.08 0zM9 11a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-
-            <div class="col-start-2 row-start-1 text-xs leading-5">
-                {{message.sender_name}}
-            </div>
-            <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-blue-500 text-white"
-                style="width: fit-content; border-end-end-radius: 0px;">
-                {{message.message}}
-            </div>
-            <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
+            <div class="chat-footer opacity-50 text-xs row-start-2">
                 sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>
             </div>
         </div>
         {% else %}
-        <div class="message grid place-items-start gap-x-3 pt-1 pb-1" style="grid-template-columns: auto 1fr 80px;">
-            <div class="col-start-1 row-span-2 w-10 relative inline-flex self-end">
-                <div class="w-10 rounded-full block" style="aspect-ratio: 1/1; overflow: hidden;">
-                    <img alt="chat-user" src="https://avatars.githubusercontent.com/u/10018{{message.sender_id}}"
-                        style="object-fit: cover;" />
-                    <span
-                        class="absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white"></span>
-                </div>
+        <div class="grid place-item-start justify-start mb-5">
+            <div class="w-8 h-8 relative flex flex-shrink-0 mr-4 col-start-1 row-start-2">
+                <img class="shadow-md rounded-full w-full h-full object-cover" alt="chat-user"
+                    src="https://avatars.githubusercontent.com/u/10018" />
+                <!-- dont forget to put back sender id -->
             </div>
-
-            <div class="col-start-2 row-start-1 text-xs leading-5">
+            <div class="text-xs leading-5 col-start-2 row-start-1">
                 {{message.sender_name}}
             </div>
-            <div class="col-start-2 max-w-90 min-w-11 min-h-11 rounded-2xl relative block pt-2 pb-2 pl-4 pr-4 bg-gray-300"
-                style="width: fit-content; border-end-start-radius: 0px;">
-                {{message.message}}
+            <div class=" messages text-sm text-gray-700 grid grid-flow-row gap-2 col-start-2 row-start-2">
+                <div class="flex items-center group">
+                    <p
+                        class="px-6 py-3 rounded-t-3xl rounded-r-3xl bg-gray-200 max-w-xs lg:max-w-md text-grey-800">
+                        {{message.message}}</p>
+                    <button type="button"
+                        class="hidden group-hover:block flex flex-shrink-0 focus:outline-none mx-2 block rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-700 bg-gray-800 w-8 h-8 p-2">
+                        <svg viewBox="0 0 20 20" class="w-full h-full fill-current">
+                            <path d="M10.001,7.8C8.786,7.8,7.8,8.785,7.8,10s0.986,2.2,2.201,2.2S12.2,11.215,12.2,10S11.216,7.8,10.001,7.8z
+M3.001,7.8C1.786,7.8,0.8,8.785,0.8,10s0.986,2.2,2.201,2.2S5.2,11.214,5.2,10S4.216,7.8,3.001,7.8z M17.001,7.8
+C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.8,17.001,7.8z" />
+                        </svg>
+                    </button>
+                    <button type="button"
+                        class="hidden group-hover:block flex flex-shrink-0 focus:outline-none mx-2 block rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-700 bg-gray-800 w-8 h-8 p-2">
+                        <svg viewBox="0 0 20 20" class="w-full h-full fill-current">
+                            <path
+                                d="M19,16.685c0,0-2.225-9.732-11-9.732V2.969L1,9.542l7,6.69v-4.357C12.763,11.874,16.516,12.296,19,16.685z" />
+                        </svg>
+                    </button>
+                    <button type="button"
+                        class="hidden group-hover:block flex flex-shrink-0 focus:outline-none mx-2 block rounded-full text-gray-500 hover:text-gray-900 hover:bg-gray-700 bg-gray-800 w-8 h-8 p-2">
+                        <svg viewBox="0 0 24 24" class="w-full h-full fill-current">
+                            <path
+                                d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-3.54-4.46a1 1 0 0 1 1.42-1.42 3 3 0 0 0 4.24 0 1 1 0 0 1 1.42 1.42 5 5 0 0 1-7.08 0zM9 11a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="chat-footer opacity-50 col-start-2 row-start-3 text-xs">
+            <div class="chat-footer opacity-50 text-xs col-start-2 row-start-3">
                 sent at: <time class="text-xs opacity-50">{{message.created_at}}</time>
             </div>
         </div>
         {% endif %}
         {% endfor %}
-    </div>
-    <div class="flex-2  pb-5">
-        <div class="write bg-white shadow flex rounded-lg ">
-            <div class="flex-3 flex content-center items-center text-center p-4 pr-0">
-            </div>
-            <div class="flex-1">
-                <input type="text" class="w-full block outline-none py-4 px-4 bg-transparent"
-                    placeholder="Type Your Message Here...." id="txt2" autocomplete="off">
-            </div>
-            <div class="flex-2 w-32 p-2 flex content-center items-center justify-end">
-                <div class="flex-1 text-center">
-                    <span class="text-gray-400 hover:text-gray-800">
-                        <span class="inline-block align-text-bottom">
-                            <i class="fas fa-heart text-md"></i>
-                        </span>
-                    </span>
-                </div>
-                <div class="flex-1">
-                    <button class="bg-blue-500 hover:bg-blue-600 w-10 h-10 rounded-full inline-block" id="send1">
-                        <span class="inline-block align-text-bottom">
-                            <i class="fa fa-paper-plane text-white text-md center"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% else %}
-    <div class="flex flex-col items-center justify-center h-full">
-        <div class="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
-            <span class="text-6xl text-gray-400 mb-4 transition-transform transform hover:scale-110">
-                <i class="far fa-comment-dots text-8xl text-blue-500"></i>
-            </span>
-            <p class="text-gray-600 text-lg font-bold mt-4">Start Talking !</p>
-            <p class="text-gray-600 text-lg mt-4">Select a chat and stay connected with your friends.</p>
-        </div>
-    </div>
-    {% endif %}
 </div>
-
-
 {% endblock %}
