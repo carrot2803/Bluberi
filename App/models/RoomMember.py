@@ -1,3 +1,4 @@
+from sqlalchemy import desc
 from App.database import db
 from App.models.ChatMessage import ChatMessage
 
@@ -20,7 +21,7 @@ class RoomMember(db.Model):
     def get_last_message(self):
         last_message = (
             ChatMessage.query.filter_by(room_name=self.room_name)
-            .order_by(ChatMessage.created_at.desc())  # type: ignore
+            .order_by(desc(ChatMessage.created_at))
             .first()
         )
         return last_message
