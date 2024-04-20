@@ -1,3 +1,4 @@
+.flaskenv
 .env
 production.env
 # put back when it is submission time
