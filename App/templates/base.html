@@ -79,15 +79,19 @@
             });
             $('#txt2').val('');
         }
-
+        
         $('#send1').click(function () {
             sendMessage();
+            $(this).focus(); // Focus on the send button to hide the keyboard
         });
 
         $('#txt2').keypress(function (e) {
-            if (e.which == 13)
+            if (e.which == 13) {
                 sendMessage();
+                $('#send1').focus(); // Focus on the send button to hide the keyboard
+            }
         });
+
 
         socket.on('message', function (msg) {
             // alert("recieved message")
