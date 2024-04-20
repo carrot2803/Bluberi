@@ -1,10 +1,12 @@
 from datetime import timedelta
 from typing import Literal
+from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from App.controllers import socket, setup_jwt, add_auth_context
 from App.database import init_db
+from os import getenv
 
 
 def add_views(app) -> None:
@@ -41,16 +43,18 @@ def create_app(overrides={}) -> Flask:
     return app
 
 
-def load_config(app, overrides) -> None:
-    # secret shud be inside a dot env
-    app.config["ENV"] = "PRODUCTION"
-    app.config["JWT_SECRET_KEY"] = "jwt-secret-string"
-    app.config["SECRET_KEY"] = "felicia is an"
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///database.db"
-    app.config["PYTHON_VERSION"] = "3.11.3"
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=15)
+def load_config(app, overrides=None):
+    load_dotenv()
+    app.config["ENV"] = "development"
+    app.config["JWT_SECRET_KEY"] = getenv("JWT_SECRET_KEY")
+    app.config["SECRET_KEY"] = getenv("SECRET_KEY")
+    app.config["SQLALCHEMY_DATABASE_URI"] = getenv("SQLALCHEMY_DATABASE_URI")
+    app.config["PYTHON_VERSION"] = getenv("PYTHON_VERSION")
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(
+        hours=int(getenv("JWT_ACCESS_TOKEN_EXPIRES", default=15))
+    )
 
-    # general config
+    # General config
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["JWT_ACCESS_COOKIE_NAME"] = "access_token"
     app.config["JWT_REFRESH_COOKIE_NAME"] = "refresh_token"
