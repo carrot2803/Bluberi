@@ -4,7 +4,7 @@
 
     {% for message in messages %}
     {% if message.sender_name == current_user.username %}
-    <div class="grid place-items-end justify-end mb-5">
+    <div class="grid message-grid-end place-items-end justify-end">
         <div class="message text-sm text-white grid grid-flow-row gap-2">
             <div class="flex items-center flex-row-reverse group row-start-1">
                 <p class="px-6 py-3 rounded-t-3xl rounded-l-3xl bg-blue-500 max-w-xs lg:max-w-md">
@@ -16,7 +16,7 @@
         </div>
     </div>
     {% else %}
-    <div class="grid place-item-start justify-start mb-5">
+    <div class="grid message-grid-start place-item-start justify-start mb-5 mr-10 ml-5">
         <div class="w-8 h-8 relative flex flex-shrink-0 mr-4 col-start-1 row-start-2">
             <img class="shadow-md rounded-full w-full h-full object-cover" alt="chat-user"
                 src="https://avatars.githubusercontent.com/u/10018{{message.sender_id}}" />

@@ -32,11 +32,20 @@
             word-wrap: break-word;
         }
 
+        .message-grid-end {
+            margin-left: 2.5rem;
+            margin-right: 1.25rem;
+        }
+
+        .message-grid-start {
+            margin-left: 1.25rem;
+            margin-right: 2.5rem;
+        }
+
         @media screen and (max-width: 767px) {
             .chat-body {
                 padding: 0;
             }
-
         }
     </style>
 </head>
@@ -80,24 +89,28 @@
             });
             $('#txt2').val('');
         }
-
+        
         $('#send1').click(function () {
             sendMessage();
+            $(this).focus(); // Focus on the send button to hide the keyboard
         });
 
         $('#txt2').keypress(function (e) {
-            if (e.which == 13)
+            if (e.which == 13) {
                 sendMessage();
+                $('#send1').focus(); // Focus on the send button to hide the keyboard
+            }
         });
+
 
         socket.on('message', function (msg) {
             // alert("recieved message")
             var escapedMsg = $('<div>').text(msg.msg).html();
 
             if (msg.username === '{{ current_user.username }}')
-                $('.messages').append('<div class="grid place-items-end justify-end mb-5"><div class="message text-sm text-white grid grid-flow-row gap-2"><div class="flex items-center flex-row-reverse group row-start-1"><p class="px-6 py-3 rounded-t-3xl rounded-l-3xl bg-blue-500 max-w-xs lg:max-w-md">' + escapedMsg + '</p></div></div><div class="chat-footer opacity-50 text-xs row-start-2">sent at: <time class="text-xs opacity-50">' + msg.time + '</time></div></div>');
+                $('.messages').append('<div class="grid message-grid-end place-items-end justify-end mb-5"><div class="message text-sm text-white grid grid-flow-row gap-2"><div class="flex items-center flex-row-reverse group row-start-1"><p class="px-6 py-3 rounded-t-3xl rounded-l-3xl bg-blue-500 max-w-xs lg:max-w-md">' + escapedMsg + '</p></div></div><div class="chat-footer opacity-50 text-xs row-start-2">sent at: <time class="text-xs opacity-50">' + msg.time + '</time></div></div>');
             else
-                $('.messages').append('<div class="grid place-item-start justify-start mb-5"><div class="w-8 h-8 relative flex flex-shrink-0 mr-4 col-start-1 row-start-2"><img class="shadow-md rounded-full w-full h-full object-cover" alt="chat-user" src="https://avatars.githubusercontent.com/u/10018' + msg.sender_id + '" /></div><div class="text-xs leading-5 col-start-2 row-start-1">' + msg.username + '</div><div class=" message text-sm text-gray-700 grid grid-flow-row gap-2 col-start-2 row-start-2"><div class="flex items-center group"><p class="px-6 py-3 rounded-t-3xl rounded-r-3xl bg-gray-200 max-w-xs lg:max-w-md text-grey-800">' + escapedMsg + '</p></div></div><div class="chat-footer opacity-50 text-xs col-start-2 row-start-3">sent at: <time class="text-xs opacity-50">' + msg.time + '</time></div></div>');
+                $('.messages').append('<div class="grid message-grid-start place-item-start justify-start mb-5"><div class="w-8 h-8 relative flex flex-shrink-0 mr-4 col-start-1 row-start-2"><img class="shadow-md rounded-full w-full h-full object-cover" alt="chat-user" src="https://avatars.githubusercontent.com/u/10018' + msg.sender_id + '" /></div><div class="text-xs leading-5 col-start-2 row-start-1">' + msg.username + '</div><div class=" message text-sm text-gray-700 grid grid-flow-row gap-2 col-start-2 row-start-2"><div class="flex items-center group"><p class="px-6 py-3 rounded-t-3xl rounded-r-3xl bg-gray-200 max-w-xs lg:max-w-md text-grey-800">' + escapedMsg + '</p></div></div><div class="chat-footer opacity-50 text-xs col-start-2 row-start-3">sent at: <time class="text-xs opacity-50">' + msg.time + '</time></div></div>');
 
             // Scroll down animation
             $('.messages').animate({ scrollTop: $('.messages').prop("scrollHeight") }, 500);
