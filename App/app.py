@@ -43,7 +43,7 @@ def create_app(overrides={}) -> Flask:
     return app
 
 
-def load_config(app, overrides=None):
+def load_config(app, overrides=None) -> None:
     load_dotenv()
     app.config["ENV"] = "development"
     app.config["JWT_SECRET_KEY"] = getenv("JWT_SECRET_KEY")

@@ -7,12 +7,12 @@ app: Flask = create_app()
 
 
 @app.cli.command("init", help="Creates and initializes the database")
-def initialize():
+def initialize() -> None:
     initialize_db()
-    print("database initialized")  # type: ignore
+    print("database initialized")
 
 
-def initialize_db():
+def initialize_db() -> None:
     db.drop_all()
     db.create_all()
     bob = User(username="bob", email="bob@mail.com", password="bobpass")

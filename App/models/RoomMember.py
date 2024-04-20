@@ -11,15 +11,17 @@ class RoomMember(db.Model):
     is_room_admin = db.Column(db.String(10), nullable=False)
     added_at: str = db.Column(db.String(40), nullable=False)
 
-    def __init__(self, member_name, room_name, added_by, is_room_admin, added_at):
+    def __init__(
+        self, member_name, room_name, added_by, is_room_admin, added_at
+    ) -> None:
         self.member_name: str = member_name
         self.room_name: str = room_name
         self.added_by: str = added_by
         self.is_room_admin = is_room_admin
         self.added_at: str = added_at
 
-    def get_last_message(self):
-        last_message = (
+    def get_last_message(self) -> ChatMessage | None:
+        last_message: ChatMessage | None = (
             ChatMessage.query.filter_by(room_name=self.room_name)
             .order_by(desc(ChatMessage.created_at))
             .first()
