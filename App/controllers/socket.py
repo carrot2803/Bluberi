@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask_jwt_extended import current_user, jwt_required
 from flask_socketio import SocketIO, send, join_room
 from App.models import Room
