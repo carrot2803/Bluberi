@@ -34,14 +34,4 @@ def on_join(data) -> None:
         return
     room_name: str = room.name
     join_room(room_name)
-    time: str = datetime.now().strftime("%H:%M")
-    send(
-        {
-            "username": current_user.username,
-            "msg": "has came to online",
-            "sender_id": current_user.id,
-            "time": time,
-        },  # type: ignore
-        room=room_name,
-    )
     print("message got sent")
