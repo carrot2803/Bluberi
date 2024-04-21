@@ -45,7 +45,7 @@ def create_app(overrides={}) -> Flask:
 
 def load_config(app, overrides=None) -> None:
     load_dotenv()
-    app.config["ENV"] = "development"
+    app.config["ENV"] = getenv("ENV")
     app.config["JWT_SECRET_KEY"] = getenv("JWT_SECRET_KEY")
     app.config["SECRET_KEY"] = getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = getenv("SQLALCHEMY_DATABASE_URI")
