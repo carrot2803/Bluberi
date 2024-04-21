@@ -75,6 +75,3 @@ Home Page<br/>
 
 Mockup<br/>
 ![Screenshot 2](https://i.imgur.com/0hAEHSl.png)
-
-Logo<br/>
-![Screenshot 3](https://i.imgur.com/GmM3xmR.png)
