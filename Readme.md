@@ -52,6 +52,24 @@ flask run
 
 </details>
 
+## Authentication Routes
+
+1. <u>/login</u> \[GET\]: Renders the login page.
+2. <u>/signup</u> \[GET\]: Renders the signup page.
+3. <u>/login</u> \[POST\]: Logs in the user.
+4. <u>/signup</u> \[POST\]: Signs up a new user.
+5. <u>/logout</u> \[GET\]: Logs out the user.
+
+### Chat Routes
+
+6. <u>/chat</u> \[GET\]: Renders the chat page.
+7. <u>/chat/&lt;room_name&gt;</u> \[GET\]: Renders the chat room with the specified room name.
+8. <u>/chat/&lt;room_name&gt;/add_member</u> \[POST\]: Adds a user to the specified chat room.
+9. <u>/chat/&lt;room_name&gt;</u> \[POST\]: Creates a new chat room with the specified name.
+10. <u>/chat/&lt;room_name&gt;</u> \[PUT\]: Updates the name of the specified chat room.
+11. <u>/chat/&lt;room_name&gt;</u> \[DELETE\]: Deletes the specified chat room.
+
+
 ## Snippets
 
 Home Page<br/>
