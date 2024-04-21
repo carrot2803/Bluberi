@@ -4,14 +4,14 @@
 - Components marked with `_` denote those that are considered as components, while others are pages.
 
 ## Front End
-- make User experience and UI cleaner
+- ~~make User experience and UI cleaner~~
 
 
 ## BackEnd
 
-- run test on chat message persistance
-- add routes renaming
-- Production Builds
+- ~~run test on chat message persistance~~
+- ~~add routes renaming~~
+- ~~Production Builds~~
 
 - ~~-maybe rewrite update query~~
 - ~~Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.~~
