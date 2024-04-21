@@ -54,11 +54,9 @@ flask run
 
 ## Authentication Routes
 
-1. <u>/login</u> \[GET\]: Renders the login page.
-2. <u>/signup</u> \[GET\]: Renders the signup page.
-3. <u>/login</u> \[POST\]: Logs in the user.
-4. <u>/signup</u> \[POST\]: Signs up a new user.
-5. <u>/logout</u> \[GET\]: Logs out the user.
+1. <u>/login</u> \[POST\]: Logs in the user.
+2. <u>/signup</u> \[POST\]: Signs up a new user.
+3. <u>/logout</u> \[GET\]: Logs out the user.
 
 ### Chat Routes
 
@@ -77,3 +75,6 @@ Home Page<br/>
 
 Mockup<br/>
 ![Screenshot 2](https://i.imgur.com/0hAEHSl.png)
+
+Logo<br/>
+![Screenshot 3](https://i.imgur.com/GmM3xmR.png)
