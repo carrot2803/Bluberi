@@ -1,6 +1,6 @@
 # Bluberi Chat Application
 
-Welcome to Bluberi, a dynamic web chat platform facilitating meaningful connections among users who share common interests, passions, and experiences. Dive into vibrant group chat rooms where you can Create, Read, Update, and Delete content effortlessly.
+Welcome to Bluberi, a dynamic web chat platform facilitating meaningful conversations among users who share common interests, passions, and experiences. Dive into vibrant group chat rooms where you can Create, Read, Update, and Delete content effortlessly.
 
 ## App Availability
 
