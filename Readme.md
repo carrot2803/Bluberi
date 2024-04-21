@@ -75,5 +75,5 @@ flask run
 Home Page<br/>
 ![Screenshot 1](https://i.imgur.com/2LgVMzn.png)
 
-Main Screen<br/>
-![Video snippet](assets/snippets/snippet2.gif)
+Mockup<br/>
+![Screenshot 2](https://i.imgur.com/0hAEHSl.png)
