@@ -1,12 +1,16 @@
 # Bluberi Chat Application
 
-Welcome to Bluberi, a dynamic web chat platform facilitating meaningful conversations among users who share common interests, passions, and experiences. Dive into vibrant group chat rooms where you can Create, Read, Update, and Delete content effortlessly.
+This is team vegetables Info2602 Project. Welcome to Bluberi, a dynamic web chat platform 
+facilitating meaningful conversations among users who share common interests, passions, and experiences.
 
 ## App Availability
 
-You can download the app at [App Link](https://github.com/carrot2803/Bluberi/tree/master)
+You can view and test the web at [Site Link](https://bluberi.onrender.com)
 
 ## Features
+-   Authentication, Authorization and Integrity.
+
+-   Search Functionality - Search for specific chat rooms.
 
 -   Intuitive and engaging user interface.
 
@@ -20,7 +24,7 @@ You can download the app at [App Link](https://github.com/carrot2803/Bluberi/tre
 
 <details>
 <summary>
-  <code>There are several ways you can run this application, here is one!</code>
+  <code>There are several ways you can run this application</code>
 </summary>
 
 -   [Downloading repository as ZIP](https://github.com/carrot2803/Bluberi/archive/refs/heads/master.zip)
