@@ -1,32 +1,61 @@
-# Todo List
+# Bluberi Chat Application
 
-## Notes
-- Components marked with `_` denote those that are considered as components, while others are pages.
+Welcome to Bluberi, a dynamic web chat platform facilitating meaningful connections among users who share common interests, passions, and experiences. Dive into vibrant group chat rooms where you can Create, Read, Update, and Delete content effortlessly.
 
-## Front End
-- ~~make User experience and UI cleaner~~
+## App Availability
 
+You can download the app at [App Link](https://github.com/carrot2803/Bluberi/tree/master)
 
-## BackEnd
+## Features
 
-- ~~run test on chat message persistance~~
-- ~~add routes renaming~~
-- ~~Production Builds~~
+-   Intuitive and engaging user interface.
 
-- ~~-maybe rewrite update query~~
-- ~~Renaming storing messages to `chatMessages`, for now i'll leave it so for my brain.~~
-- ~~perfect models~~
-- ~~clean up controllers~~
-- ~~clean up routes~~
-- ~~add type safety to models~~
-- ~~move off userlogin and user mixin  and use jwt implace(maybe idk if user mixing allowed we learn it in class)~~
-- ~~add blueprinting refactoring~~
-- ~~Maybe refactor models~~
-- ~~Consider adding auth context~~
-- ~~Addressing the issue of hook spam(Eventually).~~
-- ~~combine the hooks and models~~
-- ~~implement a cleaner put and delete~~
-- ~~implement base CRUD~~
-- ~~Remove session id after reading more socket io documentation.~~
-- ~~Move off sessions~~
-- ~~Move off emails (idk why i thought i needed it)~~
+-   Ability to create your own chat room.
+
+-   Sending messages in realtime amongst room members.
+
+-   Ability to create read and update chat rooms.
+
+## Installation
+
+<details>
+<summary>
+  <code>There are several ways you can run this application, here is one!</code>
+</summary>
+
+-   [Downloading repository as ZIP](https://github.com/carrot2803/Bluberi/archive/refs/heads/master.zip)
+-   Running the following command in a terminal, provided the [GitHub CLI](https://cli.github.com/) has been previously installed:
+
+```sh
+git clone https://github.com/carrot2803/Bluberi.git
+```
+
+<code>Install Flask and dependencies: </code>
+
+Run the following command to install the required dependencies:
+
+```sh
+pip install -r requirements.txt
+```
+
+Initialize the app:
+
+```sh
+flask init
+```
+
+Run the app:
+
+```sh
+flask run
+```
+
+</details>
+
+## Snippets
+
+Splash Screen<br/>
+![Screenshot 1](assets/snippets/snippet1.png)
+
+Main Screen<br/>
+![Video snippet](assets/snippets/snippet2.gif)
