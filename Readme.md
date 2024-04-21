@@ -55,7 +55,7 @@ flask run
 ## Snippets
 
 Splash Screen<br/>
-![Screenshot 1](assets/snippets/snippet1.png)
+![Screenshot 1](https://i.imgur.com/2LgVMzn.png)
 
 Main Screen<br/>
 ![Video snippet](assets/snippets/snippet2.gif)
