@@ -47,12 +47,12 @@ def sign_up() -> Response | str:
     password: str | None = data.get("password")
     if not username or not password or not email:
         return render_template("signup.html", error="No data provided")
-    
+
     username_exist: User | None = User.query.filter_by(username=username).first()
     email_exist: User | None = User.query.filter_by(email=email).first()
     if username_exist or email_exist:
         return render_template("signup.html", error="Username/Email Already Exist")
-        
+
     user = User(username, email, password)
     db.session.add(user)
     db.session.commit()
@@ -62,7 +62,7 @@ def sign_up() -> Response | str:
     return response
 
 
-@auth.route("/logout")
+@auth.route("/logout", methods=["GET"])
 @jwt_required()
 def logout() -> Response:
     response: Response = redirect(url_for("auth.login"))
