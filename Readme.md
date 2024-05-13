@@ -1,11 +1,11 @@
-# Bluberi Chat Application
+# Bluberi Chat Application 
 
 This is team vegetables Info2602 Project. Welcome to Bluberi, a dynamic web chat platform 
 facilitating meaningful conversations among users who share common interests, passions, and experiences.
 
 ## App Availability
 
-You can view and test the web at [Site Link](https://bluberi.onrender.com)
+You can view and test the web site at [Site Link](https://bluberi.onrender.com)
 
 ## Features
 -   Authentication, Authorization and Integrity.
@@ -14,11 +14,9 @@ You can view and test the web at [Site Link](https://bluberi.onrender.com)
 
 -   Intuitive and engaging user interface.
 
--   Ability to create your own chat room.
-
 -   Sending messages in realtime amongst room members.
 
--   Ability to create read and update chat rooms.
+-   Ability to create read delete and update chat rooms.
 
 ## Installation
 
@@ -56,10 +54,12 @@ flask run
 
 </details>
 
-## Authentication Routes
+## Routes
 
-1. <u>/login</u> [POST]: Logs in the user.
-2. <u>/signup</u> [POST]: Signs up a new user.
+### Auth Routes
+
+1. <u>/signup</u> [POST]: Signs up a new user.
+2. <u>/login</u> [POST]: Logs in the user.
 3. <u>/logout</u> [GET]: Logs out the user.
 
 ### Chat Routes
@@ -74,8 +74,13 @@ flask run
 
 ## Snippets
 
-Home Page<br/>
+Landing Page<br/>
 ![Screenshot 1](https://i.imgur.com/2LgVMzn.png)
 
-Mockup<br/>
+Wireframe<br/>
 ![Screenshot 2](https://i.imgur.com/0hAEHSl.png)
+
+<br/>
+
+View more wireframes at [Figma link](https://www.figma.com/file/fHduUjck8Yksurlyh4t37k/Wireframes?type=design&node-id=0%3A1&mode=design&t=ebXI87cTBHldO5L7-1)
+View more UI at [Figma link](https://www.figma.com/file/FXXLagx7B9ORLYrHCw2YWX/Feature-Recording?type=design&node-id=3%3A14&mode=design&t=XDFpj9lJKsMEgHa9-1)
