@@ -19,5 +19,5 @@ python-engineio==4.9.0
 python-socketio==5.11.2
 simple-websocket==1.0.0
 SQLAlchemy==2.0.29
-Werkzeug==3.0.2
+Werkzeug==3.0.3
 wsproto==1.2.0
