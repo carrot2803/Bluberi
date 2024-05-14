@@ -3,7 +3,7 @@ bidict==0.23.1
 blinker==1.7.0
 click==8.1.7
 Flask==3.0.2
-Flask-Cors==4.0.0
+Flask-Cors==4.0.1
 Flask-JWT-Extended==4.6.0
 Flask-Migrate==4.0.7
 Flask-SocketIO==5.3.6
